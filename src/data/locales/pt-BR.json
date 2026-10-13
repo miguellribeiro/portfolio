@@ -1,0 +1,142 @@
+{
+  "currency": "BRL",
+  "nav": "Navegação",
+  "lang": "Idioma",
+  "theme": "Alternar tema",
+  "meta": {
+    "title": "Seu Nome — Desenvolvedor de Software (exemplo)",
+    "description": "Portfólio profissional: sistemas, ERPs e aplicações web. Conteúdo de exemplo."
+  },
+  "hero": {
+    "eyebrow": "Desenvolvedor Full Stack",
+    "title": "Seu Nome",
+    "subtitle": "Construo sistemas confiáveis e bem acabados para empresas. (Texto de exemplo — substitua.)",
+    "ctaPrimary": "Ver projetos",
+    "ctaSecondary": "Fale comigo"
+  },
+  "about": {
+    "title": "Sobre",
+    "paragraphs": [
+      "Parágrafo de exemplo sobre sua trajetória, valores e forma de trabalhar.",
+      "Destaque maturidade, compromisso com prazos e qualidade de entrega."
+    ]
+  },
+  "capabilities": {
+    "title": "Competências",
+    "items": [
+      {
+        "name": "Front-end",
+        "description": "React, interfaces acessíveis e performáticas."
+      },
+      {
+        "name": "Back-end",
+        "description": "APIs, integrações e regras de negócio."
+      },
+      {
+        "name": "Sistemas de gestão",
+        "description": "ERPs, relatórios e automação de processos."
+      }
+    ]
+  },
+  "projects": {
+    "title": "Projetos",
+    "subtitle": "Seleção de trabalhos (exemplos).",
+    "demo": "Demo",
+    "repo": "Código",
+    "testDrive": "Test Drive",
+    "soon": "Em breve",
+    "gallery": "Abrir galeria",
+    "close": "Fechar",
+    "prev": "Anterior",
+    "next": "Próxima",
+    "status": {
+      "production": "Em produção",
+      "in-progress": "Em desenvolvimento",
+      "archived": "Arquivado"
+    },
+    "items": {
+      "projeto-exemplo-1": {
+        "title": "Projeto Exemplo 1",
+        "description": "Descrição de exemplo de um sistema de gestão.",
+        "alt": "Tela de exemplo do Projeto Exemplo 1"
+      },
+      "projeto-exemplo-2": {
+        "title": "Projeto Exemplo 2",
+        "description": "Descrição de exemplo de um painel analítico.",
+        "alt": "Tela de exemplo do Projeto Exemplo 2"
+      }
+    }
+  },
+  "experience": {
+    "title": "Experiência",
+    "items": [
+      {
+        "period": "20XX — atual",
+        "role": "Cargo Exemplo",
+        "org": "Empresa Exemplo",
+        "description": "Responsabilidades e resultados (exemplo)."
+      },
+      {
+        "period": "20XX — 20XX",
+        "role": "Cargo Exemplo",
+        "org": "Empresa Exemplo",
+        "description": "Responsabilidades e resultados (exemplo)."
+      }
+    ]
+  },
+  "testimonials": {
+    "title": "Depoimentos",
+    "items": [
+      {
+        "quote": "Depoimento de exemplo.",
+        "author": "Nome Exemplo",
+        "role": "Cargo, Empresa"
+      }
+    ]
+  },
+  "plans": {
+    "title": "Planos",
+    "subtitle": "Valores ilustrativos — a definir.",
+    "perPeriod": "/projeto",
+    "onRequest": "Sob consulta",
+    "highlight": "Recomendado",
+    "items": {
+      "essencial": {
+        "name": "Essencial",
+        "features": [
+          "Item de exemplo 1",
+          "Item de exemplo 2"
+        ],
+        "cta": "Conversar no WhatsApp"
+      },
+      "profissional": {
+        "name": "Profissional",
+        "features": [
+          "Item de exemplo 1",
+          "Item de exemplo 2",
+          "Item de exemplo 3"
+        ],
+        "cta": "Enviar e-mail"
+      },
+      "sob-medida": {
+        "name": "Sob medida",
+        "features": [
+          "Escopo personalizado",
+          "Item de exemplo"
+        ],
+        "cta": "Solicitar proposta"
+      }
+    }
+  },
+  "contact": {
+    "title": "Contato",
+    "subtitle": "Vamos conversar sobre seu projeto.",
+    "email": "E-mail",
+    "whatsapp": "WhatsApp",
+    "github": "GitHub",
+    "linkedin": "LinkedIn"
+  },
+  "footer": {
+    "text": "Seu Nome. Todos os direitos reservados."
+  }
+}

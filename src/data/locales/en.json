@@ -1,0 +1,142 @@
+{
+  "currency": "USD",
+  "nav": "Navigation",
+  "lang": "Language",
+  "theme": "Toggle theme",
+  "meta": {
+    "title": "Your Name — Software Developer (example)",
+    "description": "Professional portfolio: systems, ERPs and web apps. Example content."
+  },
+  "hero": {
+    "eyebrow": "Full Stack Developer",
+    "title": "Your Name",
+    "subtitle": "I build reliable, well-crafted systems for businesses. (Example text.)",
+    "ctaPrimary": "See projects",
+    "ctaSecondary": "Get in touch"
+  },
+  "about": {
+    "title": "About",
+    "paragraphs": [
+      "Example paragraph about your background and how you work.",
+      "Highlight maturity, commitment and quality."
+    ]
+  },
+  "capabilities": {
+    "title": "Capabilities",
+    "items": [
+      {
+        "name": "Front-end",
+        "description": "React, accessible and fast interfaces."
+      },
+      {
+        "name": "Back-end",
+        "description": "APIs, integrations and business rules."
+      },
+      {
+        "name": "Business systems",
+        "description": "ERPs, reporting and process automation."
+      }
+    ]
+  },
+  "projects": {
+    "title": "Projects",
+    "subtitle": "Selected work (examples).",
+    "demo": "Demo",
+    "repo": "Code",
+    "testDrive": "Test Drive",
+    "soon": "Coming soon",
+    "gallery": "Open gallery",
+    "close": "Close",
+    "prev": "Previous",
+    "next": "Next",
+    "status": {
+      "production": "In production",
+      "in-progress": "In progress",
+      "archived": "Archived"
+    },
+    "items": {
+      "projeto-exemplo-1": {
+        "title": "Example Project 1",
+        "description": "Example description of a management system.",
+        "alt": "Example screen of Example Project 1"
+      },
+      "projeto-exemplo-2": {
+        "title": "Example Project 2",
+        "description": "Example description of an analytics dashboard.",
+        "alt": "Example screen of Example Project 2"
+      }
+    }
+  },
+  "experience": {
+    "title": "Experience",
+    "items": [
+      {
+        "period": "20XX — present",
+        "role": "Example Role",
+        "org": "Example Company",
+        "description": "Responsibilities and outcomes (example)."
+      },
+      {
+        "period": "20XX — 20XX",
+        "role": "Example Role",
+        "org": "Example Company",
+        "description": "Responsibilities and outcomes (example)."
+      }
+    ]
+  },
+  "testimonials": {
+    "title": "Testimonials",
+    "items": [
+      {
+        "quote": "Example testimonial.",
+        "author": "Example Name",
+        "role": "Role, Company"
+      }
+    ]
+  },
+  "plans": {
+    "title": "Plans",
+    "subtitle": "Illustrative pricing — TBD.",
+    "perPeriod": "/project",
+    "onRequest": "On request",
+    "highlight": "Recommended",
+    "items": {
+      "essencial": {
+        "name": "Essential",
+        "features": [
+          "Example item 1",
+          "Example item 2"
+        ],
+        "cta": "Chat on WhatsApp"
+      },
+      "profissional": {
+        "name": "Professional",
+        "features": [
+          "Example item 1",
+          "Example item 2",
+          "Example item 3"
+        ],
+        "cta": "Send e-mail"
+      },
+      "sob-medida": {
+        "name": "Custom",
+        "features": [
+          "Custom scope",
+          "Example item"
+        ],
+        "cta": "Request a quote"
+      }
+    }
+  },
+  "contact": {
+    "title": "Contact",
+    "subtitle": "Let's talk about your project.",
+    "email": "E-mail",
+    "whatsapp": "WhatsApp",
+    "github": "GitHub",
+    "linkedin": "LinkedIn"
+  },
+  "footer": {
+    "text": "Your Name. All rights reserved."
+  }
+}

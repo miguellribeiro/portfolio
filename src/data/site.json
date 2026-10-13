@@ -1,0 +1,38 @@
+{
+  "$comment": "Configuração compartilhada (não traduzível). Textos ficam em locales/*.json.",
+  "defaultLocale": "pt-BR",
+  "locales": [
+    { "code": "pt-BR", "label": "PT", "name": "Português", "flag": "🇧🇷" },
+    { "code": "es", "label": "ES", "name": "Español", "flag": "🇪🇸" },
+    { "code": "en", "label": "EN", "name": "English", "flag": "🇺🇸" }
+  ],
+  "theme": {
+    "defaultMode": "dark",
+    "colors": {
+      "dark": { "bg": "#0e1116", "surface": "#161b22", "text": "#e6edf3", "muted": "#9aa7b4", "primary": "#6b8cff", "border": "#262d36" },
+      "light": { "bg": "#f7f8fa", "surface": "#ffffff", "text": "#1a1f26", "muted": "#5b6672", "primary": "#3554d1", "border": "#e2e6eb" }
+    }
+  },
+  "sections": [
+    { "id": "hero", "type": "hero", "enabled": true },
+    { "id": "about", "type": "about", "enabled": true },
+    { "id": "capabilities", "type": "capabilities", "enabled": true },
+    { "id": "projects", "type": "projects", "enabled": true },
+    { "id": "experience", "type": "experience", "enabled": true },
+    { "id": "testimonials", "type": "testimonials", "enabled": false },
+    { "id": "plans", "type": "plans", "enabled": true },
+    { "id": "contact", "type": "contact", "enabled": true },
+    { "id": "footer", "type": "footer", "enabled": true }
+  ],
+  "contact": {
+    "email": "seu-email@exemplo.com",
+    "whatsapp": "5500000000000",
+    "github": "https://github.com/seu-usuario",
+    "linkedin": "https://www.linkedin.com/in/seu-usuario"
+  },
+  "plans": [
+    { "id": "essencial", "highlight": false, "prices": { "BRL": 0, "USD": 0, "EUR": 0 }, "cta": { "type": "whatsapp" } },
+    { "id": "profissional", "highlight": true, "prices": { "BRL": 0, "USD": 0, "EUR": 0 }, "cta": { "type": "email" } },
+    { "id": "sob-medida", "highlight": false, "prices": null, "cta": { "type": "url", "href": "https://exemplo.com/checkout" } }
+  ]
+}

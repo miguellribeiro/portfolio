@@ -1,0 +1,23 @@
+{
+  "$comment": "Dados estruturais dos projetos. Textos (título, descrição) ficam em locales/*.json -> projects.items.<id>.",
+  "projects": [
+    {
+      "id": "projeto-exemplo-1",
+      "tags": ["React", "Node.js", "ERP"],
+      "status": "production",
+      "cover": "cover.svg",
+      "gallery": ["gallery-1.svg", "gallery-2.svg"],
+      "links": { "demo": "", "repo": "" },
+      "testDrive": { "enabled": false, "url": "" }
+    },
+    {
+      "id": "projeto-exemplo-2",
+      "tags": ["React", "Vite", "Dashboard"],
+      "status": "in-progress",
+      "cover": "cover.svg",
+      "gallery": ["gallery-1.svg"],
+      "links": { "demo": "https://exemplo.com", "repo": "https://github.com/seu-usuario/projeto-exemplo" },
+      "testDrive": { "enabled": false, "url": "" }
+    }
+  ]
+}

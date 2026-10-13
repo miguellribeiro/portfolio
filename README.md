@@ -1,0 +1,239 @@
+# Portfólio — orientado a dados (PT/ES/EN)
+
+Portfólio profissional em **Vite + React**, com renderização **orientada a dados**: todo o conteúdo
+(textos, projetos, planos, ordem das seções, tema) vive em arquivos JSON. Adicionar, remover,
+traduzir ou reordenar conteúdo **não exige mexer em componentes**.
+
+> ⚠️ Todo o conteúdo atual é **exemplo/placeholder** ("Seu Nome", "Projeto Exemplo", preços zerados).
+> Substitua antes de publicar oficialmente.
+
+---
+
+## 1. Visão e objetivos
+
+- Ser a **porta de entrada para clientes e recrutadores**: em poucos segundos, transmitir quem eu sou,
+  o que entrego e como contratar.
+- Comunicar **maturidade, compromisso e qualidade** — no conteúdo e no próprio código (acessível,
+  rápido, bem estruturado, fácil de manter).
+- Ser **trilíngue** (pt-BR, es, en) desde o início.
+- Servir de base para, futuramente, oferecer um **Test Drive** guiado dos sistemas que desenvolvo.
+
+### Público
+- **Clientes** (empresas/PMEs) buscando sistemas, ERPs, integrações e aplicações web.
+- **Recrutadores e líderes técnicos** avaliando experiência, stack e qualidade.
+
+---
+
+## 2. Stack
+
+- Vite 5 + React 18 (JavaScript), CSS puro com **CSS variables** (sem libs de UI).
+- i18n próprio e leve (Context API), sem dependências extras.
+- ESLint 9 (flat config).
+- Deploy estático: **GitHub Pages** (workflow incluso) ou **Vercel**.
+
+### Scripts
+| Comando | O que faz |
+|---|---|
+| `npm run dev` | servidor de desenvolvimento |
+| `npm run build` | build de produção em `dist/` |
+| `npm run preview` | serve o build localmente |
+| `npm run lint` | ESLint |
+
+---
+
+## 3. Arquitetura — motor de renderização
+
+```
+site.json ──► sections[] (ordem + enabled)
+                 │
+                 ▼
+     PageRenderer ──► registry[type] ──► <Componente id=... />
+                                             │
+                    useI18n().t('chave') ◄───┘  (textos de locales/<idioma>.json)
+```
+
+1. `src/data/site.json` define as seções (`{ id, type, enabled }`) **na ordem em que aparecem**.
+2. `src/engine/PageRenderer.jsx` percorre essa lista e, para cada `type`, busca o componente em
+   `src/engine/registry.js`.
+3. Cada componente em `src/sections/` lê **dados estruturais** (`site.json`, `projects.json`) e
+   **textos** pelo `t()` do i18n.
+4. `src/engine/validate.js` roda em modo dev e **avisa no console** sobre chaves de tradução
+   ausentes, `type` desconhecido, projetos sem campos obrigatórios, etc.
+5. Tipos do conteúdo estão documentados em JSDoc em `src/engine/types.js`.
+
+### Decisão: onde ficam os textos?
+**Separação estrutura × texto.**
+- `projects.json` e `site.json → plans` guardam só o que **não se traduz** (id, tags, status,
+  imagens, links, preços por moeda, tipo de CTA).
+- Todos os textos ficam em `locales/<idioma>.json`, **indexados pelo id** (`projects.items.<id>`,
+  `plans.items.<id>`).
+
+Vantagem: para traduzir o site inteiro, basta um arquivo por idioma; o validador acusa o que faltar.
+
+### Seções disponíveis (registry)
+`hero`, `about`, `capabilities` (alias `skills`), `projects`, `experience` (alias `timeline`),
+`testimonials` (desativada por padrão), `plans` (alias `pricing`), `contact`, `footer`.
+
+---
+
+## 4. Estrutura de pastas
+
+```
+portfolio/
+├─ .github/workflows/deploy.yml   # build + deploy GitHub Pages
+├─ public/
+│  ├─ favicon.svg
+│  └─ projects/<project-id>/      # imagens de cada projeto (cover, gallery-N)
+├─ src/
+│  ├─ data/
+│  │  ├─ site.json                # config compartilhada: tema, seções, contatos, planos, idiomas
+│  │  ├─ projects.json            # projetos (dados estruturais)
+│  │  └─ locales/{pt-BR,es,en}.json
+│  ├─ engine/                     # registry, PageRenderer, content loader, validação, tema, tipos
+│  ├─ i18n/                       # provider + hook useI18n
+│  ├─ components/                 # Header, LanguageSwitcher, Section, Lightbox
+│  ├─ sections/                   # um componente por tipo de seção
+│  ├─ App.jsx  main.jsx  styles.css
+├─ index.html  vite.config.js  eslint.config.js
+└─ LICENSE  .editorconfig  .gitignore
+```
+
+---
+
+## 5. Como editar o conteúdo (passo a passo)
+
+### 5.1 Adicionar um projeto
+1. Crie a pasta `public/projects/meu-projeto/`.
+2. Adicione `cover.webp` e `gallery-1.webp`, `gallery-2.webp`… (veja o README dentro de cada pasta).
+3. Em `src/data/projects.json`, adicione:
+   ```json
+   {
+     "id": "meu-projeto",
+     "tags": ["React", "Node.js"],
+     "status": "production",
+     "cover": "cover.webp",
+     "gallery": ["gallery-1.webp", "gallery-2.webp"],
+     "links": { "demo": "https://...", "repo": "" },
+     "testDrive": { "enabled": false, "url": "" }
+   }
+   ```
+   `status`: `production` | `in-progress` | `archived`. Links vazios não são exibidos.
+4. Em **cada** `locales/*.json`, em `projects.items`, adicione:
+   ```json
+   "meu-projeto": { "title": "...", "description": "...", "alt": "Descrição da imagem" }
+   ```
+5. `npm run dev` e confira o console (o validador aponta o que faltar).
+
+### 5.2 Adicionar/trocar imagens
+- Formato WebP, ~1200×750 (16:10), até ~200 KB.
+- Nomes: `cover.webp`, `gallery-1.webp`, `gallery-2.webp`…
+- Atualize `cover`/`gallery` no `projects.json`. Os `.svg` atuais são placeholders.
+
+### 5.3 Adicionar um plano
+1. Em `site.json → plans`:
+   ```json
+   { "id": "manutencao", "highlight": false,
+     "prices": { "BRL": 500, "USD": 100, "EUR": 90 },
+     "cta": { "type": "whatsapp" } }
+   ```
+   - `prices: null` → exibe "Sob consulta".
+   - `cta.type`: `whatsapp` | `email` (usam `site.json → contact`) | `url` (com `href`, ex.: checkout).
+2. Em cada `locales/*.json → plans.items`: `"manutencao": { "name", "features": [], "cta" }`.
+3. A moeda exibida vem de `currency` em cada arquivo de idioma (pt-BR → BRL, es/en → USD).
+
+### 5.4 Adicionar ou traduzir um idioma
+1. Copie `locales/pt-BR.json` para `locales/fr.json` e traduza.
+2. Em `src/engine/content.js`: `import fr from '../data/locales/fr.json'` e inclua em `messages`.
+3. Em `site.json → locales`: `{ "code": "fr", "label": "FR", "name": "Français", "flag": "🇫🇷" }`.
+
+### 5.5 Reordenar / ativar / desativar seções
+Edite a ordem do array `site.json → sections` ou altere `enabled`. Ex.: para mostrar depoimentos,
+`"testimonials" → "enabled": true`.
+
+### 5.6 Alterar o tema
+`site.json → theme.colors.dark|light` (bg, surface, text, muted, primary, border).
+`defaultMode` define o tema inicial (o navegador/escolha do usuário têm prioridade).
+As cores viram CSS variables `--c-*`, usadas em `src/styles.css`.
+
+### 5.7 Contatos
+`site.json → contact` (email, whatsapp no formato internacional só com dígitos, github, linkedin).
+Campos vazios são ocultados.
+
+---
+
+## 6. Estratégia de i18n
+
+- Seletor **PT / ES / EN** sempre visível no cabeçalho (`aria-pressed` indica o ativo).
+- Ordem de detecção: `?lang=` na URL → `localStorage` → idioma do navegador → `defaultLocale`.
+- Ao trocar, o idioma é salvo e a URL é atualizada com `?lang=` (link compartilhável).
+- SEO por idioma: `<html lang>`, `title`, `description` e `og:*` vêm de `meta` em cada locale.
+- Chave ausente → fallback para o idioma padrão + aviso no console (dev).
+
+---
+
+## 7. Roadmap
+
+### Fase 1 — MVP (este commit) ✅
+Motor de renderização por JSON, i18n PT/ES/EN, tema claro/escuro, vitrine com galeria/lightbox,
+planos, contato, validação de conteúdo, workflow de deploy.
+
+### Fase 2 — Conteúdo real + imagens + domínio
+- Textos reais (bio, competências, experiência) nos 3 idiomas.
+- Projetos reais com capturas de tela (sem expor dados de clientes; usar dados fictícios).
+- Planos e preços definidos; CTAs reais (WhatsApp/e-mail/checkout).
+- Deploy em produção + domínio próprio (CNAME), Open Graph image, `sitemap.xml`, `robots.txt`.
+
+### Fase 3 — Test Drive
+Aba/rota dedicada para **acesso limitado e guiado** aos sistemas desenvolvidos:
+- **Contas demo** por projeto, com perfis de permissão restritos (somente leitura ou ações seguras).
+- **Tours guiados** (passo a passo destacando funcionalidades-chave).
+- **Dados sandbox** fictícios, recriados/resetados periodicamente; nunca dados reais.
+- **Sessões com tempo limitado** (ex.: 30 min) e expiração automática.
+- **Autenticação** leve (link mágico/e-mail ou formulário de solicitação) para controlar acesso e
+  evitar abuso; rate limiting.
+- **Analytics** de uso do demo (quais telas, tempo, conversão para contato).
+- No portfólio: o campo `testDrive` de cada projeto passa de "Em breve" para um botão real.
+
+### Fase 4 — Extras
+- Blog / estudos de caso (cases) com MDX.
+- Formulário de contato (Formspree, função serverless ou backend próprio) com anti-spam.
+- Analytics com foco em privacidade (Plausible/Umami).
+- CMS headless opcional (ex.: Decap, Sanity) mantendo o mesmo formato JSON.
+
+---
+
+## 8. Convenções
+
+- **Commits**: [Conventional Commits](https://www.conventionalcommits.org/pt-br/) em pt-BR —
+  `feat:`, `fix:`, `docs:`, `style:`, `refactor:`, `chore:`, `content:` (para mudanças só de conteúdo).
+- **Branches**: `main` (produção, deploy automático), `feat/<nome>`, `fix/<nome>`, `content/<nome>`.
+  Mudanças via Pull Request.
+- Código: ESLint limpo, componentes pequenos, sem textos fixos no JSX (sempre via `t()`).
+
+---
+
+## 9. Deploy
+
+### GitHub Pages
+O workflow `.github/workflows/deploy.yml` roda lint + build a cada push na `main` e publica `dist/`.
+O `base` do Vite é definido por `BASE_PATH=/<nome-do-repo>/` no workflow.
+**Necessário uma vez**: em *Settings → Pages → Build and deployment*, selecionar **GitHub Actions**.
+
+### Vercel
+Importe o repositório; framework Vite; build `npm run build`; output `dist`. Não defina `BASE_PATH`.
+
+---
+
+## 10. Checklist de TODOs
+
+- [ ] Substituir "Seu Nome" e todos os textos de exemplo (3 idiomas)
+- [ ] Preencher `site.json → contact` com dados reais
+- [ ] Adicionar projetos reais e imagens WebP; remover os projetos de exemplo
+- [ ] Definir planos e preços (ou `null` = sob consulta)
+- [ ] Ativar GitHub Pages (fonte: GitHub Actions) ou conectar Vercel
+- [ ] Domínio próprio, OG image, sitemap e robots
+- [ ] Revisar acessibilidade (Lighthouse) e performance
+- [ ] Planejar Fase 3 (Test Drive)
+
+## Licença
+MIT — veja [LICENSE](LICENSE).

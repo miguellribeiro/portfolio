@@ -1,0 +1,142 @@
+{
+  "currency": "USD",
+  "nav": "Navegación",
+  "lang": "Idioma",
+  "theme": "Cambiar tema",
+  "meta": {
+    "title": "Tu Nombre — Desarrollador de Software (ejemplo)",
+    "description": "Portafolio profesional: sistemas, ERPs y aplicaciones web. Contenido de ejemplo."
+  },
+  "hero": {
+    "eyebrow": "Desarrollador Full Stack",
+    "title": "Tu Nombre",
+    "subtitle": "Construyo sistemas confiables y bien terminados para empresas. (Texto de ejemplo.)",
+    "ctaPrimary": "Ver proyectos",
+    "ctaSecondary": "Contáctame"
+  },
+  "about": {
+    "title": "Sobre mí",
+    "paragraphs": [
+      "Párrafo de ejemplo sobre tu trayectoria y forma de trabajar.",
+      "Destaca madurez, compromiso y calidad."
+    ]
+  },
+  "capabilities": {
+    "title": "Competencias",
+    "items": [
+      {
+        "name": "Front-end",
+        "description": "React, interfaces accesibles y rápidas."
+      },
+      {
+        "name": "Back-end",
+        "description": "APIs, integraciones y reglas de negocio."
+      },
+      {
+        "name": "Sistemas de gestión",
+        "description": "ERPs, reportes y automatización."
+      }
+    ]
+  },
+  "projects": {
+    "title": "Proyectos",
+    "subtitle": "Selección de trabajos (ejemplos).",
+    "demo": "Demo",
+    "repo": "Código",
+    "testDrive": "Test Drive",
+    "soon": "Próximamente",
+    "gallery": "Abrir galería",
+    "close": "Cerrar",
+    "prev": "Anterior",
+    "next": "Siguiente",
+    "status": {
+      "production": "En producción",
+      "in-progress": "En desarrollo",
+      "archived": "Archivado"
+    },
+    "items": {
+      "projeto-exemplo-1": {
+        "title": "Proyecto Ejemplo 1",
+        "description": "Descripción de ejemplo de un sistema de gestión.",
+        "alt": "Pantalla de ejemplo del Proyecto Ejemplo 1"
+      },
+      "projeto-exemplo-2": {
+        "title": "Proyecto Ejemplo 2",
+        "description": "Descripción de ejemplo de un panel analítico.",
+        "alt": "Pantalla de ejemplo del Proyecto Ejemplo 2"
+      }
+    }
+  },
+  "experience": {
+    "title": "Experiencia",
+    "items": [
+      {
+        "period": "20XX — actual",
+        "role": "Cargo Ejemplo",
+        "org": "Empresa Ejemplo",
+        "description": "Responsabilidades y resultados (ejemplo)."
+      },
+      {
+        "period": "20XX — 20XX",
+        "role": "Cargo Ejemplo",
+        "org": "Empresa Ejemplo",
+        "description": "Responsabilidades y resultados (ejemplo)."
+      }
+    ]
+  },
+  "testimonials": {
+    "title": "Testimonios",
+    "items": [
+      {
+        "quote": "Testimonio de ejemplo.",
+        "author": "Nombre Ejemplo",
+        "role": "Cargo, Empresa"
+      }
+    ]
+  },
+  "plans": {
+    "title": "Planes",
+    "subtitle": "Valores ilustrativos — por definir.",
+    "perPeriod": "/proyecto",
+    "onRequest": "A consultar",
+    "highlight": "Recomendado",
+    "items": {
+      "essencial": {
+        "name": "Esencial",
+        "features": [
+          "Ítem de ejemplo 1",
+          "Ítem de ejemplo 2"
+        ],
+        "cta": "Hablar por WhatsApp"
+      },
+      "profissional": {
+        "name": "Profesional",
+        "features": [
+          "Ítem de ejemplo 1",
+          "Ítem de ejemplo 2",
+          "Ítem de ejemplo 3"
+        ],
+        "cta": "Enviar e-mail"
+      },
+      "sob-medida": {
+        "name": "A medida",
+        "features": [
+          "Alcance personalizado",
+          "Ítem de ejemplo"
+        ],
+        "cta": "Solicitar propuesta"
+      }
+    }
+  },
+  "contact": {
+    "title": "Contacto",
+    "subtitle": "Hablemos de tu proyecto.",
+    "email": "E-mail",
+    "whatsapp": "WhatsApp",
+    "github": "GitHub",
+    "linkedin": "LinkedIn"
+  },
+  "footer": {
+    "text": "Tu Nombre. Todos los derechos reservados."
+  }
+}
