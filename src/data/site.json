@@ -2,28 +2,194 @@
   "$comment": "Configuração compartilhada (não traduzível). Textos ficam em locales/*.json.",
   "defaultLocale": "pt-BR",
   "locales": [
-    { "code": "pt-BR", "label": "PT", "name": "Português", "flag": "🇧🇷" },
-    { "code": "es", "label": "ES", "name": "Español", "flag": "🇪🇸" },
-    { "code": "en", "label": "EN", "name": "English", "flag": "🇺🇸" }
+    {
+      "code": "pt-BR",
+      "label": "PT",
+      "name": "Português",
+      "flag": "🇧🇷"
+    },
+    {
+      "code": "es",
+      "label": "ES",
+      "name": "Español",
+      "flag": "🇪🇸"
+    },
+    {
+      "code": "en",
+      "label": "EN",
+      "name": "English",
+      "flag": "🇺🇸"
+    }
   ],
   "theme": {
-    "defaultMode": "dark",
-    "colors": {
-      "dark": { "bg": "#0e1116", "surface": "#161b22", "text": "#e6edf3", "muted": "#9aa7b4", "primary": "#6b8cff", "border": "#262d36" },
-      "light": { "bg": "#f7f8fa", "surface": "#ffffff", "text": "#1a1f26", "muted": "#5b6672", "primary": "#3554d1", "border": "#e2e6eb" }
+    "mode": "dark",
+    "palette": {
+      "dark": {
+        "bg": "#0B1020",
+        "surface": "#121A2E",
+        "border": "#1F2A44",
+        "text": "#E6EAF2",
+        "muted": "#94A3B8",
+        "primary": "#14B8A6",
+        "primaryText": "#2DD4BF",
+        "onPrimary": "#04121A",
+        "accent": "#6366F1",
+        "highlight": "#F59E0B",
+        "onHighlight": "#1A1203",
+        "gradient": [
+          "#14B8A6 0%",
+          "#6366F1 55%",
+          "#8B5CF6 100%"
+        ],
+        "mesh": [
+          "#14B8A6",
+          "#6366F1",
+          "#0EA5E9"
+        ],
+        "meshOpacity": 0.35
+      },
+      "light": {
+        "bg": "#F7F8FB",
+        "surface": "#FFFFFF",
+        "border": "#E3E7EF",
+        "text": "#0F172A",
+        "muted": "#475569",
+        "primary": "#0D9488",
+        "primaryText": "#0F766E",
+        "onPrimary": "#020617",
+        "accent": "#4F46E5",
+        "highlight": "#D97706",
+        "onHighlight": "#1A1203",
+        "gradient": [
+          "#0D9488 0%",
+          "#4F46E5 55%",
+          "#7C3AED 100%"
+        ],
+        "mesh": [
+          "#14B8A6",
+          "#6366F1",
+          "#0EA5E9"
+        ],
+        "meshOpacity": 0.18
+      }
+    },
+    "fonts": {
+      "heading": "Space Grotesk",
+      "body": "Inter",
+      "mono": "JetBrains Mono"
     }
   },
+  "effects": {
+    "heroMesh": true,
+    "grain": true,
+    "bgGrid": true,
+    "scrollReveal": true,
+    "parallax": true,
+    "cardTilt": false,
+    "cursorSpotlight": true,
+    "marquee": true,
+    "counters": true,
+    "dividers": "diagonal",
+    "smoothScroll": false
+  },
   "sections": [
-    { "id": "hero", "type": "hero", "enabled": true },
-    { "id": "about", "type": "about", "enabled": true },
-    { "id": "capabilities", "type": "capabilities", "enabled": true },
-    { "id": "projects", "type": "projects", "enabled": true },
-    { "id": "experience", "type": "experience", "enabled": true },
-    { "id": "testimonials", "type": "testimonials", "enabled": false },
-    { "id": "plans", "type": "plans", "enabled": true },
-    { "id": "contact", "type": "contact", "enabled": true },
-    { "id": "footer", "type": "footer", "enabled": true }
+    {
+      "id": "hero",
+      "type": "hero",
+      "enabled": true
+    },
+    {
+      "id": "stats",
+      "type": "stats",
+      "enabled": true
+    },
+    {
+      "id": "about",
+      "type": "about",
+      "enabled": true
+    },
+    {
+      "id": "capabilities",
+      "type": "capabilities",
+      "enabled": true
+    },
+    {
+      "id": "stack",
+      "type": "marquee",
+      "enabled": true
+    },
+    {
+      "id": "projects",
+      "type": "projects",
+      "enabled": true
+    },
+    {
+      "id": "experience",
+      "type": "experience",
+      "enabled": true
+    },
+    {
+      "id": "testimonials",
+      "type": "testimonials",
+      "enabled": false
+    },
+    {
+      "id": "plans",
+      "type": "plans",
+      "enabled": true
+    },
+    {
+      "id": "contact",
+      "type": "contact",
+      "enabled": true
+    },
+    {
+      "id": "footer",
+      "type": "footer",
+      "enabled": true
+    }
   ],
+  "stats": [
+    {
+      "id": "projects",
+      "value": 12,
+      "suffix": "+",
+      "example": true
+    },
+    {
+      "id": "years",
+      "value": 8,
+      "suffix": "+",
+      "example": true
+    },
+    {
+      "id": "uptime",
+      "value": 99.9,
+      "decimals": 1,
+      "suffix": "%",
+      "example": true
+    },
+    {
+      "id": "support",
+      "value": 24,
+      "suffix": "h",
+      "example": true
+    }
+  ],
+  "marquee": {
+    "items": [
+      "React",
+      "TypeScript",
+      "Node.js",
+      "Vite",
+      "PostgreSQL",
+      "SQL Server",
+      "Docker",
+      "REST APIs",
+      "Integrações TISS",
+      "Power BI"
+    ]
+  },
   "contact": {
     "email": "seu-email@exemplo.com",
     "whatsapp": "5500000000000",
@@ -31,8 +197,38 @@
     "linkedin": "https://www.linkedin.com/in/seu-usuario"
   },
   "plans": [
-    { "id": "essencial", "highlight": false, "prices": { "BRL": 0, "USD": 0, "EUR": 0 }, "cta": { "type": "whatsapp" } },
-    { "id": "profissional", "highlight": true, "prices": { "BRL": 0, "USD": 0, "EUR": 0 }, "cta": { "type": "email" } },
-    { "id": "sob-medida", "highlight": false, "prices": null, "cta": { "type": "url", "href": "https://exemplo.com/checkout" } }
+    {
+      "id": "essencial",
+      "highlight": false,
+      "prices": {
+        "BRL": 0,
+        "USD": 0,
+        "EUR": 0
+      },
+      "cta": {
+        "type": "whatsapp"
+      }
+    },
+    {
+      "id": "profissional",
+      "highlight": true,
+      "prices": {
+        "BRL": 0,
+        "USD": 0,
+        "EUR": 0
+      },
+      "cta": {
+        "type": "email"
+      }
+    },
+    {
+      "id": "sob-medida",
+      "highlight": false,
+      "prices": null,
+      "cta": {
+        "type": "url",
+        "href": "https://exemplo.com/checkout"
+      }
+    }
   ]
 }

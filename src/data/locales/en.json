@@ -12,7 +12,38 @@
     "title": "Your Name",
     "subtitle": "I build reliable, well-crafted systems for businesses. (Example text.)",
     "ctaPrimary": "See projects",
-    "ctaSecondary": "Get in touch"
+    "ctaSecondary": "Get in touch",
+    "headline": "Custom software, [[well crafted]] and ready to scale.",
+    "mockup": {
+      "title": "Management dashboard (illustrative)",
+      "app": "Example ERP",
+      "nav": [
+        "Home",
+        "Finance",
+        "Billing",
+        "Reports"
+      ],
+      "kpis": [
+        "Revenue",
+        "Orders",
+        "Avg. ticket"
+      ],
+      "chart": "Monthly revenue",
+      "revenue": "Billing",
+      "revenueValue": "+00% (example)",
+      "tiss": "TISS claims",
+      "tissValue": "000 sent (example)"
+    }
+  },
+  "stats": {
+    "title": "By the numbers",
+    "note": "Example figures — replace with real ones.",
+    "items": {
+      "projects": "Projects delivered",
+      "years": "Years of experience",
+      "uptime": "Average uptime",
+      "support": "Response time"
+    }
   },
   "about": {
     "title": "About",
@@ -37,6 +68,9 @@
         "description": "ERPs, reporting and process automation."
       }
     ]
+  },
+  "marquee": {
+    "title": "Technologies I work with"
   },
   "projects": {
     "title": "Projects",

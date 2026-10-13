@@ -12,7 +12,38 @@
     "title": "Seu Nome",
     "subtitle": "Construo sistemas confiáveis e bem acabados para empresas. (Texto de exemplo — substitua.)",
     "ctaPrimary": "Ver projetos",
-    "ctaSecondary": "Fale comigo"
+    "ctaSecondary": "Fale comigo",
+    "headline": "Software sob medida, [[bem acabado]] e pronto para crescer.",
+    "mockup": {
+      "title": "Painel de gestão (ilustrativo)",
+      "app": "ERP Exemplo",
+      "nav": [
+        "Início",
+        "Financeiro",
+        "Faturamento",
+        "Relatórios"
+      ],
+      "kpis": [
+        "Receita",
+        "Pedidos",
+        "Ticket médio"
+      ],
+      "chart": "Receita mensal",
+      "revenue": "Faturamento",
+      "revenueValue": "+00% (exemplo)",
+      "tiss": "Guias TISS",
+      "tissValue": "000 enviadas (exemplo)"
+    }
+  },
+  "stats": {
+    "title": "Em números",
+    "note": "Números de exemplo — substitua pelos reais.",
+    "items": {
+      "projects": "Projetos entregues",
+      "years": "Anos de experiência",
+      "uptime": "Disponibilidade média",
+      "support": "Tempo de resposta"
+    }
   },
   "about": {
     "title": "Sobre",
@@ -37,6 +68,9 @@
         "description": "ERPs, relatórios e automação de processos."
       }
     ]
+  },
+  "marquee": {
+    "title": "Tecnologias com que trabalho"
   },
   "projects": {
     "title": "Projetos",

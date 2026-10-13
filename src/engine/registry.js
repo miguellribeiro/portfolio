@@ -1,6 +1,8 @@
 import Hero from '../sections/Hero.jsx';
+import Stats from '../sections/Stats.jsx';
 import About from '../sections/About.jsx';
 import Capabilities from '../sections/Capabilities.jsx';
+import Marquee from '../sections/Marquee.jsx';
 import Projects from '../sections/Projects.jsx';
 import Experience from '../sections/Experience.jsx';
 import Testimonials from '../sections/Testimonials.jsx';
@@ -15,9 +17,12 @@ import Footer from '../sections/Footer.jsx';
  */
 export const registry = {
   hero: Hero,
+  stats: Stats,
+  counters: Stats,
   about: About,
   capabilities: Capabilities,
   skills: Capabilities,
+  marquee: Marquee,
   projects: Projects,
   experience: Experience,
   timeline: Experience,
@@ -27,3 +32,5 @@ export const registry = {
   contact: Contact,
   footer: Footer,
 };
+
+export { UNNUMBERED } from './sectionMeta.js';

@@ -27,6 +27,9 @@ traduzir ou reordenar conteúdo **não exige mexer em componentes**.
 ## 2. Stack
 
 - Vite 5 + React 18 (JavaScript), CSS puro com **CSS variables** (sem libs de UI).
+- [`motion`](https://motion.dev) (`motion/react`, `LazyMotion` + `domAnimation`) para parallax, timeline e galeria.
+- Fontes auto-hospedadas via `@fontsource` (Space Grotesk, Inter, JetBrains Mono).
+- [`lenis`](https://lenis.darkroom.engineering) opcional (smooth scroll, carregado sob demanda).
 - i18n próprio e leve (Context API), sem dependências extras.
 - ESLint 9 (flat config).
 - Deploy estático: **GitHub Pages** (workflow incluso) ou **Vercel**.
@@ -71,7 +74,7 @@ site.json ──► sections[] (ordem + enabled)
 Vantagem: para traduzir o site inteiro, basta um arquivo por idioma; o validador acusa o que faltar.
 
 ### Seções disponíveis (registry)
-`hero`, `about`, `capabilities` (alias `skills`), `projects`, `experience` (alias `timeline`),
+`hero`, `stats` (alias `counters`), `about`, `capabilities` (alias `skills`), `marquee`, `projects`, `experience` (alias `timeline`),
 `testimonials` (desativada por padrão), `plans` (alias `pricing`), `contact`, `footer`.
 
 ---
@@ -89,10 +92,11 @@ portfolio/
 │  │  ├─ site.json                # config compartilhada: tema, seções, contatos, planos, idiomas
 │  │  ├─ projects.json            # projetos (dados estruturais)
 │  │  └─ locales/{pt-BR,es,en}.json
-│  ├─ engine/                     # registry, PageRenderer, content loader, validação, tema, tipos
+│  ├─ engine/                     # registry, PageRenderer, loader, validação, tema, efeitos, tipos
 │  ├─ i18n/                       # provider + hook useI18n
-│  ├─ components/                 # Header, LanguageSwitcher, Section, Lightbox
+│  ├─ components/                 # Header, LanguageSwitcher, Section, Lightbox, DashboardMockup
 │  ├─ sections/                   # um componente por tipo de seção
+│  ├─ hooks/                      # useCardFx (spotlight/tilt)
 │  ├─ App.jsx  main.jsx  styles.css
 ├─ index.html  vite.config.js  eslint.config.js
 └─ LICENSE  .editorconfig  .gitignore
@@ -151,9 +155,7 @@ Edite a ordem do array `site.json → sections` ou altere `enabled`. Ex.: para m
 `"testimonials" → "enabled": true`.
 
 ### 5.6 Alterar o tema
-`site.json → theme.colors.dark|light` (bg, surface, text, muted, primary, border).
-`defaultMode` define o tema inicial (o navegador/escolha do usuário têm prioridade).
-As cores viram CSS variables `--c-*`, usadas em `src/styles.css`.
+Veja a seção **Design system** abaixo (`site.json → theme` e `effects`).
 
 ### 5.7 Contatos
 `site.json → contact` (email, whatsapp no formato internacional só com dígitos, github, linkedin).
@@ -161,7 +163,70 @@ Campos vazios são ocultados.
 
 ---
 
-## 6. Estratégia de i18n
+## 6. Design system
+
+Direção visual: B2B profissional, escuro por padrão, com profundidade (gradientes, blobs, grade,
+cards sobrepostos) em vez de blocos retangulares chapados. Tudo configurável em `src/data/site.json`.
+
+### 6.1 Paleta (`theme.palette.dark|light`)
+| Token | Dark | Light | Uso |
+|---|---|---|---|
+| `bg` | `#0B1020` | `#F7F8FB` | fundo |
+| `surface` / `border` | `#121A2E` / `#1F2A44` | `#FFFFFF` / `#E3E7EF` | cards |
+| `text` / `muted` | `#E6EAF2` / `#94A3B8` | `#0F172A` / `#475569` | texto |
+| `primary` | `#14B8A6` (teal) | `#0D9488` | ações, destaques |
+| `primaryText` | `#2DD4BF` | `#0F766E` | primária em texto pequeno (contraste AA) |
+| `accent` | `#6366F1` (índigo) | `#4F46E5` | detalhes |
+| `highlight` | `#F59E0B` (âmbar) | `#D97706` | **só** CTAs/preços do plano recomendado |
+| `gradient` | `#14B8A6 0% → #6366F1 55% → #8B5CF6 100%` (135deg) | variação mais escura | bordas, palavra do título |
+| `mesh` / `meshOpacity` | `#14B8A6 #6366F1 #0EA5E9` / `.35` | idem / `.18` | blobs do hero |
+
+Cada chave vira uma CSS variable `--c-<chave-em-kebab>` (ex.: `primaryText` → `--c-primary-text`),
+`gradient` vira `--grad`, `mesh` vira `--mesh-1..3`. Aplicado em `src/engine/useTheme.js` ao carregar.
+`theme.mode` define o modo inicial (a escolha do usuário/preferência do SO têm prioridade).
+
+### 6.2 Tipografia (`theme.fonts`)
+- **Space Grotesk** 600/700 — títulos · **Inter** 400/500 — corpo · **JetBrains Mono** — tags, números,
+  rótulos de seção (`01 / Projetos`).
+- Auto-hospedadas via `@fontsource` (subset latin, `font-display: swap`), importadas em `src/main.jsx`.
+  Para trocar uma fonte: instale o pacote `@fontsource/<fonte>`, troque o import e o nome em `theme.fonts`.
+
+### 6.3 Efeitos (`effects`)
+```json
+"effects": {
+  "heroMesh": true, "grain": true, "bgGrid": true,
+  "scrollReveal": true, "parallax": true, "cardTilt": false,
+  "cursorSpotlight": true, "marquee": true, "counters": true,
+  "dividers": "diagonal", "smoothScroll": false
+}
+```
+| Chave | Efeito |
+|---|---|
+| `heroMesh` / `grain` / `bgGrid` | blobs em gradiente, ruído SVG (~4%) e grade no fundo do hero |
+| `scrollReveal` | fade + translateY 16px com stagger de 60ms (CSS scroll-driven animations com `@supports`; fallback IntersectionObserver) |
+| `parallax` | camadas do hero (blobs, mockup do painel e cards flutuantes; 30–60px) via `motion` |
+| `cardTilt` | inclinação 3D dos cards (máx. 6deg) — **desligado por padrão** |
+| `cursorSpotlight` | brilho radial que segue o cursor nos cards (`--x`/`--y`) |
+| `marquee` | animação da faixa de tecnologias (pausa no hover) |
+| `counters` | contagem animada dos números da seção `stats` |
+| `dividers` | `"diagonal"` \| `"wave"` \| `"none"` — divisores das seções alternadas |
+| `smoothScroll` | Lenis (carregado só se ligado) — **desligado por padrão** |
+
+`src/engine/EffectsProvider.jsx` lê essa config e `prefers-reduced-motion`; com movimento reduzido,
+`parallax`, `cardTilt`, `marquee`, `counters`, `scrollReveal` e `smoothScroll` são desligados
+(o conteúdo aparece direto, sem estados ocultos). Componentes consultam `useEffects()`.
+
+### 6.4 Contadores e tecnologias
+- `site.json → stats`: `{ "id", "value", "decimals?", "prefix?", "suffix?", "example": true }`;
+  rótulos em `locales/*.json → stats.items.<id>`. Com `example: true` aparece o aviso `stats.note`.
+  **Os números atuais são de exemplo.**
+- `site.json → marquee.items`: nomes de tecnologias (não traduzidos); título em `marquee.title`.
+- Título do hero: `hero.headline`; o trecho entre `[[ ]]` recebe o gradiente.
+- Mockup do painel (hero): textos em `hero.mockup` — ilustrativo, sem dados reais.
+
+---
+
+## 7. Estratégia de i18n
 
 - Seletor **PT / ES / EN** sempre visível no cabeçalho (`aria-pressed` indica o ativo).
 - Ordem de detecção: `?lang=` na URL → `localStorage` → idioma do navegador → `defaultLocale`.
@@ -171,11 +236,18 @@ Campos vazios são ocultados.
 
 ---
 
-## 7. Roadmap
+## 8. Roadmap
 
-### Fase 1 — MVP (este commit) ✅
+### Fase 1 — MVP ✅
 Motor de renderização por JSON, i18n PT/ES/EN, tema claro/escuro, vitrine com galeria/lightbox,
 planos, contato, validação de conteúdo, workflow de deploy.
+
+### Redesign visual ✅
+- **Fase A** ✅ tokens de tema via JSON, hero com mesh/grade/grão e gradiente no título, scroll reveal,
+  cards com zoom/borda em gradiente/spotlight, contadores, marquee, divisores, plano recomendado em destaque,
+  rótulos mono.
+- **Fase B** ✅ `motion` (LazyMotion): parallax em camadas no hero com mockup de painel + cards flutuantes,
+  timeline com cabeçalho sticky e progresso ligado ao scroll, animações da galeria, tilt e Lenis opcionais.
 
 ### Fase 2 — Conteúdo real + imagens + domínio
 - Textos reais (bio, competências, experiência) nos 3 idiomas.
@@ -202,7 +274,7 @@ Aba/rota dedicada para **acesso limitado e guiado** aos sistemas desenvolvidos:
 
 ---
 
-## 8. Convenções
+## 9. Convenções
 
 - **Commits**: [Conventional Commits](https://www.conventionalcommits.org/pt-br/) em pt-BR —
   `feat:`, `fix:`, `docs:`, `style:`, `refactor:`, `chore:`, `content:` (para mudanças só de conteúdo).
@@ -212,7 +284,7 @@ Aba/rota dedicada para **acesso limitado e guiado** aos sistemas desenvolvidos:
 
 ---
 
-## 9. Deploy
+## 10. Deploy
 
 ### GitHub Pages
 O workflow `.github/workflows/deploy.yml` roda lint + build a cada push na `main` e publica `dist/`.
@@ -224,7 +296,7 @@ Importe o repositório; framework Vite; build `npm run build`; output `dist`. N�
 
 ---
 
-## 10. Checklist de TODOs
+## 11. Checklist de TODOs
 
 - [ ] Substituir "Seu Nome" e todos os textos de exemplo (3 idiomas)
 - [ ] Preencher `site.json → contact` com dados reais
@@ -232,6 +304,7 @@ Importe o repositório; framework Vite; build `npm run build`; output `dist`. N�
 - [ ] Definir planos e preços (ou `null` = sob consulta)
 - [ ] Ativar GitHub Pages (fonte: GitHub Actions) ou conectar Vercel
 - [ ] Domínio próprio, OG image, sitemap e robots
+- [ ] Substituir os números de exemplo em `site.json → stats`
 - [ ] Revisar acessibilidade (Lighthouse) e performance
 - [ ] Planejar Fase 3 (Test Drive)
 
