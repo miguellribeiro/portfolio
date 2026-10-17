@@ -1,23 +1,16 @@
 import { useI18n } from '../i18n/context.js';
+import Segmented from './Segmented.jsx';
 
 export default function LanguageSwitcher() {
   const { locale, setLocale, locales, t } = useI18n();
   return (
-    <div className="lang" role="group" aria-label={t('lang')}>
-      {locales.map((l) => (
-        <button
-          key={l.code}
-          type="button"
-          lang={l.code}
-          className="lang__btn"
-          aria-pressed={locale === l.code}
-          title={l.name}
-          onClick={() => setLocale(l.code)}
-        >
-          {l.flag && <span aria-hidden="true">{l.flag} </span>}
-          {l.label}
-        </button>
-      ))}
-    </div>
+    <Segmented
+      id="lang"
+      size="sm"
+      label={t('lang')}
+      value={locale}
+      onChange={setLocale}
+      options={locales.map((l) => ({ value: l.code, label: l.label, lang: l.code, title: l.name }))}
+    />
   );
 }

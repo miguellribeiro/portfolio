@@ -27,8 +27,8 @@ traduzir ou reordenar conteúdo **não exige mexer em componentes**.
 ## 2. Stack
 
 - Vite 5 + React 18 (JavaScript), CSS puro com **CSS variables** (sem libs de UI).
-- [`motion`](https://motion.dev) (`motion/react`, `LazyMotion` + `domAnimation`) para parallax, timeline e galeria.
-- Fontes auto-hospedadas via `@fontsource` (Space Grotesk, Inter, JetBrains Mono).
+- [`motion`](https://motion.dev) (`motion/react`, `LazyMotion` com `domMax` carregado sob demanda) para parallax, timeline, galeria e a pílula deslizante dos toggles (`layoutId`).
+- Fontes auto-hospedadas via `@fontsource` (Bricolage Grotesque, Inter, JetBrains Mono, Instrument Serif).
 - [`lenis`](https://lenis.darkroom.engineering) opcional (smooth scroll, carregado sob demanda).
 - i18n próprio e leve (Context API), sem dependências extras.
 - ESLint 9 (flat config).
@@ -94,9 +94,9 @@ portfolio/
 │  │  └─ locales/{pt-BR,es,en}.json
 │  ├─ engine/                     # registry, PageRenderer, loader, validação, tema, efeitos, tipos
 │  ├─ i18n/                       # provider + hook useI18n
-│  ├─ components/                 # Header, LanguageSwitcher, Section, Lightbox, DashboardMockup
+│  ├─ components/                 # Header, Section, Loader, SmartImage, Segmented, ChannelOverlay/Link, PlansCompare…
 │  ├─ sections/                   # um componente por tipo de seção
-│  ├─ hooks/                      # useCardFx (spotlight/tilt)
+│  ├─ hooks/                      # useCardFx, useMagnetic, usePlanCta
 │  ├─ App.jsx  main.jsx  styles.css
 ├─ index.html  vite.config.js  eslint.config.js
 └─ LICENSE  .editorconfig  .gitignore
@@ -133,17 +133,33 @@ portfolio/
 - Nomes: `cover.webp`, `gallery-1.webp`, `gallery-2.webp`…
 - Atualize `cover`/`gallery` no `projects.json`. Os `.svg` atuais são placeholders.
 
-### 5.3 Adicionar um plano
-1. Em `site.json → plans`:
-   ```json
-   { "id": "manutencao", "highlight": false,
-     "prices": { "BRL": 500, "USD": 100, "EUR": 90 },
-     "cta": { "type": "whatsapp" } }
-   ```
-   - `prices: null` → exibe "Sob consulta".
-   - `cta.type`: `whatsapp` | `email` (usam `site.json → contact`) | `url` (com `href`, ex.: checkout).
-2. Em cada `locales/*.json → plans.items`: `"manutencao": { "name", "features": [], "cta" }`.
-3. A moeda exibida vem de `currency` em cada arquivo de idioma (pt-BR → BRL, es/en → USD).
+### 5.3 Planos (cards, toggle, comparativo e FAQ)
+**Cards** — `site.json → plans` (formato antigo continua válido: `prices` = preço por projeto):
+```json
+{ "id": "sistema", "highlight": true, "inherits": true,
+  "prices": { "BRL": 12000, "USD": 2800, "EUR": 2600 },
+  "pricesMonthly": { "BRL": 1200, "USD": 280, "EUR": 260 },
+  "cta": { "type": "whatsapp" } }
+```
+- `highlight`: card "Recomendado" (borda em gradiente, scale 1.02, CTA de destaque).
+- `inherits`: mostra "Tudo do anterior +" antes dos itens.
+- `prices`/`pricesMonthly`: preço "a partir de" por moeda. Se o modo escolhido não existir, mostra o
+  outro com o período certo ("cobrança mensal"). Sem nenhum dos dois → "Proposta sob medida".
+- `cta.type`: `whatsapp` (abre o overlay e depois o WhatsApp com plano + modo + moeda) | `email` | `url` (com `href`).
+- Textos em `locales/*.json → plans.items.<id>`: `name`, `audience`, `features[]`, `cta`.
+- A moeda vem de `currency` em cada idioma (pt-BR → BRL, es/en → USD); a nota "Valores em …" é automática.
+
+**`site.json → plansConfig`**
+| Chave | O que faz |
+|---|---|
+| `billing` | `{ "default": "project", "options": ["project", "monthly"] }` — toggle Projeto/Mensal |
+| `examplePrices` | `true` exibe "Valores de exemplo — a definir." (**desligue quando os preços forem reais**) |
+| `trust` | ids da faixa de garantias → `plans.trust.<id>` |
+| `compare.categories[]` | `{ id, rows: [{ id, values: { <planoId>: true \| false \| "v:<id>" } }] }` → rótulos em `plans.categories.<id>`, `plans.rows.<id>.{label,tip}`, textos em `plans.values.<id>` |
+| `faq` | ids das perguntas → `plans.faq.<id>.{q,a}` |
+
+Valores na tabela: `true` = check, `false` = "—", `"v:w2_4"` = `plans.values.w2_4` (traduzido).
+O validador (dev) avisa sobre plano inexistente na tabela, chaves `v:` sem tradução, etc.
 
 ### 5.4 Adicionar ou traduzir um idioma
 1. Copie `locales/pt-BR.json` para `locales/fr.json` e traduza.
@@ -158,63 +174,74 @@ Edite a ordem do array `site.json → sections` ou altere `enabled`. Ex.: para m
 Veja a seção **Design system** abaixo (`site.json → theme` e `effects`).
 
 ### 5.7 Contatos
-`site.json → contact` (email, whatsapp no formato internacional só com dígitos, github, linkedin).
-Campos vazios são ocultados.
-
----
+`site.json → contact`:
+```json
+{ "email": "miguelanperibeiro@gmail.com", "whatsapp": "5512991827172",
+  "whatsappDisplay": "+55 12 99182-7172",
+  "linkedin": "https://www.linkedin.com/in/miguel-antonio-pereira-ribeiro",
+  "github": "https://github.com/miguellribeiro" }
+```
+- `whatsapp` só com dígitos (DDI + DDD + número); `whatsappDisplay` é o texto exibido/copiado.
+- Mensagem pré-preenchida do WhatsApp: `contact.whatsappText`; assunto do e-mail: `contact.emailSubject`;
+  mensagem dos planos: `contact.planMessage` (`{plan}`, `{billing}`, `{currency}`) — em cada idioma.
+- Os canais aparecem na seção Contato (cards com copiar), no rodapé e no botão do cabeçalho.
+- Ao clicar, um overlay do canal ("Abrindo WhatsApp…") aparece por ~700ms e então abre o link
+  (Esc/Cancelar interrompe; "Abrir agora" abre na hora). Com movimento reduzido, abre direto.
+  Se o navegador bloquear a nova aba, o link abre na própria página. Campos vazios ocultam o canal.
 
 ## 6. Design system
 
-Direção visual: B2B profissional, escuro por padrão, com profundidade (gradientes, blobs, grade,
-cards sobrepostos) em vez de blocos retangulares chapados. Tudo configurável em `src/data/site.json`.
+Direção visual **"Rosé & Wine"**: B2B profissional com personalidade — rosa/vinho, profundidade
+(blobs, grade, grão, cards sobrepostos), tipografia expressiva e movimento sutil. Tudo em `src/data/site.json`.
 
-### 6.1 Paleta (`theme.palette.dark|light`)
-| Token | Dark | Light | Uso |
+### 6.1 Paleta (`theme.palette.light|dark`)
+| Token | Light | Dark (rose-black) | Uso |
 |---|---|---|---|
-| `bg` | `#0B1020` | `#F7F8FB` | fundo |
-| `surface` / `border` | `#121A2E` / `#1F2A44` | `#FFFFFF` / `#E3E7EF` | cards |
-| `text` / `muted` | `#E6EAF2` / `#94A3B8` | `#0F172A` / `#475569` | texto |
-| `primary` | `#14B8A6` (teal) | `#0D9488` | ações, destaques |
-| `primaryText` | `#2DD4BF` | `#0F766E` | primária em texto pequeno (contraste AA) |
-| `accent` | `#6366F1` (índigo) | `#4F46E5` | detalhes |
-| `highlight` | `#F59E0B` (âmbar) | `#D97706` | **só** CTAs/preços do plano recomendado |
-| `gradient` | `#14B8A6 0% → #6366F1 55% → #8B5CF6 100%` (135deg) | variação mais escura | bordas, palavra do título |
-| `mesh` / `meshOpacity` | `#14B8A6 #6366F1 #0EA5E9` / `.35` | idem / `.18` | blobs do hero |
+| `bg` | `#FFF7FA` | `#1A0B14` | fundo |
+| `surface` / `surface2` | `#FFFFFF` / `#FFEFF5` | `#24111C` / `#2E1623` | cards / seções alternadas |
+| `border` | `#F3CFDD` | `#3D1F2F` | bordas |
+| `text` / `muted` | `#2A0F1E` / `#6B4458` | `#FCEAF2` / `#C9A3B6` | texto |
+| `primary` / `onPrimary` | `#D81B60` / `#FFFFFF` | `#FF5FA2` / `#1A0B14` | preenchimento de botões, pílulas |
+| `primaryText` | `#C2185B` | `#FF7AB3` | primária em texto (AA) |
+| `secondary` | coral `#B4442A` | pêssego `#FFB38A` | texto de apoio |
+| `accent` | berry `#7A1E4F` | orquídea `#E879B9` | detalhes |
+| `highlight` / `onHighlight` | `#FF8A65` / `#2A0F1E` | `#F5C26B` / `#1A0B14` | CTA do plano recomendado |
+| `success` | `#0F7A6C` | `#7FE3CF` | checks, status |
+| `gradient` | `#C2185B → #D81B60 → #E5533D` | `#FF5FA2 → #FF7F8E → #FFB38A` | bordas; em texto **só em tamanhos grandes** |
+| `mesh` / `meshOpacity` | `#FF6FA8 #FFB199 #F7A8D0` / `.22` | `#FF4F9A #8A1F55 #FF9E7A` / `.30` | blobs do hero |
 
-Cada chave vira uma CSS variable `--c-<chave-em-kebab>` (ex.: `primaryText` → `--c-primary-text`),
-`gradient` vira `--grad`, `mesh` vira `--mesh-1..3`. Aplicado em `src/engine/useTheme.js` ao carregar.
-`theme.mode` define o modo inicial (a escolha do usuário/preferência do SO têm prioridade).
+Cada chave vira `--c-<chave-em-kebab>` (`primaryText` → `--c-primary-text`, `surface2` → `--c-surface2`),
+`gradient` → `--grad`, `mesh` → `--mesh-1..3`; o `<meta name="theme-color">` acompanha o `bg`.
+Todas as combinações de texto foram checadas para contraste **WCAG AA** nos dois temas.
 
 ### 6.2 Tipografia (`theme.fonts`)
-- **Space Grotesk** 600/700 — títulos · **Inter** 400/500 — corpo · **JetBrains Mono** — tags, números,
-  rótulos de seção (`01 / Projetos`).
+- **Bricolage Grotesque** 600/700 — títulos · **Inter** 400/500 — corpo · **JetBrains Mono** — números,
+  tags, preços · **Instrument Serif** itálico — apenas a palavra `[[destacada]]` do título do hero.
 - Auto-hospedadas via `@fontsource` (subset latin, `font-display: swap`), importadas em `src/main.jsx`.
-  Para trocar uma fonte: instale o pacote `@fontsource/<fonte>`, troque o import e o nome em `theme.fonts`.
+  Para trocar: instale `@fontsource/<fonte>`, troque o import e o nome em `theme.fonts`.
 
 ### 6.3 Efeitos (`effects`)
-```json
-"effects": {
-  "heroMesh": true, "grain": true, "bgGrid": true,
-  "scrollReveal": true, "parallax": true, "cardTilt": false,
-  "cursorSpotlight": true, "marquee": true, "counters": true,
-  "dividers": "diagonal", "smoothScroll": false
-}
-```
 | Chave | Efeito |
 |---|---|
-| `heroMesh` / `grain` / `bgGrid` | blobs em gradiente, ruído SVG (~4%) e grade no fundo do hero |
-| `scrollReveal` | fade + translateY 16px com stagger de 60ms (CSS scroll-driven animations com `@supports`; fallback IntersectionObserver) |
-| `parallax` | camadas do hero (blobs, mockup do painel e cards flutuantes; 30–60px) via `motion` |
+| `loader` | monograma `brand.monogram` desenhado (stroke) + varredura + fade, ≤700ms, 1ª visita da sessão |
+| `heroMesh` / `ambientBlobs` | blobs do hero / movimento lento 30–45s (pausa com aba oculta ou hero fora da tela) |
+| `grain` / `bgGrid` | ruído SVG (~4%) e grade no hero |
+| `headlineReveal` | título palavra por palavra com máscara (~40ms) + sublinhado em gradiente que cresce |
+| `scrollReveal` | fade + 16px ao rolar (CSS scroll-driven com `@supports`; fallback IntersectionObserver) |
+| `skeleton` | shimmer enquanto imagens carregam (aspect-ratio fixo, sem CLS) |
+| `parallax` | camadas do hero (blobs, mockup e cards flutuantes; 30–60px) |
+| `magnetic` | CTA principal "magnético" (máx. 4px) |
 | `cardTilt` | inclinação 3D dos cards (máx. 6deg) — **desligado por padrão** |
-| `cursorSpotlight` | brilho radial que segue o cursor nos cards (`--x`/`--y`) |
-| `marquee` | animação da faixa de tecnologias (pausa no hover) |
-| `counters` | contagem animada dos números da seção `stats` |
-| `dividers` | `"diagonal"` \| `"wave"` \| `"none"` — divisores das seções alternadas |
+| `cursorSpotlight` | brilho + borda em gradiente que seguem o cursor nos cards |
+| `marquee` / `counters` | faixa de tecnologias / contagem animada |
+| `dividers` | `"diagonal"` \| `"wave"` \| `"none"` |
 | `smoothScroll` | Lenis (carregado só se ligado) — **desligado por padrão** |
 
-`src/engine/EffectsProvider.jsx` lê essa config e `prefers-reduced-motion`; com movimento reduzido,
-`parallax`, `cardTilt`, `marquee`, `counters`, `scrollReveal` e `smoothScroll` são desligados
-(o conteúdo aparece direto, sem estados ocultos). Componentes consultam `useEffects()`.
+Micro-interações fixas: gradiente que desliza nos botões + seta que avança, checks da tabela que se
+redesenham no hover da linha, pílula deslizante nos toggles (idioma, Projeto/Mensal, abas).
+
+**Movimento reduzido** (`prefers-reduced-motion`): `MotionConfig reducedMotion="user"` + CSS — sem loader,
+blobs estáticos, skeleton estático, só fades simples, overlays de contato abrem o link na hora.
 
 ### 6.4 Contadores e tecnologias
 - `site.json → stats`: `{ "id", "value", "decimals?", "prefix?", "suffix?", "example": true }`;
@@ -248,6 +275,9 @@ planos, contato, validação de conteúdo, workflow de deploy.
   rótulos mono.
 - **Fase B** ✅ `motion` (LazyMotion): parallax em camadas no hero com mockup de painel + cards flutuantes,
   timeline com cabeçalho sticky e progresso ligado ao scroll, animações da galeria, tilt e Lenis opcionais.
+- **Fase C** ✅ paleta "Rosé & Wine", nova tipografia, loader com monograma, skeletons, blobs ambientes,
+  título animado, micro-interações, títulos de seção sem duplicação, planos comparativos (toggle,
+  tabela, garantias, FAQ) e contatos reais com overlay de abertura.
 
 ### Fase 2 — Conteúdo real + imagens + domínio
 - Textos reais (bio, competências, experiência) nos 3 idiomas.
@@ -299,9 +329,9 @@ Importe o repositório; framework Vite; build `npm run build`; output `dist`. N�
 ## 11. Checklist de TODOs
 
 - [ ] Substituir "Seu Nome" e todos os textos de exemplo (3 idiomas)
-- [ ] Preencher `site.json → contact` com dados reais
+- [x] Preencher `site.json → contact` com dados reais
 - [ ] Adicionar projetos reais e imagens WebP; remover os projetos de exemplo
-- [ ] Definir planos e preços (ou `null` = sob consulta)
+- [ ] Definir planos e preços reais e desligar `plansConfig.examplePrices`
 - [ ] Ativar GitHub Pages (fonte: GitHub Actions) ou conectar Vercel
 - [ ] Domínio próprio, OG image, sitemap e robots
 - [ ] Substituir os números de exemplo em `site.json → stats`

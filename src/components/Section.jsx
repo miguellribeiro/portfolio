@@ -9,7 +9,7 @@ const numberOf = (id) => {
 };
 
 /**
- * Seção padrão: rótulo mono "01 / Título", h2 e subtítulo.
+ * Seção padrão: título composto (número mono + título num único h2) e subtítulo.
  * Seções ímpares recebem fundo alternado + divisor (site.json → effects.dividers).
  * layout="split" deixa o cabeçalho fixo (sticky) à esquerda.
  */
@@ -24,8 +24,10 @@ export default function Section({ id, title, subtitle, children, className = '',
     >
       <div className="container section__inner">
         <header className="section__head reveal">
-          {n > 0 && <p className="section__label mono">{String(n).padStart(2, '0')} / {title}</p>}
-          <h2 id={`${id}-title`}>{title}</h2>
+          <h2 id={`${id}-title`} className="section__title">
+            {n > 0 && <span className="section__num mono" aria-hidden="true">{String(n).padStart(2, '0')}</span>}
+            <span>{title}</span>
+          </h2>
           {subtitle && <p className="muted">{subtitle}</p>}
         </header>
         <div className="section__body">{children}</div>

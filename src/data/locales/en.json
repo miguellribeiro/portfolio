@@ -3,6 +3,8 @@
   "nav": "Navigation",
   "lang": "Language",
   "theme": "Toggle theme",
+  "headerCta": "Let's talk",
+  "loader": "Loading",
   "meta": {
     "title": "Your Name — Software Developer (example)",
     "description": "Professional portfolio: systems, ERPs and web apps. Example content."
@@ -130,45 +132,224 @@
   },
   "plans": {
     "title": "Plans",
-    "subtitle": "Illustrative pricing — TBD.",
-    "perPeriod": "/project",
-    "onRequest": "On request",
+    "subtitle": "Pick a starting point — every project ends with a tailored proposal.",
+    "onRequest": "Tailored proposal",
     "highlight": "Recommended",
+    "billing": {
+      "label": "Billing mode",
+      "project": "Project",
+      "monthly": "Monthly"
+    },
+    "period": {
+      "project": "/project",
+      "monthly": "/month"
+    },
+    "onlyOther": "{mode} billing",
+    "currencyNote": "Prices in {currency}.",
+    "exampleNote": "Example prices — to be defined.",
+    "everything": "Everything above +",
+    "trustLabel": "Guarantees",
+    "trust": {
+      "code": "100% your code",
+      "contract": "Contract + invoice",
+      "payment": "Card, bank transfer or Pix",
+      "lgpd": "LGPD-aware health systems"
+    },
+    "compareToggle": "Compare all",
+    "compareHide": "Hide comparison",
+    "compareTitle": "Full comparison",
+    "feature": "Feature",
+    "choose": "Choose",
+    "yes": "Included",
+    "no": "Not included",
+    "categories": {
+      "scope": "Scope",
+      "quality": "Quality",
+      "process": "Process",
+      "support": "Support"
+    },
+    "rows": {
+      "pages": {
+        "label": "Pages/screens",
+        "tip": "Number of pages (website) or screens (system) planned."
+      },
+      "admin": {
+        "label": "Admin panel/CMS",
+        "tip": "An area to edit content and data without coding."
+      },
+      "auth": {
+        "label": "Login and roles",
+        "tip": "Authentication and permissions per user type."
+      },
+      "integrations": {
+        "label": "Integrations (APIs, TISS, payments)",
+        "tip": "Connections to external systems, Brazil's TISS health standard and payment providers."
+      },
+      "reports": {
+        "label": "Reports/dashboards",
+        "tip": "KPIs, charts and data export."
+      },
+      "a11y": {
+        "label": "Responsive + WCAG AA",
+        "tip": "Works well on mobile and follows WCAG level AA accessibility guidelines."
+      },
+      "seo": {
+        "label": "Technical SEO",
+        "tip": "Metadata, performance, sitemap and search best practices."
+      },
+      "tests": {
+        "label": "Automated tests",
+        "tip": "Tests that prevent regressions in every release."
+      },
+      "deadline": {
+        "label": "Timeline",
+        "tip": "Typical estimate; the final timeline is in the proposal."
+      },
+      "revisions": {
+        "label": "Revision rounds",
+        "tip": "Adjustment cycles included before delivery."
+      },
+      "warranty": {
+        "label": "Bug-fix warranty",
+        "tip": "Free defect fixes after delivery."
+      },
+      "response": {
+        "label": "Response time",
+        "tip": "Time to first reply on business days."
+      },
+      "handover": {
+        "label": "Deploy, docs and handover",
+        "tip": "Publishing, documentation and full project handover."
+      }
+    },
+    "values": {
+      "upTo5": "Up to 5",
+      "custom": "Custom",
+      "evolving": "Continuous evolution",
+      "forms": "Forms",
+      "asNeeded": "Per scope",
+      "w2_4": "2–4 weeks",
+      "w6_12": "6–12 weeks",
+      "continuous": "Ongoing",
+      "agreed": "To be agreed",
+      "rev2": "2",
+      "rev3": "3",
+      "perSprint": "Every cycle",
+      "d30": "30 days",
+      "d90": "90 days",
+      "whileActive": "While active",
+      "h48": "48 h",
+      "h24": "24 h",
+      "h8": "8 h",
+      "sla": "Dedicated SLA"
+    },
+    "faqTitle": "Frequently asked questions",
+    "faq": {
+      "deadline": {
+        "q": "How long does a project take?",
+        "a": "It depends on scope: websites usually take 2–4 weeks and systems 6–12. The detailed schedule comes with the proposal."
+      },
+      "payment": {
+        "q": "How does payment work?",
+        "a": "Usually 50% on approval and 50% on delivery, by card, bank transfer or Pix. Larger projects can be split into milestones."
+      },
+      "ownership": {
+        "q": "Do I own the code?",
+        "a": "Yes. At the end, the source code, credentials and documentation are 100% yours."
+      },
+      "scope": {
+        "q": "What if the scope changes midway?",
+        "a": "Changes are welcome: we assess the impact on time and cost and record everything before moving on."
+      },
+      "maintenance": {
+        "q": "Do you offer maintenance after delivery?",
+        "a": "Yes. Besides the bug-fix warranty, you can hire the Ongoing partnership or ad-hoc support."
+      },
+      "cancel": {
+        "q": "Can I cancel the Ongoing partnership?",
+        "a": "Yes, with 30 days' notice and no penalty. You keep everything delivered."
+      },
+      "lgpd": {
+        "q": "How are sensitive and health data handled?",
+        "a": "With LGPD (Brazil's data protection law) in mind: access control, encryption, audit logs and data minimization. I never use real data in demos."
+      },
+      "invoice": {
+        "q": "Do you issue invoices?",
+        "a": "Yes, every project comes with a contract and an invoice."
+      }
+    },
+    "from": "from",
     "items": {
-      "essencial": {
-        "name": "Essential",
+      "landing": {
+        "name": "Website / Landing",
+        "audience": "For those who need a professional presence and more leads.",
         "features": [
-          "Example item 1",
-          "Example item 2"
+          "Up to 5 responsive pages",
+          "Custom design for your brand",
+          "Technical SEO and performance",
+          "Integrated form and WhatsApp",
+          "Publishing and domain set up"
         ],
-        "cta": "Chat on WhatsApp"
+        "cta": "I want a website"
       },
-      "profissional": {
-        "name": "Professional",
+      "sistema": {
+        "name": "Custom system",
+        "audience": "For companies that need to automate processes and management.",
         "features": [
-          "Example item 1",
-          "Example item 2",
-          "Example item 3"
+          "Login, roles and permissions",
+          "Admin panel",
+          "Integrations (APIs, TISS, payments)",
+          "Reports and dashboards",
+          "Automated tests and documentation"
         ],
-        "cta": "Send e-mail"
+        "cta": "I want a system"
       },
-      "sob-medida": {
-        "name": "Custom",
+      "parceria": {
+        "name": "Ongoing partnership",
+        "audience": "For evolving products with a dedicated technical partner.",
         "features": [
-          "Custom scope",
-          "Example item"
+          "Monthly hours for improvements",
+          "Priority and 8 h response",
+          "Monitoring and updates",
+          "Monthly planning meeting"
         ],
-        "cta": "Request a quote"
+        "cta": "I want a partnership"
+      },
+      "sob-consulta": {
+        "name": "On request",
+        "audience": "For complex scopes, critical integrations or teams.",
+        "features": [
+          "Discovery and architecture",
+          "Phased schedule",
+          "Dedicated SLA and support",
+          "Flexible commercial terms"
+        ],
+        "cta": "Book a call"
       }
     }
   },
   "contact": {
     "title": "Contact",
-    "subtitle": "Let's talk about your project.",
-    "email": "E-mail",
+    "subtitle": "Pick the channel you prefer — I reply quickly.",
+    "email": "Email",
     "whatsapp": "WhatsApp",
     "github": "GitHub",
-    "linkedin": "LinkedIn"
+    "linkedin": "LinkedIn",
+    "hint": {
+      "email": "For proposals and details",
+      "whatsapp": "Fastest reply",
+      "github": "Code and projects",
+      "linkedin": "Professional background"
+    },
+    "copy": "Copy",
+    "copied": "Copied!",
+    "opening": "Opening {channel}…",
+    "openNow": "Open now",
+    "cancel": "Cancel",
+    "preparing": "Preparing the conversation",
+    "whatsappText": "Hi Miguel! I saw your portfolio and would like to talk about a project.",
+    "emailSubject": "Contact from your portfolio",
+    "planMessage": "Hi Miguel! I'm interested in the \"{plan}\" plan ({billing}, prices in {currency}). Can we talk?"
   },
   "footer": {
     "text": "Your Name. All rights reserved."

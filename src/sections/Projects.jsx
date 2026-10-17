@@ -4,6 +4,7 @@ import { useI18n } from '../i18n/context.js';
 import { projects } from '../engine/content.js';
 import Section from '../components/Section.jsx';
 import Lightbox from '../components/Lightbox.jsx';
+import SmartImage from '../components/SmartImage.jsx';
 import { useCardFx } from '../hooks/useCardFx.js';
 
 const asset = (id, file) => `${import.meta.env.BASE_URL}projects/${id}/${file}`;
@@ -22,7 +23,7 @@ function ProjectCard({ p, i }) {
       onPointerLeave={fx.onPointerLeave}
     >
       <button type="button" className="project__cover" onClick={() => setOpen(true)} aria-label={`${t('projects.gallery')}: ${text.title}`}>
-        <img src={asset(p.id, p.cover)} alt={text.alt} loading="lazy" width="1200" height="750" />
+        <SmartImage src={asset(p.id, p.cover)} alt={text.alt} width={1200} height={750} />
         <span className="project__zoom mono" aria-hidden="true">+ {images.length}</span>
       </button>
       <div className="project__body">

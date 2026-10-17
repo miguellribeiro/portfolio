@@ -5,6 +5,7 @@ const FALLBACK = {
   heading: 'system-ui, sans-serif',
   body: 'system-ui, -apple-system, "Segoe UI", Roboto, sans-serif',
   mono: 'ui-monospace, SFMono-Regular, Consolas, monospace',
+  display: 'Georgia, \'Times New Roman\', serif',
 };
 const kebab = (s) => s.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`);
 
@@ -35,6 +36,13 @@ export function useTheme(theme) {
     Object.entries(theme.fonts || {}).forEach(([k, name]) => {
       root.style.setProperty(`--font-${k}`, `'${name}', ${FALLBACK[k] || 'sans-serif'}`);
     });
+    let meta = document.head.querySelector('meta[name="theme-color"]');
+    if (!meta) {
+      meta = document.createElement('meta');
+      meta.name = 'theme-color';
+      document.head.appendChild(meta);
+    }
+    if (colors.bg) meta.content = colors.bg;
     root.dataset.theme = mode;
     root.style.colorScheme = mode;
     localStorage.setItem(KEY, mode);

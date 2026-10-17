@@ -3,6 +3,8 @@
   "nav": "Navegación",
   "lang": "Idioma",
   "theme": "Cambiar tema",
+  "headerCta": "Hablemos",
+  "loader": "Cargando",
   "meta": {
     "title": "Tu Nombre — Desarrollador de Software (ejemplo)",
     "description": "Portafolio profesional: sistemas, ERPs y aplicaciones web. Contenido de ejemplo."
@@ -130,45 +132,224 @@
   },
   "plans": {
     "title": "Planes",
-    "subtitle": "Valores ilustrativos — por definir.",
-    "perPeriod": "/proyecto",
-    "onRequest": "A consultar",
+    "subtitle": "Elige un punto de partida — cada proyecto termina con una propuesta a medida.",
+    "onRequest": "Propuesta a medida",
     "highlight": "Recomendado",
+    "billing": {
+      "label": "Modalidad de cobro",
+      "project": "Proyecto",
+      "monthly": "Mensual"
+    },
+    "period": {
+      "project": "/proyecto",
+      "monthly": "/mes"
+    },
+    "onlyOther": "cobro {mode}",
+    "currencyNote": "Valores en {currency}.",
+    "exampleNote": "Valores de ejemplo — por definir.",
+    "everything": "Todo lo anterior +",
+    "trustLabel": "Garantías",
+    "trust": {
+      "code": "Código 100% tuyo",
+      "contract": "Contrato + factura",
+      "payment": "Transferencia, Pix o tarjeta",
+      "lgpd": "Atención a la LGPD en sistemas de salud"
+    },
+    "compareToggle": "Comparar todo",
+    "compareHide": "Ocultar comparación",
+    "compareTitle": "Comparativa completa",
+    "feature": "Recurso",
+    "choose": "Elegir",
+    "yes": "Incluido",
+    "no": "No incluido",
+    "categories": {
+      "scope": "Alcance",
+      "quality": "Calidad",
+      "process": "Proceso",
+      "support": "Soporte"
+    },
+    "rows": {
+      "pages": {
+        "label": "Páginas/pantallas",
+        "tip": "Cantidad de páginas (sitio) o pantallas (sistema) previstas."
+      },
+      "admin": {
+        "label": "Panel admin/CMS",
+        "tip": "Área para editar contenido y datos sin programar."
+      },
+      "auth": {
+        "label": "Login y perfiles",
+        "tip": "Autenticación y permisos por tipo de usuario."
+      },
+      "integrations": {
+        "label": "Integraciones (APIs, TISS, pagos)",
+        "tip": "Conexión con sistemas externos, estándar TISS (Brasil) y medios de pago."
+      },
+      "reports": {
+        "label": "Informes/dashboards",
+        "tip": "Indicadores, gráficos y exportación de datos."
+      },
+      "a11y": {
+        "label": "Responsive + WCAG AA",
+        "tip": "Funciona bien en el móvil y sigue las pautas de accesibilidad WCAG nivel AA."
+      },
+      "seo": {
+        "label": "SEO técnico",
+        "tip": "Metadatos, rendimiento, sitemap y buenas prácticas para buscadores."
+      },
+      "tests": {
+        "label": "Pruebas automatizadas",
+        "tip": "Pruebas que evitan regresiones en cada nueva versión."
+      },
+      "deadline": {
+        "label": "Plazo",
+        "tip": "Estimación típica; el plazo final va en la propuesta."
+      },
+      "revisions": {
+        "label": "Rondas de revisión",
+        "tip": "Ciclos de ajustes incluidos antes de la entrega."
+      },
+      "warranty": {
+        "label": "Garantía de corrección",
+        "tip": "Corrección de defectos sin costo después de la entrega."
+      },
+      "response": {
+        "label": "Tiempo de respuesta",
+        "tip": "Plazo para la primera respuesta en días hábiles."
+      },
+      "handover": {
+        "label": "Deploy, documentación y traspaso",
+        "tip": "Publicación, documentación y traspaso completo del proyecto."
+      }
+    },
+    "values": {
+      "upTo5": "Hasta 5",
+      "custom": "A medida",
+      "evolving": "Evolución continua",
+      "forms": "Formularios",
+      "asNeeded": "Según alcance",
+      "w2_4": "2–4 semanas",
+      "w6_12": "6–12 semanas",
+      "continuous": "Continuo",
+      "agreed": "A convenir",
+      "rev2": "2",
+      "rev3": "3",
+      "perSprint": "En cada ciclo",
+      "d30": "30 días",
+      "d90": "90 días",
+      "whileActive": "Mientras esté activo",
+      "h48": "48 h",
+      "h24": "24 h",
+      "h8": "8 h",
+      "sla": "SLA dedicado"
+    },
+    "faqTitle": "Preguntas frecuentes",
+    "faq": {
+      "deadline": {
+        "q": "¿Cuánto tarda un proyecto?",
+        "a": "Depende del alcance: los sitios suelen tardar de 2 a 4 semanas y los sistemas de 6 a 12. El cronograma detallado va en la propuesta."
+      },
+      "payment": {
+        "q": "¿Cómo funciona el pago?",
+        "a": "Normalmente 50% al aprobar y 50% en la entrega, por transferencia, Pix o tarjeta. Los proyectos grandes pueden dividirse por etapas."
+      },
+      "ownership": {
+        "q": "¿El código es mío?",
+        "a": "Sí. Al final, el código fuente, los accesos y la documentación son 100% tuyos."
+      },
+      "scope": {
+        "q": "¿Y si el alcance cambia a mitad de camino?",
+        "a": "Los cambios son bienvenidos: evaluamos el impacto en plazo y costo y lo registramos todo antes de seguir."
+      },
+      "maintenance": {
+        "q": "¿Ofreces mantenimiento después de la entrega?",
+        "a": "Sí. Además de la garantía de corrección, puedes contratar la Alianza continua o soporte puntual."
+      },
+      "cancel": {
+        "q": "¿Puedo cancelar la Alianza continua?",
+        "a": "Sí, con aviso previo de 30 días y sin penalización. Conservas todo lo entregado."
+      },
+      "lgpd": {
+        "q": "¿Cómo se tratan los datos sensibles y de salud?",
+        "a": "Con atención a la LGPD: control de acceso, cifrado, registro de auditoría y recolección mínima de datos. Nunca uso datos reales en demostraciones."
+      },
+      "invoice": {
+        "q": "¿Emites factura?",
+        "a": "Sí, todo proyecto tiene contrato y factura."
+      }
+    },
+    "from": "desde",
     "items": {
-      "essencial": {
-        "name": "Esencial",
+      "landing": {
+        "name": "Sitio / Landing",
+        "audience": "Para quien necesita presencia profesional y captar contactos.",
         "features": [
-          "Ítem de ejemplo 1",
-          "Ítem de ejemplo 2"
+          "Hasta 5 páginas responsive",
+          "Diseño a medida para la marca",
+          "SEO técnico y rendimiento",
+          "Formulario y WhatsApp integrados",
+          "Publicación y dominio configurados"
         ],
-        "cta": "Hablar por WhatsApp"
+        "cta": "Quiero un sitio"
       },
-      "profissional": {
-        "name": "Profesional",
+      "sistema": {
+        "name": "Sistema a medida",
+        "audience": "Para empresas que necesitan automatizar procesos y gestión.",
         "features": [
-          "Ítem de ejemplo 1",
-          "Ítem de ejemplo 2",
-          "Ítem de ejemplo 3"
+          "Login, perfiles y permisos",
+          "Panel administrativo",
+          "Integraciones (APIs, TISS, pagos)",
+          "Informes y dashboards",
+          "Pruebas automatizadas y documentación"
         ],
-        "cta": "Enviar e-mail"
+        "cta": "Quiero un sistema"
       },
-      "sob-medida": {
-        "name": "A medida",
+      "parceria": {
+        "name": "Alianza continua",
+        "audience": "Para productos en evolución con un socio técnico dedicado.",
         "features": [
-          "Alcance personalizado",
-          "Ítem de ejemplo"
+          "Horas mensuales para mejoras",
+          "Prioridad y respuesta en 8 h",
+          "Monitoreo y actualizaciones",
+          "Reunión mensual de planificación"
         ],
-        "cta": "Solicitar propuesta"
+        "cta": "Quiero una alianza"
+      },
+      "sob-consulta": {
+        "name": "A consultar",
+        "audience": "Para alcances complejos, integraciones críticas o equipos.",
+        "features": [
+          "Diagnóstico y arquitectura",
+          "Cronograma por etapas",
+          "SLA y soporte dedicados",
+          "Condiciones comerciales flexibles"
+        ],
+        "cta": "Agendar conversación"
       }
     }
   },
   "contact": {
     "title": "Contacto",
-    "subtitle": "Hablemos de tu proyecto.",
-    "email": "E-mail",
+    "subtitle": "Elige el canal que prefieras — respondo rápido.",
+    "email": "Correo",
     "whatsapp": "WhatsApp",
     "github": "GitHub",
-    "linkedin": "LinkedIn"
+    "linkedin": "LinkedIn",
+    "hint": {
+      "email": "Para propuestas y detalles",
+      "whatsapp": "Respuesta más rápida",
+      "github": "Código y proyectos",
+      "linkedin": "Trayectoria profesional"
+    },
+    "copy": "Copiar",
+    "copied": "¡Copiado!",
+    "opening": "Abriendo {channel}…",
+    "openNow": "Abrir ahora",
+    "cancel": "Cancelar",
+    "preparing": "Preparando la conversación",
+    "whatsappText": "¡Hola, Miguel! Vi tu portafolio y me gustaría conversar sobre un proyecto.",
+    "emailSubject": "Contacto desde el portafolio",
+    "planMessage": "¡Hola, Miguel! Me interesa el plan \"{plan}\" ({billing}, valores en {currency}). ¿Podemos conversar?"
   },
   "footer": {
     "text": "Tu Nombre. Todos los derechos reservados."

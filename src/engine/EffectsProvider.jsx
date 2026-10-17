@@ -57,11 +57,21 @@ export function EffectsProvider({ children }) {
     root.dataset.fxGrid = String(fx.bgGrid);
     root.dataset.fxSpotlight = String(fx.cursorSpotlight);
     root.dataset.fxDividers = fx.dividers;
+    root.dataset.fxBlobs = String(fx.ambientBlobs);
+    root.dataset.fxSkeleton = String(fx.skeleton);
+    root.dataset.fxHeadline = String(fx.headlineReveal);
     root.classList.toggle('fx-reveal', !!fx.scrollReveal);
     root.classList.toggle('fx-sda', !!(fx.scrollReveal && sda));
   }, [fx, sda]);
 
   useRevealFallback(fx.scrollReveal && !sda);
+
+  // Blobs ambientes: pausa quando a aba está oculta (o hero fora da tela é tratado no Hero).
+  useEffect(() => {
+    const on = () => document.documentElement.classList.toggle('tab-hidden', document.hidden);
+    document.addEventListener('visibilitychange', on);
+    return () => document.removeEventListener('visibilitychange', on);
+  }, []);
 
   useEffect(() => {
     if (!fx.smoothScroll) return undefined;

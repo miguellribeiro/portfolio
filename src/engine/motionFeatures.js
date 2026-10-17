@@ -1,2 +1,3 @@
 // Carregado sob demanda pelo LazyMotion (chunk separado).
-export { domAnimation as default } from 'motion/react';
+// domMax = domAnimation + layout/layoutId (pílula deslizante dos toggles).
+export { domMax as default } from 'motion/react';
