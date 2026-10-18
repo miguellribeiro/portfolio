@@ -5,24 +5,21 @@
     {
       "code": "pt-BR",
       "label": "PT",
-      "name": "Português",
-      "flag": "🇧🇷"
+      "name": "Português"
     },
     {
       "code": "es",
       "label": "ES",
-      "name": "Español",
-      "flag": "🇪🇸"
+      "name": "Español"
     },
     {
       "code": "en",
       "label": "EN",
-      "name": "English",
-      "flag": "🇺🇸"
+      "name": "English"
     }
   ],
   "brand": {
-    "monogram": "MR"
+    "name": "Manpe"
   },
   "theme": {
     "mode": "dark",
@@ -114,18 +111,13 @@
       "enabled": true
     },
     {
-      "id": "stats",
-      "type": "stats",
+      "id": "highlights",
+      "type": "bento",
       "enabled": true
     },
     {
       "id": "about",
       "type": "about",
-      "enabled": true
-    },
-    {
-      "id": "capabilities",
-      "type": "capabilities",
       "enabled": true
     },
     {
@@ -149,6 +141,11 @@
       "enabled": false
     },
     {
+      "id": "process",
+      "type": "process",
+      "enabled": true
+    },
+    {
       "id": "plans",
       "type": "plans",
       "enabled": true
@@ -166,44 +163,94 @@
   ],
   "stats": [
     {
-      "id": "projects",
-      "value": 12,
-      "suffix": "+",
-      "example": true
+      "id": "years",
+      "value": 3,
+      "suffix": "+"
     },
     {
-      "id": "years",
-      "value": 8,
-      "suffix": "+",
-      "example": true
+      "id": "security",
+      "value": 100,
+      "suffix": "%"
     },
     {
       "id": "uptime",
       "value": 99.9,
       "decimals": 1,
-      "suffix": "%",
-      "example": true
+      "suffix": "%"
     },
     {
       "id": "support",
       "value": 24,
-      "suffix": "h",
-      "example": true
+      "suffix": "h"
     }
   ],
+  "capabilities": [
+    "frontend",
+    "backend",
+    "security"
+  ],
+  "bento": {
+    "items": [
+      {
+        "ref": "stat:security",
+        "size": "xl",
+        "icon": "shield"
+      },
+      {
+        "ref": "cap:frontend",
+        "size": "md",
+        "icon": "layout"
+      },
+      {
+        "ref": "cap:backend",
+        "size": "md",
+        "icon": "server"
+      },
+      {
+        "ref": "cap:security",
+        "size": "md",
+        "icon": "lock"
+      },
+      {
+        "ref": "stat:years",
+        "size": "sm",
+        "icon": "spark"
+      },
+      {
+        "ref": "stat:uptime",
+        "size": "sm",
+        "icon": "pulse"
+      },
+      {
+        "ref": "stat:support",
+        "size": "sm",
+        "icon": "clock"
+      }
+    ]
+  },
   "marquee": {
     "items": [
       "React",
       "TypeScript",
-      "Node.js",
-      "Vite",
-      "PostgreSQL",
-      "SQL Server",
+      "JavaScript",
+      "Java",
+      "Spring Boot",
+      "NestJS",
+      "Python",
+      "Oracle PL/SQL",
+      "Git",
       "Docker",
-      "REST APIs",
-      "Integrações TISS",
-      "Power BI"
+      "Google Tag Manager"
     ]
+  },
+  "process": {
+    "steps": [
+      "conversa",
+      "prototipo",
+      "desenvolvimento",
+      "publicacao"
+    ],
+    "autoAdvanceMs": 7000
   },
   "contact": {
     "email": "miguelanperibeiro@gmail.com",
@@ -212,230 +259,736 @@
     "linkedin": "https://www.linkedin.com/in/miguel-antonio-pereira-ribeiro",
     "github": "https://github.com/miguellribeiro"
   },
-  "plans": [
-    {
-      "id": "landing",
-      "highlight": false,
-      "prices": {
-        "BRL": 2500,
-        "USD": 600,
-        "EUR": 550
-      },
-      "pricesMonthly": {
-        "BRL": 190,
-        "USD": 45,
-        "EUR": 40
-      },
-      "cta": {
-        "type": "whatsapp"
-      }
-    },
-    {
-      "id": "sistema",
-      "highlight": true,
-      "inherits": true,
-      "prices": {
-        "BRL": 12000,
-        "USD": 2800,
-        "EUR": 2600
-      },
-      "pricesMonthly": {
-        "BRL": 1200,
-        "USD": 280,
-        "EUR": 260
-      },
-      "cta": {
-        "type": "whatsapp"
-      }
-    },
-    {
-      "id": "parceria",
-      "highlight": false,
-      "inherits": true,
-      "prices": null,
-      "pricesMonthly": {
-        "BRL": 3500,
-        "USD": 800,
-        "EUR": 740
-      },
-      "cta": {
-        "type": "whatsapp"
-      }
-    },
-    {
-      "id": "sob-consulta",
-      "highlight": false,
-      "prices": null,
-      "cta": {
-        "type": "whatsapp"
-      }
-    }
-  ],
   "plansConfig": {
-    "billing": {
-      "default": "project",
-      "options": [
-        "project",
-        "monthly"
-      ]
-    },
-    "examplePrices": true,
-    "trust": [
-      "code",
-      "contract",
-      "payment",
-      "lgpd"
+    "categories": [
+      {
+        "id": "sites",
+        "plans": [
+          {
+            "id": "essencial",
+            "highlight": false,
+            "inherits": false
+          },
+          {
+            "id": "profissional",
+            "highlight": true,
+            "inherits": true
+          },
+          {
+            "id": "premium",
+            "highlight": false,
+            "inherits": true
+          },
+          {
+            "id": "premiumPainel",
+            "highlight": false,
+            "inherits": true
+          }
+        ],
+        "compare": {
+          "groups": [
+            {
+              "id": "site",
+              "rows": [
+                {
+                  "id": "pages",
+                  "values": {
+                    "essencial": "v:singlePage",
+                    "profissional": "v:upTo5Pages",
+                    "premium": "v:multiPages",
+                    "premiumPainel": "v:multiPages"
+                  }
+                },
+                {
+                  "id": "cart",
+                  "values": {
+                    "essencial": false,
+                    "profissional": "v:cartWhatsapp",
+                    "premium": "v:cartApi",
+                    "premiumPainel": "v:cartApi"
+                  }
+                },
+                {
+                  "id": "custom",
+                  "values": {
+                    "essencial": false,
+                    "profissional": false,
+                    "premium": true,
+                    "premiumPainel": true
+                  }
+                },
+                {
+                  "id": "panel",
+                  "values": {
+                    "essencial": false,
+                    "profissional": false,
+                    "premium": false,
+                    "premiumPainel": true
+                  }
+                },
+                {
+                  "id": "catalog",
+                  "values": {
+                    "essencial": false,
+                    "profissional": false,
+                    "premium": false,
+                    "premiumPainel": true
+                  }
+                },
+                {
+                  "id": "analytics",
+                  "values": {
+                    "essencial": false,
+                    "profissional": false,
+                    "premium": false,
+                    "premiumPainel": true
+                  }
+                }
+              ]
+            },
+            {
+              "id": "domain",
+              "rows": [
+                {
+                  "id": "hosting",
+                  "values": {
+                    "essencial": true,
+                    "profissional": true,
+                    "premium": true,
+                    "premiumPainel": true
+                  }
+                },
+                {
+                  "id": "domain",
+                  "values": {
+                    "essencial": "v:subdomain",
+                    "profissional": "v:ownDomain",
+                    "premium": "v:managedDomain",
+                    "premiumPainel": "v:managedDomain"
+                  },
+                  "footnotes": [
+                    1,
+                    2
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "support",
+              "rows": [
+                {
+                  "id": "maintenance",
+                  "values": {
+                    "essencial": "v:onDemand",
+                    "profissional": "v:onDemand",
+                    "premium": "v:onDemand",
+                    "premiumPainel": "v:onDemand"
+                  }
+                },
+                {
+                  "id": "priority",
+                  "values": {
+                    "essencial": false,
+                    "profissional": false,
+                    "premium": true,
+                    "premiumPainel": true
+                  }
+                },
+                {
+                  "id": "response",
+                  "values": {
+                    "essencial": "v:h48",
+                    "profissional": "v:h24",
+                    "premium": "v:h12",
+                    "premiumPainel": "v:h12"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "terms",
+              "rows": [
+                {
+                  "id": "monthly",
+                  "values": {
+                    "essencial": "price",
+                    "profissional": "price",
+                    "premium": "price",
+                    "premiumPainel": "price"
+                  }
+                },
+                {
+                  "id": "setup",
+                  "values": {
+                    "essencial": "v:none",
+                    "profissional": "v:none",
+                    "premium": "v:none",
+                    "premiumPainel": "v:none"
+                  }
+                },
+                {
+                  "id": "lockIn",
+                  "values": {
+                    "essencial": "v:none",
+                    "profissional": "v:none",
+                    "premium": "v:none",
+                    "premiumPainel": "v:none"
+                  },
+                  "footnotes": [
+                    2
+                  ]
+                },
+                {
+                  "id": "notice",
+                  "values": {
+                    "essencial": "v:days30",
+                    "profissional": "v:days30",
+                    "premium": "v:days30",
+                    "premiumPainel": "v:days30"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "priceKey": "sites"
+      },
+      {
+        "id": "systems",
+        "plans": [
+          {
+            "id": "essencial",
+            "highlight": false,
+            "inherits": false
+          },
+          {
+            "id": "profissional",
+            "highlight": true,
+            "inherits": true
+          },
+          {
+            "id": "premium",
+            "highlight": false,
+            "inherits": true
+          }
+        ],
+        "compare": {
+          "groups": [
+            {
+              "id": "system",
+              "rows": [
+                {
+                  "id": "audit",
+                  "values": {
+                    "essencial": true,
+                    "profissional": true,
+                    "premium": true
+                  }
+                },
+                {
+                  "id": "basic",
+                  "values": {
+                    "essencial": true,
+                    "profissional": true,
+                    "premium": true
+                  }
+                },
+                {
+                  "id": "importExport",
+                  "values": {
+                    "essencial": false,
+                    "profissional": true,
+                    "premium": true
+                  }
+                },
+                {
+                  "id": "modules",
+                  "values": {
+                    "essencial": false,
+                    "profissional": true,
+                    "premium": true
+                  }
+                },
+                {
+                  "id": "notifications",
+                  "values": {
+                    "essencial": false,
+                    "profissional": true,
+                    "premium": true
+                  }
+                },
+                {
+                  "id": "messaging",
+                  "values": {
+                    "essencial": false,
+                    "profissional": true,
+                    "premium": true
+                  }
+                },
+                {
+                  "id": "apis",
+                  "values": {
+                    "essencial": false,
+                    "profissional": false,
+                    "premium": true
+                  }
+                },
+                {
+                  "id": "webhooks",
+                  "values": {
+                    "essencial": false,
+                    "profissional": false,
+                    "premium": true
+                  }
+                },
+                {
+                  "id": "staging",
+                  "values": {
+                    "essencial": false,
+                    "profissional": false,
+                    "premium": true
+                  }
+                },
+                {
+                  "id": "dashboards",
+                  "values": {
+                    "essencial": false,
+                    "profissional": false,
+                    "premium": true
+                  }
+                }
+              ]
+            },
+            {
+              "id": "domain",
+              "rows": [
+                {
+                  "id": "hosting",
+                  "values": {
+                    "essencial": true,
+                    "profissional": true,
+                    "premium": true
+                  }
+                },
+                {
+                  "id": "domain",
+                  "values": {
+                    "essencial": "v:subdomain",
+                    "profissional": "v:ownDomain",
+                    "premium": "v:managedDomain"
+                  },
+                  "footnotes": [
+                    1,
+                    2
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "support",
+              "rows": [
+                {
+                  "id": "maintenance",
+                  "values": {
+                    "essencial": "v:onDemand",
+                    "profissional": "v:onDemand",
+                    "premium": "v:onDemand"
+                  }
+                },
+                {
+                  "id": "priority",
+                  "values": {
+                    "essencial": false,
+                    "profissional": false,
+                    "premium": true
+                  }
+                },
+                {
+                  "id": "response",
+                  "values": {
+                    "essencial": "v:h48",
+                    "profissional": "v:h24",
+                    "premium": "v:h12"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "terms",
+              "rows": [
+                {
+                  "id": "monthly",
+                  "values": {
+                    "essencial": "price",
+                    "profissional": "price",
+                    "premium": "price"
+                  }
+                },
+                {
+                  "id": "setup",
+                  "values": {
+                    "essencial": "v:none",
+                    "profissional": "v:none",
+                    "premium": "v:none"
+                  }
+                },
+                {
+                  "id": "lockIn",
+                  "values": {
+                    "essencial": "v:none",
+                    "profissional": "v:none",
+                    "premium": "v:none"
+                  },
+                  "footnotes": [
+                    2
+                  ]
+                },
+                {
+                  "id": "notice",
+                  "values": {
+                    "essencial": "v:days30",
+                    "profissional": "v:days30",
+                    "premium": "v:days30"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "priceKey": "sistemas"
+      }
     ],
-    "compare": {
-      "categories": [
-        {
-          "id": "scope",
-          "rows": [
-            {
-              "id": "pages",
-              "values": {
-                "landing": "v:upTo5",
-                "sistema": "v:custom",
-                "parceria": "v:evolving",
-                "sob-consulta": "v:custom"
-              }
-            },
-            {
-              "id": "admin",
-              "values": {
-                "landing": false,
-                "sistema": true,
-                "parceria": true,
-                "sob-consulta": true
-              }
-            },
-            {
-              "id": "auth",
-              "values": {
-                "landing": false,
-                "sistema": true,
-                "parceria": true,
-                "sob-consulta": true
-              }
-            },
-            {
-              "id": "integrations",
-              "values": {
-                "landing": "v:forms",
-                "sistema": true,
-                "parceria": true,
-                "sob-consulta": true
-              }
-            },
-            {
-              "id": "reports",
-              "values": {
-                "landing": false,
-                "sistema": true,
-                "parceria": true,
-                "sob-consulta": true
-              }
-            }
-          ]
-        },
-        {
-          "id": "quality",
-          "rows": [
-            {
-              "id": "a11y",
-              "values": {
-                "landing": true,
-                "sistema": true,
-                "parceria": true,
-                "sob-consulta": true
-              }
-            },
-            {
-              "id": "seo",
-              "values": {
-                "landing": true,
-                "sistema": true,
-                "parceria": true,
-                "sob-consulta": "v:asNeeded"
-              }
-            },
-            {
-              "id": "tests",
-              "values": {
-                "landing": false,
-                "sistema": true,
-                "parceria": true,
-                "sob-consulta": true
-              }
-            }
-          ]
-        },
-        {
-          "id": "process",
-          "rows": [
-            {
-              "id": "deadline",
-              "values": {
-                "landing": "v:w2_4",
-                "sistema": "v:w6_12",
-                "parceria": "v:continuous",
-                "sob-consulta": "v:agreed"
-              }
-            },
-            {
-              "id": "revisions",
-              "values": {
-                "landing": "v:rev2",
-                "sistema": "v:rev3",
-                "parceria": "v:perSprint",
-                "sob-consulta": "v:agreed"
-              }
-            }
-          ]
-        },
-        {
-          "id": "support",
-          "rows": [
-            {
-              "id": "warranty",
-              "values": {
-                "landing": "v:d30",
-                "sistema": "v:d90",
-                "parceria": "v:whileActive",
-                "sob-consulta": "v:agreed"
-              }
-            },
-            {
-              "id": "response",
-              "values": {
-                "landing": "v:h48",
-                "sistema": "v:h24",
-                "parceria": "v:h8",
-                "sob-consulta": "v:sla"
-              }
-            },
-            {
-              "id": "handover",
-              "values": {
-                "landing": true,
-                "sistema": true,
-                "parceria": true,
-                "sob-consulta": true
-              }
-            }
-          ]
-        }
-      ]
+    "customBand": {
+      "cta": {
+        "type": "whatsapp"
+      }
     },
+    "trust": [
+      "noSetup",
+      "noLockIn",
+      "yourData",
+      "contract",
+      "payment"
+    ],
+    "footnotes": [
+      1,
+      2
+    ],
+    "disclaimer": true,
     "faq": [
-      "deadline",
       "payment",
-      "ownership",
+      "cancel",
+      "domain",
+      "invoice",
+      "security",
       "scope",
       "maintenance",
-      "cancel",
-      "lgpd",
-      "invoice"
+      "ownership"
+    ]
+  },
+  "pricing": {
+    "$comment": "Preços mensais por REGIÃO (independe do idioma da interface). Resolução: escolha manual (salva) > região de navigator.languages (countries) > idioma sem região (languages) > defaultRegion. domainFee = taxa de transferência/registro do domínio em cancelamentos antes de 12 meses ({fee} em plans.domainClause), formatada no locale da região.",
+    "defaultRegion": "US",
+    "regions": [
+      {
+        "id": "BR",
+        "currency": "BRL",
+        "locale": "pt-BR",
+        "countries": [
+          "BR"
+        ],
+        "languages": [
+          "pt"
+        ],
+        "flag": "BR",
+        "domainFee": {
+          "amount": 150,
+          "currency": "BRL"
+        },
+        "sites": {
+          "essencial": 149,
+          "profissional": 297,
+          "premium": 549,
+          "premiumPainel": 897
+        },
+        "sistemas": {
+          "essencial": 697,
+          "profissional": 1297,
+          "premium": 2497
+        }
+      },
+      {
+        "id": "US",
+        "currency": "USD",
+        "locale": "en-US",
+        "countries": [
+          "US",
+          "CA",
+          "AU",
+          "NZ"
+        ],
+        "languages": [
+          "en"
+        ],
+        "flag": "US",
+        "sites": {
+          "essencial": 49,
+          "profissional": 99,
+          "premium": 199,
+          "premiumPainel": 299
+        },
+        "sistemas": {
+          "essencial": 249,
+          "profissional": 499,
+          "premium": 899
+        },
+        "domainFee": {
+          "amount": 50,
+          "currency": "USD"
+        }
+      },
+      {
+        "id": "EU",
+        "currency": "EUR",
+        "locale": "es-ES",
+        "countries": [
+          "AT",
+          "BE",
+          "BG",
+          "HR",
+          "CY",
+          "CZ",
+          "DK",
+          "EE",
+          "FI",
+          "FR",
+          "DE",
+          "GR",
+          "HU",
+          "IE",
+          "IT",
+          "LV",
+          "LT",
+          "LU",
+          "MT",
+          "NL",
+          "PL",
+          "PT",
+          "RO",
+          "SK",
+          "SI",
+          "ES",
+          "SE",
+          "GB",
+          "CH",
+          "NO",
+          "IS",
+          "LI",
+          "MC",
+          "AD",
+          "SM",
+          "VA"
+        ],
+        "languages": [
+          "de",
+          "fr",
+          "it",
+          "nl",
+          "pl",
+          "sv",
+          "da",
+          "fi",
+          "el",
+          "cs",
+          "hu",
+          "ro",
+          "bg",
+          "hr",
+          "sk",
+          "sl",
+          "et",
+          "lv",
+          "lt",
+          "mt",
+          "ga",
+          "ca",
+          "eu",
+          "gl"
+        ],
+        "flag": "EU",
+        "sites": {
+          "essencial": 45,
+          "profissional": 89,
+          "premium": 179,
+          "premiumPainel": 279
+        },
+        "sistemas": {
+          "essencial": 229,
+          "profissional": 449,
+          "premium": 849
+        },
+        "domainFee": {
+          "amount": 50,
+          "currency": "EUR"
+        }
+      },
+      {
+        "id": "MX",
+        "currency": "MXN",
+        "locale": "es-MX",
+        "countries": [
+          "MX"
+        ],
+        "languages": [],
+        "flag": "MX",
+        "sites": {
+          "essencial": 499,
+          "profissional": 999,
+          "premium": 1899,
+          "premiumPainel": 2999
+        },
+        "sistemas": {
+          "essencial": 2499,
+          "profissional": 4499,
+          "premium": 8499
+        },
+        "domainFee": {
+          "amount": 500,
+          "currency": "MXN"
+        }
+      },
+      {
+        "id": "CL",
+        "currency": "CLP",
+        "locale": "es-CL",
+        "countries": [
+          "CL"
+        ],
+        "languages": [],
+        "flag": "CL",
+        "sites": {
+          "essencial": 24990,
+          "profissional": 49990,
+          "premium": 89990,
+          "premiumPainel": 149990
+        },
+        "sistemas": {
+          "essencial": 119990,
+          "profissional": 229990,
+          "premium": 449990
+        },
+        "domainFee": {
+          "amount": 25000,
+          "currency": "CLP"
+        }
+      },
+      {
+        "id": "CO",
+        "currency": "COP",
+        "locale": "es-CO",
+        "countries": [
+          "CO"
+        ],
+        "languages": [],
+        "flag": "CO",
+        "sites": {
+          "essencial": 99900,
+          "profissional": 199900,
+          "premium": 389900,
+          "premiumPainel": 619900
+        },
+        "sistemas": {
+          "essencial": 489900,
+          "profissional": 899900,
+          "premium": 1749900
+        },
+        "domainFee": {
+          "amount": 100000,
+          "currency": "COP"
+        }
+      },
+      {
+        "id": "AR",
+        "currency": "USD",
+        "locale": "es-AR",
+        "countries": [
+          "AR"
+        ],
+        "languages": [],
+        "flag": "AR",
+        "alternatives": {
+          "$comment": "Desativado: cobrança em ARS. Recomendação do responsável: cobrar em USD por causa da inflação. Para ativar, mova estes valores para sites/sistemas e troque currency para ARS.",
+          "enabled": false,
+          "currency": "ARS",
+          "sistemas": {
+            "essencial": 139900,
+            "profissional": 259900,
+            "premium": 499900
+          },
+          "domainFee": {
+            "amount": 30000,
+            "currency": "ARS"
+          }
+        },
+        "sites": {
+          "essencial": 49,
+          "profissional": 99,
+          "premium": 199,
+          "premiumPainel": 299
+        },
+        "sistemas": {
+          "essencial": 249,
+          "profissional": 499,
+          "premium": 899
+        },
+        "domainFee": {
+          "amount": 50,
+          "currency": "USD"
+        }
+      },
+      {
+        "id": "LATAM",
+        "currency": "USD",
+        "locale": "es-419",
+        "countries": [
+          "419",
+          "PE",
+          "UY",
+          "PY",
+          "BO",
+          "EC",
+          "VE",
+          "GT",
+          "HN",
+          "SV",
+          "NI",
+          "CR",
+          "PA",
+          "DO",
+          "PR",
+          "CU",
+          "US-419"
+        ],
+        "languages": [
+          "es"
+        ],
+        "flag": "LATAM",
+        "sites": {
+          "essencial": 49,
+          "profissional": 99,
+          "premium": 199,
+          "premiumPainel": 299
+        },
+        "sistemas": {
+          "essencial": 249,
+          "profissional": 499,
+          "premium": 899
+        },
+        "domainFee": {
+          "amount": 50,
+          "currency": "USD"
+        }
+      }
     ]
   }
 }

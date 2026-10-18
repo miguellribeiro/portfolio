@@ -1,23 +1,47 @@
 {
-  "$comment": "Dados estruturais dos projetos. Textos (título, descrição) ficam em locales/*.json -> projects.items.<id>.",
+  "$comment": "Dados estruturais dos projetos. Textos (título, descrição) ficam em locales/*.json -> projects.items.<id>. Capas em public/projects/<id>/.",
   "projects": [
     {
-      "id": "projeto-exemplo-1",
-      "tags": ["React", "Node.js", "ERP"],
-      "status": "production",
+      "id": "sinapse",
+      "tags": [
+        "React",
+        "NestJS",
+        "Oracle PL/SQL",
+        "UX"
+      ],
+      "status": "internal",
+      "confidential": true,
       "cover": "cover.svg",
-      "gallery": ["gallery-1.svg", "gallery-2.svg"],
-      "links": { "demo": "", "repo": "" },
-      "testDrive": { "enabled": false, "url": "" }
+      "gallery": [],
+      "links": {
+        "demo": "",
+        "repo": ""
+      },
+      "testDrive": {
+        "enabled": false,
+        "url": ""
+      }
     },
     {
-      "id": "projeto-exemplo-2",
-      "tags": ["React", "Vite", "Dashboard"],
-      "status": "in-progress",
+      "id": "bankup",
+      "tags": [
+        "Scrum",
+        "Java",
+        "Arquitetura",
+        "Gestão"
+      ],
+      "status": "completed",
+      "confidential": false,
       "cover": "cover.svg",
-      "gallery": ["gallery-1.svg"],
-      "links": { "demo": "https://exemplo.com", "repo": "https://github.com/seu-usuario/projeto-exemplo" },
-      "testDrive": { "enabled": false, "url": "" }
+      "gallery": [],
+      "links": {
+        "demo": "",
+        "repo": ""
+      },
+      "testDrive": {
+        "enabled": false,
+        "url": ""
+      }
     }
   ]
 }

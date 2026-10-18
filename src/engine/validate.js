@@ -58,19 +58,41 @@ export function validateContent({ site, projects, messages }) {
   ['email', 'whatsapp', 'linkedin', 'github'].forEach((k) => !site.contact?.[k] && warn(`contact.${k} vazio (canal oculto).`));
   if (site.contact?.whatsapp && !/^\d{10,15}$/.test(site.contact.whatsapp)) warn('contact.whatsapp deve ter só dígitos com DDI (ex.: 5512999999999).');
 
-  // Planos
-  const planIds = new Set(site.plans.map((p) => p.id));
-  site.plans.forEach((p) => {
-    ['prices', 'pricesMonthly'].forEach((k) => {
-      if (p[k] != null && typeof p[k] !== 'object') warn(`Plano "${p.id}": ${k} deve ser { BRL, USD, EUR } ou null.`);
-    });
-    if (!['whatsapp', 'email', 'url'].includes(p.cta?.type)) warn(`Plano "${p.id}": cta.type inválido.`);
+  // Bento (stat:<id> | cap:<id>)
+  const statIds = new Set((site.stats || []).map((x) => x.id));
+  const capIds = new Set(site.capabilities || []);
+  (site.bento?.items || []).forEach((it) => {
+    const [kind, rid] = String(it.ref).split(':');
+    if (kind === 'stat' && !statIds.has(rid)) warn(`bento: stat "${rid}" não existe em stats.`);
+    else if (kind === 'cap' && !capIds.has(rid)) warn(`bento: capability "${rid}" não existe em capabilities.`);
+    else if (!['stat', 'cap'].includes(kind)) warn(`bento: ref inválida "${it.ref}" (use stat:<id> ou cap:<id>).`);
+    if (!['sm', 'md', 'xl'].includes(it.size)) warn(`bento: size inválido "${it.size}" (sm|md|xl).`);
   });
+
+  // Planos (plansConfig.categories[].plans + compare.groups)
   const pc = site.plansConfig || {};
-  (pc.billing?.options || []).forEach((o) => !['project', 'monthly'].includes(o) && warn(`plansConfig.billing.options: "${o}" inválido.`));
-  (pc.compare?.categories || []).forEach((c) => c.rows?.forEach((r) => {
-    Object.keys(r.values || {}).forEach((pid) => !planIds.has(pid) && warn(`compare.${c.id}.${r.id}: plano "${pid}" não existe.`));
-  }));
+  const notes = new Set((pc.footnotes || []).map(String));
+  (pc.categories || []).forEach((c) => {
+    const planIds = new Set(c.plans.map((p) => p.id));
+    c.plans.forEach((p) => {
+      (site.pricing?.regions || []).forEach((r) => {
+        if (typeof r[c.priceKey || c.id]?.[p.id] !== 'number') warn(`pricing ${r.id}: preço ausente para ${c.priceKey || c.id}.${p.id}.`);
+      });
+      if (p.cta && !['whatsapp', 'email', 'url'].includes(p.cta.type)) warn(`Plano "${c.id}/${p.id}": cta.type inválido.`);
+    });
+    (c.compare?.groups || []).forEach((g) => g.rows.forEach((r) => {
+      Object.keys(r.values || {}).forEach((pid) => !planIds.has(pid) && warn(`compare ${c.id}.${r.id}: plano "${pid}" não existe.`));
+      planIds.forEach((pid) => r.values?.[pid] === undefined && warn(`compare ${c.id}.${r.id}: sem valor para "${pid}".`));
+      (r.footnotes || []).forEach((n) => !notes.has(String(n)) && warn(`compare ${c.id}.${r.id}: nota ${n} não está em plansConfig.footnotes.`));
+    }));
+  });
+  const regs = site.pricing?.regions || [];
+  if (!regs.length) warn('pricing.regions vazio: os planos ficam sem preço.');
+  if (site.pricing?.defaultRegion && !regs.some((r) => r.id === site.pricing.defaultRegion)) warn(`pricing.defaultRegion "${site.pricing.defaultRegion}" não existe.`);
+  regs.forEach((r) => {
+    try { new Intl.NumberFormat(r.locale, { style: 'currency', currency: r.currency }); } catch { warn(`pricing ${r.id}: locale/currency inválidos.`); }
+    if (r.domainFee && typeof r.domainFee.amount !== 'number') warn(`pricing ${r.id}: domainFee.amount deve ser número.`);
+  });
 
   const ids = new Set();
   projects.forEach((p) => {
@@ -89,17 +111,26 @@ export function validateContent({ site, projects, messages }) {
     ref.forEach((k) => !have.has(k) && warn(`[${code}] chave ausente: ${k}`));
     projects.forEach((p) => !m.projects?.items?.[p.id] && warn(`[${code}] textos ausentes para projeto "${p.id}"`));
     (site.stats || []).forEach((st) => !m.stats?.items?.[st.id] && warn(`[${code}] rótulo ausente para stat "${st.id}"`));
-    site.plans.forEach((p) => !m.plans?.items?.[p.id] && warn(`[${code}] textos ausentes para plano "${p.id}"`));
+    (site.capabilities || []).forEach((k) => !m.capabilities?.items?.[k] && warn(`[${code}] capabilities.items.${k} ausente`));
+    (site.process?.steps || []).forEach((k) => !m.process?.steps?.[k] && warn(`[${code}] process.steps.${k} ausente`));
     (pc.trust || []).forEach((k) => !m.plans?.trust?.[k] && warn(`[${code}] plans.trust.${k} ausente`));
     (pc.faq || []).forEach((k) => !m.plans?.faq?.[k] && warn(`[${code}] plans.faq.${k} ausente`));
-    (pc.compare?.categories || []).forEach((c) => {
-      if (!m.plans?.categories?.[c.id]) warn(`[${code}] plans.categories.${c.id} ausente`);
-      c.rows?.forEach((r) => {
-        if (!m.plans?.rows?.[r.id]) warn(`[${code}] plans.rows.${r.id} ausente`);
-        Object.values(r.values || {}).forEach((v) => {
-          if (typeof v === 'string' && v.startsWith('v:') && !m.plans?.values?.[v.slice(2)]) warn(`[${code}] plans.values.${v.slice(2)} ausente`);
+    regs.forEach((r) => !m.plans?.region?.names?.[r.id] && warn(`[${code}] plans.region.names.${r.id} ausente`));
+    notes.forEach((n) => !m.plans?.footnotes?.[n] && warn(`[${code}] plans.footnotes.${n} ausente`));
+    (pc.categories || []).forEach((c) => {
+      const mc = m.plans?.categories?.[c.id];
+      if (!mc) return warn(`[${code}] plans.categories.${c.id} ausente`);
+      c.plans.forEach((p) => !mc.plans?.[p.id] && warn(`[${code}] plans.categories.${c.id}.plans.${p.id} ausente`));
+      (c.compare?.groups || []).forEach((g) => {
+        if (!m.plans?.groups?.[g.id]) warn(`[${code}] plans.groups.${g.id} ausente`);
+        g.rows.forEach((r) => {
+          if (!m.plans?.rows?.[r.id]) warn(`[${code}] plans.rows.${r.id} ausente`);
+          Object.values(r.values || {}).forEach((v) => {
+            if (typeof v === 'string' && v.startsWith('v:') && !m.plans?.values?.[v.slice(2)]) warn(`[${code}] plans.values.${v.slice(2)} ausente`);
+          });
         });
       });
+      return undefined;
     });
   });
 }

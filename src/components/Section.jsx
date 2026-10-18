@@ -13,7 +13,7 @@ const numberOf = (id) => {
  * Seções ímpares recebem fundo alternado + divisor (site.json → effects.dividers).
  * layout="split" deixa o cabeçalho fixo (sticky) à esquerda.
  */
-export default function Section({ id, title, subtitle, children, className = '', layout }) {
+export default function Section({ id, title, subtitle, children, className = '', layout, sectionRef, style, after }) {
   const n = numberOf(id);
   const alt = n > 0 && n % 2 === 0;
   return (
@@ -21,6 +21,8 @@ export default function Section({ id, title, subtitle, children, className = '',
       id={id}
       className={`section ${alt ? 'section--alt' : ''} ${layout ? `section--${layout}` : ''} ${className}`}
       aria-labelledby={`${id}-title`}
+      ref={sectionRef}
+      style={style}
     >
       <div className="container section__inner">
         <header className="section__head reveal">
@@ -32,6 +34,7 @@ export default function Section({ id, title, subtitle, children, className = '',
         </header>
         <div className="section__body">{children}</div>
       </div>
+      {after}
     </section>
   );
 }

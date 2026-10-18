@@ -1,84 +1,112 @@
 import { useState } from 'react';
 import { useI18n } from '../i18n/context.js';
 import { site } from '../engine/content.js';
+import { useChannel } from '../engine/channels.js';
 import Section from '../components/Section.jsx';
 import Segmented from '../components/Segmented.jsx';
 import Check from '../components/Check.jsx';
 import PlansCompare from '../components/PlansCompare.jsx';
 import { useCardFx } from '../hooks/useCardFx.js';
-import { priceFor, usePlanCta } from '../hooks/usePlanCta.js';
+import { useMagnetic } from '../hooks/useMagnetic.js';
+import { ctaProps, usePlanCta } from '../hooks/usePlanCta.js';
+import RegionSelect from '../components/RegionSelect.jsx';
+import { regionPrice, useRegion, withDomainFee } from '../engine/region.js';
 
 const cfg = () => site.plansConfig || {};
 
-function PlanCard({ p, i, billing, fmt }) {
-  const { t, currency } = useI18n();
+function PlanCard({ cat, p, i }) {
+  const { t } = useI18n();
+  const [region] = useRegion();
   const fx = useCardFx();
+  const magnetic = useMagnetic();
   const cta = usePlanCta();
-  const text = t(`plans.items.${p.id}`);
-  const price = priceFor(p, billing, currency);
+  const text = t(`plans.categories.${cat.id}.plans.${p.id}`);
+  const price = regionPrice(region, cat, p);
+  const hid = `plan-${cat.id}-${p.id}`;
   return (
     <article
       className={`card plan reveal ${p.highlight ? 'plan--highlight' : ''} ${fx.className}`}
       style={{ '--i': i }}
       onPointerMove={fx.onPointerMove}
       onPointerLeave={fx.onPointerLeave}
-      aria-labelledby={`plan-${p.id}`}
+      aria-labelledby={hid}
     >
       {p.highlight && <span className="badge badge--grad mono">{t('plans.highlight')}</span>}
-      <h3 id={`plan-${p.id}`}>{text.name}</h3>
+      <h3 id={hid}>{text.name}</h3>
       <p className="plan__audience">{text.audience}</p>
       <div className="plan__price">
-        {price ? (
+        {price && (
           <>
-            <span className="plan__from">{t('plans.from')}</span>
-            <span className="plan__amount mono">{fmt.format(price.value)}</span>
-            <span className="plan__period">{t(`plans.period.${price.mode}`)}</span>
-            {price.fallback && (
-              <span className="plan__fallback">{t('plans.onlyOther').replace('{mode}', t(`plans.billing.${price.mode}`).toLowerCase())}</span>
-            )}
+            <span className="plan__amount mono">{price.text}</span>
+            <span className="plan__period">{t('plans.period')}</span>
           </>
-        ) : (
-          <span className="plan__amount plan__amount--text">{t('plans.onRequest')}</span>
         )}
       </div>
+      <p className="plan__note mono">{t('plans.priceNote')}</p>
       {p.inherits && <p className="plan__inherits mono">{t('plans.everything')}</p>}
       <ul className="plan__features">
         {text.features.map((f) => <li key={f}><Check />{f}</li>)}
       </ul>
-      <a className={`btn ${p.highlight ? 'btn--highlight' : 'btn--ghost'}`} {...cta(p, billing)}>
-        {text.cta} <span className="btn__arrow" aria-hidden="true">→</span>
+      <a className={`btn ${p.highlight ? 'btn--highlight' : 'btn--ghost'}`} {...cta(cat, p)} {...magnetic}>
+        {t('plans.cta')} <span className="btn__arrow" aria-hidden="true">→</span>
       </a>
     </article>
   );
 }
 
+function CustomBand() {
+  const { t } = useI18n();
+  const { launch } = useChannel();
+  const magnetic = useMagnetic();
+  const c = cfg().customBand;
+  if (!c) return null;
+  return (
+    <div className="custom-band reveal">
+      <div>
+        <h3>{t('plans.custom.title')}</h3>
+        <p className="muted">{t('plans.custom.text')}</p>
+      </div>
+      <a className="btn btn--primary" {...ctaProps(c.cta, t('plans.custom.message'), `${t('contact.emailSubject')} — ${t('plans.custom.title')}`, launch)} {...magnetic}>
+        {t('plans.custom.cta')} <span className="btn__arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+  );
+}
+
 export default function Plans({ id }) {
-  const { t, locale, currency } = useI18n();
+  const { t } = useI18n();
+  const [region] = useRegion();
   const c = cfg();
-  const options = c.billing?.options || ['project', 'monthly'];
-  const [billing, setBilling] = useState(c.billing?.default || options[0]);
-  const fmt = new Intl.NumberFormat(locale, { style: 'currency', currency, maximumFractionDigits: 0 });
+  const cats = c.categories || [];
+  const [catId, setCatId] = useState(cats[0]?.id);
+  const cat = cats.find((x) => x.id === catId) || cats[0];
+  if (!cat) return null;
+  const notes = (c.footnotes || []).map(String);
+
   return (
     <Section id={id} title={t('plans.title')} subtitle={t('plans.subtitle')} className="plans-section">
       <div className="plans__bar reveal">
-        {options.length > 1 && (
+        {cats.length > 1 && (
           <Segmented
-            id="billing"
-            label={t('plans.billing.label')}
-            value={billing}
-            onChange={setBilling}
-            options={options.map((o) => ({ value: o, label: t(`plans.billing.${o}`) }))}
+            id="plan-cat"
+            label={t('plans.categoryLabel')}
+            value={cat.id}
+            onChange={setCatId}
+            className="plans__tabs"
+            options={cats.map((x) => ({ value: x.id, label: t(`plans.categories.${x.id}.label`) }))}
           />
         )}
-        <p className="plans__note mono">
-          {t('plans.currencyNote').replace('{currency}', currency)}
-          {c.examplePrices && <> <strong className="plans__example">{t('plans.exampleNote')}</strong></>}
-        </p>
+        <div className="plans__region">
+          <RegionSelect />
+          {region && region.currency !== 'BRL' && <p className="plans__note mono">{t('plans.currencyNote').replace('{currency}', region.currency)}</p>}
+        </div>
       </div>
 
-      <div className="plans-grid" style={{ '--n': site.plans.length }}>
-        {site.plans.map((p, i) => <PlanCard key={p.id} p={p} i={i} billing={billing} fmt={fmt} />)}
+      <div key={`grid-${cat.id}`} className={`plans-grid plans-grid--${cat.plans.length}`} style={{ '--n': cat.plans.length }}>
+        {cat.plans.map((p, i) => <PlanCard key={p.id} cat={cat} p={p} i={i} />)}
       </div>
+
+      <CustomBand />
 
       {c.trust?.length > 0 && (
         <ul className="trust reveal" aria-label={t('plans.trustLabel')}>
@@ -86,16 +114,18 @@ export default function Plans({ id }) {
         </ul>
       )}
 
-      {c.compare?.categories?.length > 0 && <PlansCompare billing={billing} />}
+      {cat.compare?.groups?.length > 0 && <PlansCompare key={`cmp-${cat.id}`} cat={cat} notes={notes} />}
+
+      {c.disclaimer && <p className="plans__disclaimer small">{t('plans.disclaimer')}</p>}
 
       {c.faq?.length > 0 && (
         <div className="faq">
           <h3 className="faq__title">{t('plans.faqTitle')}</h3>
           <div className="faq__list">
-            {c.faq.map((k) => (
-              <details key={k} className="faq__item">
+            {c.faq.map((k, i) => (
+              <details key={k} className="faq__item reveal" style={{ '--i': i % 4 }}>
                 <summary>{t(`plans.faq.${k}.q`)}<span className="faq__icon" aria-hidden="true" /></summary>
-                <p>{t(`plans.faq.${k}.a`)}</p>
+                <p>{withDomainFee(t(`plans.faq.${k}.a`), region, t)}</p>
               </details>
             ))}
           </div>

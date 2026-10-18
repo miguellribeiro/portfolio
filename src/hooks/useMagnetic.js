@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useEffects } from '../engine/effects.js';
 
-const MAX = 4; // px
+const MAX = 7; // px
 
 /** Efeito magnético sutil (máx. 4px) via CSS `translate` (--mx/--my). */
 export function useMagnetic() {

@@ -5,30 +5,49 @@
  * @property {string} code   Código BCP-47 (ex.: "pt-BR")
  * @property {string} label  Rótulo curto no seletor (ex.: "PT")
  * @property {string} name   Nome completo do idioma
- * @property {string} [flag] Emoji de bandeira (opcional)
  *
  * @typedef {Object} SectionDef
  * @property {string} id       Âncora/ID único da seção (usado em #links)
- * @property {string} type     Chave do registry (hero, stats, about, marquee, projects, ...)
+ * @property {string} type     Chave do registry (hero, bento, about, marquee, projects, experience, process, plans, contact, footer)
  * @property {boolean} enabled Se false, não é renderizada
  *
- * @typedef {Object} PlanDef  Textos em locales/*.json → plans.items.<id> (name, audience, features[], cta)
+ * @typedef {Object} PlanDef  Textos em locales/*.json → plans.categories.<cat>.plans.<id> (name, audience, features[])
  * @property {string} id
- * @property {boolean} highlight  true = card "Recomendado" (borda em gradiente, scale 1.02, CTA de destaque)
+ * @property {boolean} highlight  true = card "Recomendado" (borda em gradiente, CTA de destaque)
  * @property {boolean} [inherits] true = mostra "Tudo do anterior +" antes dos itens
- * @property {Object<string, number>|null} prices  Preço "a partir de" por projeto, por moeda (BRL/USD/EUR). null = sem preço
- * @property {Object<string, number>|null} [pricesMonthly]  Preço mensal por moeda. Sem os dois = "Sob consulta"
- * @property {{type: 'whatsapp'|'email'|'url', href?: string}} cta  whatsapp/email abrem o overlay de contato com plano + modo + moeda
+ * @property {{type: 'whatsapp'|'email'|'url', href?: string}} [cta]  Padrão whatsapp (overlay com categoria, plano e preço)
  *
- * @typedef {true|false|string} CompareValue  true = check, false = "—", "v:<id>" = locales → plans.values.<id>
+ * @typedef {true|false|'price'|string} CompareValue  true = check, false = "—", "price" = mensalidade, "v:<id>" = locales → plans.values.<id>
+ *
+ * @typedef {Object} CompareRow
+ * @property {string} id  Rótulo/tooltip em plans.rows.<id>.{label,tip}
+ * @property {Object<string, CompareValue>} values  planId → valor
+ * @property {number[]} [footnotes]  Notas sobrescritas (¹ ²) → plans.footnotes.<n>
+ *
+ * @typedef {Object} PlanCategory
+ * @property {string} id  "sites" | "systems" (aba). Rótulo em plans.categories.<id>.label
+ * @property {string} [priceKey]  Chave da tabela de preços em cada região ("sites" | "sistemas"); padrão = id
+ * @property {{groups: {id: string, rows: CompareRow[]}[]}} compare  Grupos (rótulos em plans.groups.<id>)
  *
  * @typedef {Object} PlansConfig
- * @property {{default: 'project'|'monthly', options: ('project'|'monthly')[]}} billing  Toggle Projeto|Mensal
- * @property {boolean} examplePrices  true = exibe o aviso "valores de exemplo"
- * @property {string[]} trust  Ids da faixa de garantias (textos em plans.trust.<id>)
- * @property {{categories: {id: string, rows: {id: string, values: Object<string, CompareValue>}[]}[]}} compare
- *   Tabela "Comparar tudo" (rótulos/tooltips em plans.categories.<id> e plans.rows.<id>.{label,tip})
+ * @property {PlanCategory[]} categories
+ * @property {{cta: {type: 'whatsapp'|'email'|'url', href?: string}}} [customBand]  Faixa "Sob Medida"
+ * @property {string[]} trust  Ids da faixa de garantias (plans.trust.<id>)
+ * @property {number[]} footnotes  Notas exibidas sob a tabela (plans.footnotes.<n>)
+ * @property {boolean} disclaimer  Exibe plans.disclaimer sob a tabela
  * @property {string[]} faq  Ids das perguntas (plans.faq.<id>.{q,a})
+ *
+ * @typedef {Object} Region  Tabela de preços mensais de uma região (site.json → pricing.regions)
+ * @property {string} id  BR | US | EU | MX | CL | CO | AR | LATAM (rótulo em plans.region.names.<id>)
+ * @property {string} currency  ISO 4217 (BRL, USD, EUR, MXN, CLP, COP...)
+ * @property {string} locale  Locale do Intl.NumberFormat (ex.: "es-MX"); sem casas decimais
+ * @property {string[]} countries  Códigos de país/região BCP-47 que caem nesta região (ex.: "MX", "419")
+ * @property {string[]} languages  Idiomas sem região que caem aqui (ex.: "pt" → BR)
+ * @property {string} [flag]  Bandeira (components/Flag.jsx)
+ * @property {Object<string, number>} sites  essencial, profissional, premium, premiumPainel
+ * @property {Object<string, number>} sistemas  essencial, profissional, premium
+ * @property {{amount: number, currency?: string}} [domainFee]  Taxa de transferência/registro do domínio (cancelamento < 12 meses) → {fee} em plans.domainClause
+ * @property {Object} [alternatives]  Tabela alternativa desativada (ex.: AR em ARS)
  *
  * @typedef {Object} Palette  Cores de um modo (dark ou light). Viram CSS vars --c-<kebab-case>.
  * @property {string} bg
@@ -56,11 +75,11 @@
  *   Famílias (carregadas via @fontsource em main.jsx). display = serifa itálica só na palavra [[destacada]] do hero
  *
  * @typedef {Object} Effects  Liga/desliga efeitos. prefers-reduced-motion desliga os de movimento.
- * @property {boolean} loader          Monograma animado na 1ª visita da sessão (≤700ms)
+ * @property {boolean} loader          Wordmark desenhado na 1ª visita da sessão (≤700ms)
  * @property {boolean} ambientBlobs    Blobs do hero se movendo lentamente (pausa fora da tela/aba oculta)
  * @property {boolean} headlineReveal  Título do hero palavra por palavra + sublinhado no destaque
  * @property {boolean} skeleton        Shimmer enquanto imagens carregam
- * @property {boolean} magnetic        CTA principal "magnético" (máx. 4px)
+ * @property {boolean} magnetic        CTAs "magnéticos" (máx. 7px)
  * @property {boolean} heroMesh        Blobs de gradiente no hero
  * @property {boolean} grain           Ruído sutil (SVG) no hero
  * @property {boolean} bgGrid          Grade de fundo no hero
@@ -79,7 +98,6 @@
  * @property {number} [decimals]
  * @property {string} [prefix]
  * @property {string} [suffix]
- * @property {boolean} [example]  true = número ilustrativo (exibe aviso)
  *
  * @typedef {Object} SiteConfig
  * @property {string} defaultLocale
@@ -89,16 +107,20 @@
  * @property {SectionDef[]} sections
  * @property {StatDef[]} stats
  * @property {{items: string[]}} marquee  Nomes de tecnologias (não traduzidos)
- * @property {{monogram: string}} [brand]  Monograma do loader/header (ex.: "MR")
+ * @property {{name: string}} brand  Marca (wordmark no header/loader/rodapé), ex.: "Manpe"
+ * @property {string[]} capabilities  Ids dos diferenciais (locales → capabilities.items.<id>.{name,description})
+ * @property {{items: {ref: string, size: 'sm'|'md'|'xl', icon: string}[]}} bento  ref = "stat:<id>" | "cap:<id>"
+ * @property {{steps: string[], autoAdvanceMs: number}} process  "Como funciona" (locales → process.steps.<id>)
  * @property {{email?: string, whatsapp?: string, whatsappDisplay?: string, github?: string, linkedin?: string}} contact
  *   whatsapp só dígitos com DDI. Textos pré-preenchidos em locales → contact.whatsappText / emailSubject
- * @property {PlanDef[]} plans
- * @property {PlansConfig} [plansConfig]
+ * @property {PlansConfig} plansConfig
+ * @property {{defaultRegion: string, regions: Region[]}} pricing  Preços por região (independe do idioma)
  *
  * @typedef {Object} ProjectDef
  * @property {string} id         Igual ao nome da pasta em public/projects/<id>/
  * @property {string[]} tags
- * @property {'production'|'in-progress'|'archived'} status
+ * @property {'production'|'in-progress'|'archived'|'internal'|'completed'} status  internal = "Em produção · Uso corporativo"
+ * @property {boolean} [confidential]  true = selo "Confidencial" (sem links)
  * @property {string} cover      Nome do arquivo da capa dentro da pasta
  * @property {string[]} gallery  Arquivos da galeria
  * @property {{demo?: string, repo?: string}} links

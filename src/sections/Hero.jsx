@@ -3,32 +3,45 @@ import { useScroll, useTransform } from 'motion/react';
 import * as M from 'motion/react-m';
 import { useI18n } from '../i18n/context.js';
 import { useEffects } from '../engine/effects.js';
-import DashboardMockup from '../components/DashboardMockup.jsx';
+import { getChannels } from '../engine/channels.js';
+import { ChannelAnchor } from '../components/ChannelLink.jsx';
 import { useMagnetic } from '../hooks/useMagnetic.js';
 
 /**
- * "Texto [[destaque]] texto": cada palavra entra com máscara (stagger ~40ms);
- * o destaque usa a fonte display itálica + gradiente e ganha um sublinhado que cresce.
+ * "Texto [[destaque]] texto": cada palavra entra com máscara (stagger curto, ~30ms;
+ * o texto está sempre no DOM para SEO). O destaque ganha cor contrastante + brilho sutil.
  */
 function Headline({ text }) {
   let n = 0;
   const word = (w, key) => (
     <span key={key} className="word"><span className="word__in" style={{ '--w': n++ }}>{w}</span></span>
   );
-  return text.split(/\[\[(.+?)\]\]/).map((part, i) => {
+  const parts = text.split(/\[\[(.+?)\]\]/);
+  const out = [];
+  for (let i = 0; i < parts.length; i += 1) {
+    let part = parts[i];
+    if (i % 2) {
+      // pontuação colada ao destaque (ex.: "seguro,") fica junto dele, sem quebrar linha
+      const next = parts[i + 1] || '';
+      const punct = (next.match(/^[^\s\w\u00C0-\u024F]+/) || [''])[0];
+      if (punct) parts[i + 1] = next.slice(punct.length);
+      const words = part.split(/\s+/).filter(Boolean);
+      const body = words.map((w, j) => <Fragment key={j}>{j > 0 && ' '}{word(w, `w${j}`)}</Fragment>);
+      out.push(
+        <span key={i} className="hl-wrap">
+          <span className="hl" style={{ '--hl': n + words.length }}><span className="hl__text">{body}</span></span>
+          {punct && word(punct, 'p')}
+        </span>,
+      );
+      continue;
+    }
+    part = parts[i];
     const words = part.split(/\s+/).filter(Boolean);
     const lead = /^\s/.test(part) ? ' ' : '';
     const trail = /\s$/.test(part) ? ' ' : '';
-    const body = words.map((w, j) => <Fragment key={j}>{j > 0 && ' '}{word(w, `w${j}`)}</Fragment>);
-    if (i % 2) {
-      return (
-        <span key={i} className="hl" style={{ '--hl': n + words.length }}>
-          <span className="hl__text">{body}</span>
-        </span>
-      );
-    }
-    return <Fragment key={i}>{lead}{body}{trail}</Fragment>;
-  });
+    out.push(<Fragment key={i}>{lead}{words.map((w, j) => <Fragment key={j}>{j > 0 && ' '}{word(w, `w${j}`)}</Fragment>)}{trail}</Fragment>);
+  }
+  return out;
 }
 
 export default function Hero({ id }) {
@@ -37,14 +50,12 @@ export default function Hero({ id }) {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
   const k = fx.parallax ? 1 : 0;
-  const yBlobs = useTransform(scrollYProgress, [0, 1], [0, 60 * k]);
-  const yMock = useTransform(scrollYProgress, [0, 1], [0, -40 * k]);
-  const yCardA = useTransform(scrollYProgress, [0, 1], [0, -60 * k]);
-  const yCardB = useTransform(scrollYProgress, [0, 1], [0, 30 * k]);
-  const mk = t('hero.mockup');
+  const yMesh = useTransform(scrollYProgress, [0, 1], [0, 80 * k]);
+  const yCopy = useTransform(scrollYProgress, [0, 1], [0, -40 * k]);
   const magnetic = useMagnetic();
+  const wa = getChannels(t).find((c) => c.key === 'whatsapp');
 
-  // Pausa os blobs ambientes quando o hero sai da tela.
+  // Pausa a malha animada quando o hero sai da tela.
   useEffect(() => {
     const el = ref.current;
     if (!el || !('IntersectionObserver' in window)) return undefined;
@@ -56,48 +67,38 @@ export default function Hero({ id }) {
   return (
     <section id={id} ref={ref} className="hero" aria-labelledby={`${id}-title`}>
       <div className="hero__bg" aria-hidden="true">
-        {fx.bgGrid && <div className="hero__grid" />}
         {fx.heroMesh && (
-          <M.div className="hero__mesh" style={{ y: yBlobs }}>
+          <M.div className="hero__mesh" style={{ y: yMesh }}>
             <span className="blob blob--1" />
             <span className="blob blob--2" />
             <span className="blob blob--3" />
+            <span className="blob blob--4" />
           </M.div>
         )}
+        {fx.bgGrid && <div className="hero__grid" />}
         {fx.grain && <div className="hero__grain" />}
+        <div className="hero__fade" />
       </div>
 
-      <div className="container hero__inner">
-        <div className="hero__copy">
-          <p className="eyebrow mono"><span className="dot" aria-hidden="true" />{t('hero.title')} · {t('hero.eyebrow')}</p>
-          <h1 id={`${id}-title`}><Headline text={t('hero.headline')} /></h1>
-          <p className="hero__subtitle">{t('hero.subtitle')}</p>
-          <div className="hero__ctas">
-            <a className="btn btn--primary" href="#projects" {...magnetic}>{t('hero.ctaPrimary')} <span className="btn__arrow" aria-hidden="true">→</span></a>
-            <a className="btn btn--ghost" href="#contact">{t('hero.ctaSecondary')}</a>
-          </div>
+      <M.div className="container hero__inner" style={{ y: yCopy }}>
+        <p className="eyebrow mono hero__eyebrow"><span className="dot" aria-hidden="true" /><span className="hero__who">{t('hero.title')}</span><span aria-hidden="true">·</span>{t('hero.eyebrow')}</p>
+        <h1 id={`${id}-title`} className="hero__title">
+          <span className="sr-only">{t('hero.title')} — </span>
+          <Headline text={t('hero.headline')} />
+        </h1>
+        <p className="hero__subtitle">{t('hero.subtitle')}</p>
+        <div className="hero__ctas">
+          <a className="btn btn--primary btn--lg" href="#projects" {...magnetic}>
+            {t('hero.ctaPrimary')} <span className="btn__arrow" aria-hidden="true">→</span>
+          </a>
+          {wa ? (
+            <ChannelAnchor ch={wa} className="btn btn--ghost btn--lg" {...magnetic}>{t('hero.ctaSecondary')}</ChannelAnchor>
+          ) : (
+            <a className="btn btn--ghost btn--lg" href="#contact" {...magnetic}>{t('hero.ctaSecondary')}</a>
+          )}
         </div>
-
-        <div className="hero__visual" role="img" aria-label={mk.title}>
-          <M.div className="hero__mock" style={{ y: yMock }}>
-            <DashboardMockup text={mk} />
-          </M.div>
-          <M.div className="float-card float-card--a" style={{ y: yCardA }} aria-hidden="true">
-            <span className="float-card__icon">↗</span>
-            <span>
-              <span className="float-card__label">{mk.revenue}</span>
-              <strong className="mono">{mk.revenueValue}</strong>
-            </span>
-          </M.div>
-          <M.div className="float-card float-card--b" style={{ y: yCardB }} aria-hidden="true">
-            <span className="float-card__icon float-card__icon--accent">✓</span>
-            <span>
-              <span className="float-card__label">{mk.tiss}</span>
-              <strong className="mono">{mk.tissValue}</strong>
-            </span>
-          </M.div>
-        </div>
-      </div>
+      </M.div>
+      <a className="hero__scroll" href="#highlights" aria-label={t('projects.hint')}><span /></a>
     </section>
   );
 }

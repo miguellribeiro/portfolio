@@ -1,82 +1,66 @@
 {
-  "currency": "USD",
   "nav": "Navegación",
   "lang": "Idioma",
   "theme": "Cambiar tema",
   "headerCta": "Hablemos",
   "loader": "Cargando",
   "meta": {
-    "title": "Tu Nombre — Desarrollador de Software (ejemplo)",
-    "description": "Portafolio profesional: sistemas, ERPs y aplicaciones web. Contenido de ejemplo."
+    "title": "Manpe — Miguel Ribeiro | Líder Técnico y Desarrollador Full Stack",
+    "description": "Portafolio de Miguel Ribeiro, Desarrollador Full Stack y Líder Técnico. Especialista en crear sistemas robustos, seguros y enfocados en la calidad."
   },
   "hero": {
-    "eyebrow": "Desarrollador Full Stack",
-    "title": "Tu Nombre",
-    "subtitle": "Construyo sistemas confiables y bien terminados para empresas. (Texto de ejemplo.)",
+    "eyebrow": "Líder Técnico y Desarrollador Full Stack",
+    "title": "Miguel Ribeiro",
+    "headline": "Software [[seguro]], escalable y centrado en la experiencia del usuario.",
+    "subtitle": "Sistemas seguros, escalables y de alto rendimiento, que unen la calidad del código con la excelencia en la experiencia del usuario.",
     "ctaPrimary": "Ver proyectos",
-    "ctaSecondary": "Contáctame",
-    "headline": "Software a medida, [[bien terminado]] y listo para crecer.",
-    "mockup": {
-      "title": "Panel de gestión (ilustrativo)",
-      "app": "ERP Ejemplo",
-      "nav": [
-        "Inicio",
-        "Finanzas",
-        "Facturación",
-        "Informes"
-      ],
-      "kpis": [
-        "Ingresos",
-        "Pedidos",
-        "Ticket medio"
-      ],
-      "chart": "Ingresos mensuales",
-      "revenue": "Facturación",
-      "revenueValue": "+00% (ejemplo)",
-      "tiss": "Guías TISS",
-      "tissValue": "000 enviadas (ejemplo)"
-    }
+    "ctaSecondary": "Hablemos"
+  },
+  "bento": {
+    "title": "Diferenciales",
+    "subtitle": "Experiencia de punta a punta, con la seguridad como punto de partida."
   },
   "stats": {
-    "title": "En números",
-    "note": "Números de ejemplo — reemplace por los reales.",
+    "title": "En cifras",
     "items": {
-      "projects": "Proyectos entregados",
       "years": "Años de experiencia",
-      "uptime": "Disponibilidad media",
+      "security": "Enfoque en seguridad",
+      "uptime": "Disponibilidad",
       "support": "Tiempo de respuesta"
     }
   },
   "about": {
     "title": "Sobre mí",
     "paragraphs": [
-      "Párrafo de ejemplo sobre tu trayectoria y forma de trabajar.",
-      "Destaca madurez, compromiso y calidad."
+      "Soy desarrollador Full Stack y Líder Técnico, con sólida experiencia en la gestión del ciclo completo de desarrollo de software. Mi trayectoria abarca desde la facilitación de equipos ágiles como Scrum Master hasta la arquitectura de plataformas corporativas y la elaboración de propuestas ejecutivas de gobernanza y seguridad de datos.",
+      "Trabajo con una visión de punta a punta, asegurando que la infraestructura y el back-end sean robustos mientras el front-end ofrece una experiencia de usuario fluida e intuitiva. Valoro la calidad de la entrega y aplico prácticas avanzadas como la ofuscación de código, el cifrado y los pipelines automatizados para garantizar la integridad de los sistemas.",
+      "Mi diferencial es unir la capacidad técnica con la visión estratégica. Entiendo el problema de negocio para construir plataformas a medida que no solo resuelven la necesidad actual, sino que están preparadas para escalar de forma segura en cualquier sector."
     ]
   },
   "capabilities": {
     "title": "Competencias",
-    "items": [
-      {
-        "name": "Front-end",
-        "description": "React, interfaces accesibles y rápidas."
+    "items": {
+      "frontend": {
+        "name": "Front-end y UX",
+        "description": "Creación de interfaces dinámicas y responsivas, con foco en la usabilidad y el rendimiento."
       },
-      {
-        "name": "Back-end",
-        "description": "APIs, integraciones y reglas de negocio."
+      "backend": {
+        "name": "Back-end y Arquitectura",
+        "description": "Desarrollo de APIs robustas, arquitectura de bases de datos y lógica de negocio escalable."
       },
-      {
-        "name": "Sistemas de gestión",
-        "description": "ERPs, reportes y automatización."
+      "security": {
+        "name": "Seguridad y Liderazgo Técnico",
+        "description": "Gobernanza de datos, cifrado de extremo a extremo, metodologías ágiles (Scrum) y gestión de equipos de desarrollo."
       }
-    ]
+    }
   },
   "marquee": {
     "title": "Tecnologías con las que trabajo"
   },
   "projects": {
     "title": "Proyectos",
-    "subtitle": "Selección de trabajos (ejemplos).",
+    "subtitle": "Una selección de trabajos — los detalles sensibles se preservan por confidencialidad.",
+    "hint": "Desplázate para explorar",
     "demo": "Demo",
     "repo": "Código",
     "testDrive": "Test Drive",
@@ -85,75 +69,116 @@
     "close": "Cerrar",
     "prev": "Anterior",
     "next": "Siguiente",
+    "confidential": "Confidencial",
     "status": {
       "production": "En producción",
       "in-progress": "En desarrollo",
-      "archived": "Archivado"
+      "archived": "Archivado",
+      "internal": "En producción · Uso corporativo",
+      "completed": "Finalizado"
+    },
+    "tags": {
+      "Arquitetura": "Arquitectura",
+      "Gestão": "Gestión"
     },
     "items": {
-      "projeto-exemplo-1": {
-        "title": "Proyecto Ejemplo 1",
-        "description": "Descripción de ejemplo de un sistema de gestión.",
-        "alt": "Pantalla de ejemplo del Proyecto Ejemplo 1"
+      "sinapse": {
+        "title": "Sinapse",
+        "description": "Plataforma web interna para el registro diario de actividades y el intercambio de conocimiento corporativo.",
+        "alt": "Portada ilustrativa de Sinapse: red de nodos de conocimiento conectados"
       },
-      "projeto-exemplo-2": {
-        "title": "Proyecto Ejemplo 2",
-        "description": "Descripción de ejemplo de un panel analítico.",
-        "alt": "Pantalla de ejemplo del Proyecto Ejemplo 2"
+      "bankup": {
+        "title": "Bankup",
+        "description": "Sistema gestionado con metodología Scrum, enfocado en entregas de alto valor y flujo continuo.",
+        "alt": "Portada ilustrativa de Bankup: tablero de sprint con flujo de entregas"
       }
+    },
+    "end": {
+      "title": "Tu proyecto aquí",
+      "text": "¿Tienes una idea o un proceso que merece convertirse en software? Hablemos de tu próximo proyecto.",
+      "cta": "Iniciar conversación",
+      "message": "¡Hola, Miguel! Vi tus proyectos en el sitio de Manpe y me gustaría hablar sobre el mío."
     }
   },
   "experience": {
     "title": "Experiencia",
     "items": [
       {
-        "period": "20XX — actual",
-        "role": "Cargo Ejemplo",
-        "org": "Empresa Ejemplo",
-        "description": "Responsabilidades y resultados (ejemplo)."
+        "period": "2023 — Actualidad",
+        "role": "Líder Técnico y Desarrollador Full Stack",
+        "org": "Hermanos TI",
+        "description": "Responsable de liderar el equipo de desarrollo, diseñar la arquitectura de plataformas internas de gestión e implementar mejoras de infraestructura, gobernanza de datos y cifrado."
       },
       {
-        "period": "20XX — 20XX",
-        "role": "Cargo Ejemplo",
-        "org": "Empresa Ejemplo",
-        "description": "Responsabilidades y resultados (ejemplo)."
+        "period": "Abr/2025 — Dic/2025",
+        "role": "Scrum Master",
+        "org": "Proyecto Bankup",
+        "description": "Facilitación de ceremonias ágiles y gestión del flujo de entregas, garantizando la alineación técnica, la eliminación de impedimentos y la calidad en el ciclo de vida del software."
       }
     ]
   },
   "testimonials": {
     "title": "Testimonios",
-    "items": [
-      {
-        "quote": "Testimonio de ejemplo.",
-        "author": "Nombre Ejemplo",
-        "role": "Cargo, Empresa"
+    "items": []
+  },
+  "process": {
+    "title": "Cómo funciona",
+    "subtitle": "Un proceso simple y transparente, desde el primer contacto hasta la evolución continua.",
+    "labels": {
+      "happens": "Qué sucede",
+      "receive": "Qué recibes",
+      "do": "Qué haces",
+      "step": "Etapa",
+      "pause": "Pausar avance automático",
+      "play": "Reanudar avance automático"
+    },
+    "steps": {
+      "conversa": {
+        "title": "Conversación",
+        "short": "Entendemos tu negocio",
+        "happens": "Conversamos por WhatsApp (o por llamada) para entender tu negocio, tus objetivos y lo que necesitas resolver.",
+        "receive": "Un resumen de la conversación y el plan recomendado para tu caso, con alcance claro y cuota mensual definida.",
+        "do": "Contarnos sobre tu negocio, tus clientes y lo que esperas del proyecto."
+      },
+      "prototipo": {
+        "title": "Prototipo",
+        "short": "Lo ves antes de construirlo",
+        "happens": "Diseñamos el layout y los principales flujos de navegación para que visualices el resultado antes del desarrollo.",
+        "receive": "Un prototipo navegable para revisar, comentar y aprobar.",
+        "do": "Evaluar el prototipo, enviar ajustes y aprobar la dirección."
+      },
+      "desenvolvimento": {
+        "title": "Desarrollo",
+        "short": "Construcción con seguridad y calidad",
+        "happens": "Construimos la solución con buenas prácticas de seguridad, código revisado y pruebas, con seguimiento en cada etapa.",
+        "receive": "Actualizaciones frecuentes del avance y acceso a una versión de pruebas.",
+        "do": "Seguir las entregas, enviar textos, imágenes e información y validar las funcionalidades."
+      },
+      "publicacao": {
+        "title": "Publicación y evolución",
+        "short": "En línea y siempre evolucionando",
+        "happens": "Publicamos el proyecto, configuramos el dominio y la monitorización y seguimos con el mantenimiento continuo.",
+        "receive": "Tu sitio o sistema en línea, monitorizado y con soporte según tu plan.",
+        "do": "Usarlo, difundirlo y contarnos qué se puede mejorar — las mejoras entran en el ciclo de mantenimiento."
       }
-    ]
+    }
   },
   "plans": {
     "title": "Planes",
-    "subtitle": "Elige un punto de partida — cada proyecto termina con una propuesta a medida.",
-    "onRequest": "Propuesta a medida",
+    "subtitle": "Cuotas mensuales prepagas, sin cuota de alta y sin permanencia. Elige el tipo de proyecto:",
+    "categoryLabel": "Tipo de proyecto",
+    "period": "/mes",
+    "priceNote": "Sin cuota de alta · prepago",
     "highlight": "Recomendado",
-    "billing": {
-      "label": "Modalidad de cobro",
-      "project": "Proyecto",
-      "monthly": "Mensual"
-    },
-    "period": {
-      "project": "/proyecto",
-      "monthly": "/mes"
-    },
-    "onlyOther": "cobro {mode}",
-    "currencyNote": "Valores en {currency}.",
-    "exampleNote": "Valores de ejemplo — por definir.",
     "everything": "Todo lo anterior +",
+    "currencyNote": "Valores en {currency}. Pago con tarjeta internacional o Pix/boleto (Brasil).",
     "trustLabel": "Garantías",
     "trust": {
-      "code": "Código 100% tuyo",
-      "contract": "Contrato + factura",
-      "payment": "Transferencia, Pix o tarjeta",
-      "lgpd": "Atención a la LGPD en sistemas de salud"
+      "noSetup": "Sin cuota de alta",
+      "noLockIn": "Sin permanencia",
+      "yourData": "Tus datos son tuyos",
+      "contract": "Contrato + recibo",
+      "payment": "Pix, boleto o tarjeta"
     },
     "compareToggle": "Comparar todo",
     "compareHide": "Ocultar comparación",
@@ -162,171 +187,282 @@
     "choose": "Elegir",
     "yes": "Incluido",
     "no": "No incluido",
+    "custom": {
+      "title": "A Medida",
+      "text": "Para alcances complejos, integraciones críticas o necesidades específicas.",
+      "cta": "Agendar una conversación",
+      "message": "¡Hola, Miguel! Me gustaría agendar una conversación sobre un proyecto A Medida."
+    },
     "categories": {
-      "scope": "Alcance",
-      "quality": "Calidad",
-      "process": "Proceso",
-      "support": "Soporte"
+      "sites": {
+        "label": "Sitios y Landing Pages",
+        "plans": {
+          "essencial": {
+            "name": "Esencial",
+            "audience": "Para tener presencia online con una página simple y profesional.",
+            "features": [
+              "Página única",
+              "Secciones básicas",
+              "Mantenimiento bajo demanda",
+              "Hosting y dominio incluidos (subdominio Manpe, ej.: tunegocio.manpestudio.com.br)",
+              "Respuesta en hasta 48 h"
+            ]
+          },
+          "profissional": {
+            "name": "Profesional",
+            "audience": "Para negocios que quieren presentar sus servicios y recibir pedidos por WhatsApp.",
+            "features": [
+              "Hasta 5 páginas con navegación",
+              "Carrito y pedidos por contacto (WhatsApp)",
+              "Uso de tu propio dominio",
+              "Respuesta en hasta 24 h"
+            ]
+          },
+          "premium": {
+            "name": "Premium",
+            "audience": "Para marcas que necesitan más páginas, recursos a medida y prioridad.",
+            "features": [
+              "Registro y gestión de dominio incluidos — nos ocupamos de la burocracia técnica, la renovación anual y el DNS (dominio registrado a tu nombre)",
+              "Múltiples páginas (sujeto a análisis de alcance)",
+              "Mayor prioridad en los cambios",
+              "Recursos personalizados",
+              "Integración de API externa para el carrito",
+              "Respuesta en hasta 12 h"
+            ]
+          },
+          "premiumPainel": {
+            "name": "Premium + Panel",
+            "audience": "Para gestionar productos y galería y seguir los resultados con autonomía.",
+            "features": [
+              "Panel de gestión con inicio de sesión seguro",
+              "Registro de productos y galería",
+              "Estadísticas de visitas y del carrito"
+            ]
+          }
+        }
+      },
+      "systems": {
+        "label": "Sistemas",
+        "plans": {
+          "essencial": {
+            "name": "Esencial",
+            "audience": "Para digitalizar procesos internos con seguridad y control de acceso.",
+            "features": [
+              "Auditoría, seguridad y gestión de usuarios",
+              "Funcionalidades básicas",
+              "Mantenimiento bajo demanda",
+              "Hosting y dominio incluidos (subdominio Manpe)",
+              "Respuesta en hasta 48 h"
+            ]
+          },
+          "profissional": {
+            "name": "Profesional",
+            "audience": "Para operaciones que necesitan módulos a medida, notificaciones e intercambio de datos.",
+            "features": [
+              "Importaciones y exportaciones",
+              "Módulos personalizados",
+              "Sistema de notificaciones",
+              "Mensajería",
+              "Uso de tu propio dominio",
+              "Respuesta en hasta 24 h"
+            ]
+          },
+          "premium": {
+            "name": "Premium",
+            "audience": "Para empresas que exigen APIs, integraciones y entornos dedicados.",
+            "features": [
+              "APIs dedicadas",
+              "Integración de webhooks",
+              "Entorno de staging",
+              "Dashboards personalizados",
+              "Registro y gestión de dominio incluidos",
+              "Mayor prioridad en los cambios",
+              "Respuesta en hasta 12 h"
+            ]
+          }
+        }
+      }
+    },
+    "groups": {
+      "site": "Sitio",
+      "system": "Sistema",
+      "domain": "Dominio y hosting",
+      "support": "Soporte",
+      "terms": "Condiciones"
     },
     "rows": {
       "pages": {
-        "label": "Páginas/pantallas",
-        "tip": "Cantidad de páginas (sitio) o pantallas (sistema) previstas."
+        "label": "Páginas",
+        "tip": "Cantidad de páginas del sitio. Las múltiples páginas pasan por un análisis de alcance."
       },
-      "admin": {
-        "label": "Panel admin/CMS",
-        "tip": "Área para editar contenido y datos sin programar."
+      "cart": {
+        "label": "Carrito y pedidos",
+        "tip": "Pedidos enviados por WhatsApp o integrados con una API externa de carrito."
       },
-      "auth": {
-        "label": "Login y perfiles",
-        "tip": "Autenticación y permisos por tipo de usuario."
+      "custom": {
+        "label": "Recursos personalizados",
+        "tip": "Funcionalidades creadas a medida para tu negocio."
       },
-      "integrations": {
-        "label": "Integraciones (APIs, TISS, pagos)",
-        "tip": "Conexión con sistemas externos, estándar TISS (Brasil) y medios de pago."
+      "panel": {
+        "label": "Panel de gestión con inicio de sesión seguro",
+        "tip": "Área administrativa protegida para que actualices el sitio tú mismo."
       },
-      "reports": {
-        "label": "Informes/dashboards",
-        "tip": "Indicadores, gráficos y exportación de datos."
+      "catalog": {
+        "label": "Registro de productos y galería",
+        "tip": "Gestiona productos, fotos y galería desde el panel."
       },
-      "a11y": {
-        "label": "Responsive + WCAG AA",
-        "tip": "Funciona bien en el móvil y sigue las pautas de accesibilidad WCAG nivel AA."
+      "analytics": {
+        "label": "Estadísticas de visitas y del carrito",
+        "tip": "Sigue las visitas y el uso del carrito desde el panel."
       },
-      "seo": {
-        "label": "SEO técnico",
-        "tip": "Metadatos, rendimiento, sitemap y buenas prácticas para buscadores."
+      "audit": {
+        "label": "Auditoría, seguridad y gestión de usuarios",
+        "tip": "Registro de acciones, control de acceso y perfiles de usuario."
       },
-      "tests": {
-        "label": "Pruebas automatizadas",
-        "tip": "Pruebas que evitan regresiones en cada nueva versión."
+      "basic": {
+        "label": "Funcionalidades básicas",
+        "tip": "Registros, consultas y flujos esenciales del sistema."
       },
-      "deadline": {
-        "label": "Plazo",
-        "tip": "Estimación típica; el plazo final va en la propuesta."
+      "importExport": {
+        "label": "Importaciones y exportaciones",
+        "tip": "Entrada y salida de datos en hojas de cálculo y otros formatos."
       },
-      "revisions": {
-        "label": "Rondas de revisión",
-        "tip": "Ciclos de ajustes incluidos antes de la entrega."
+      "modules": {
+        "label": "Módulos personalizados",
+        "tip": "Módulos desarrollados para los procesos específicos de tu operación."
       },
-      "warranty": {
-        "label": "Garantía de corrección",
-        "tip": "Corrección de defectos sin costo después de la entrega."
+      "notifications": {
+        "label": "Sistema de notificaciones",
+        "tip": "Avisos en el sistema y por correo sobre eventos importantes."
+      },
+      "messaging": {
+        "label": "Mensajería",
+        "tip": "Colas de mensajes para procesar tareas de forma fiable."
+      },
+      "apis": {
+        "label": "APIs dedicadas",
+        "tip": "APIs exclusivas para integrar el sistema con otras aplicaciones."
+      },
+      "webhooks": {
+        "label": "Integración de webhooks",
+        "tip": "Recibe y envía eventos en tiempo real a servicios externos."
+      },
+      "staging": {
+        "label": "Entorno de staging",
+        "tip": "Copia del sistema para probar novedades antes de publicarlas."
+      },
+      "dashboards": {
+        "label": "Dashboards personalizados",
+        "tip": "Paneles con los indicadores que importan para tu negocio."
+      },
+      "hosting": {
+        "label": "Hosting",
+        "tip": "Servidor, certificado SSL y publicación incluidos."
+      },
+      "domain": {
+        "label": "Dominio",
+        "tip": "Dirección del sitio o sistema en internet."
+      },
+      "maintenance": {
+        "label": "Mantenimiento",
+        "tip": "Ajustes y correcciones bajo demanda, incluidos en la cuota."
+      },
+      "priority": {
+        "label": "Prioridad en los cambios",
+        "tip": "Tus solicitudes pasan al frente de la cola."
       },
       "response": {
         "label": "Tiempo de respuesta",
-        "tip": "Plazo para la primera respuesta en días hábiles."
+        "tip": "Plazo máximo para la primera respuesta a tus solicitudes."
       },
-      "handover": {
-        "label": "Deploy, documentación y traspaso",
-        "tip": "Publicación, documentación y traspaso completo del proyecto."
+      "monthly": {
+        "label": "Cuota mensual",
+        "tip": "Valor mensual prepago, cobrado al inicio de cada ciclo."
+      },
+      "setup": {
+        "label": "Cuota de alta",
+        "tip": "Valor cobrado para iniciar el proyecto."
+      },
+      "lockIn": {
+        "label": "Permanencia",
+        "tip": "Tiempo mínimo de permanencia en el plan."
+      },
+      "notice": {
+        "label": "Aviso de reajuste",
+        "tip": "Antelación mínima para comunicar cambios en el valor."
       }
     },
     "values": {
-      "upTo5": "Hasta 5",
-      "custom": "A medida",
-      "evolving": "Evolución continua",
-      "forms": "Formularios",
-      "asNeeded": "Según alcance",
-      "w2_4": "2–4 semanas",
-      "w6_12": "6–12 semanas",
-      "continuous": "Continuo",
-      "agreed": "A convenir",
-      "rev2": "2",
-      "rev3": "3",
-      "perSprint": "En cada ciclo",
-      "d30": "30 días",
-      "d90": "90 días",
-      "whileActive": "Mientras esté activo",
-      "h48": "48 h",
-      "h24": "24 h",
-      "h8": "8 h",
-      "sla": "SLA dedicado"
+      "singlePage": "Página única",
+      "upTo5Pages": "Hasta 5",
+      "multiPages": "Múltiples",
+      "cartWhatsapp": "Por WhatsApp",
+      "cartApi": "API externa",
+      "subdomain": "Subdominio Manpe",
+      "ownDomain": "Tu dominio",
+      "managedDomain": "Registro y gestión incluidos",
+      "onDemand": "Bajo demanda",
+      "h48": "Hasta 48 h",
+      "h24": "Hasta 24 h",
+      "h12": "Hasta 12 h",
+      "none": "Ninguna",
+      "days30": "30 días"
     },
+    "footnotes": {
+      "1": "Subdominio Manpe con el formato tunegocio.manpestudio.com.br, incluido sin costo adicional. Para usar un dominio propio, elige el plan Profesional o superior.",
+      "2": "{domainClause} Manpe actúa como contacto técnico del dominio (en Brasil, ante Registro.br) y se ocupa de la renovación anual y de la configuración del DNS."
+    },
+    "disclaimer": "Las funcionalidades extra, integraciones complejas o herramientas de terceros pasarán por un análisis de alcance (Discovery) y podrán sumar un adicional a la cuota mensual. Las herramientas de pago solicitadas por el cliente pueden ser contratadas y gestionadas directamente por él o gestionadas por Manpe, con el correspondiente aumento en la cuota.",
     "faqTitle": "Preguntas frecuentes",
     "faq": {
-      "deadline": {
-        "q": "¿Cuánto tarda un proyecto?",
-        "a": "Depende del alcance: los sitios suelen tardar de 2 a 4 semanas y los sistemas de 6 a 12. El cronograma detallado va en la propuesta."
-      },
       "payment": {
         "q": "¿Cómo funciona el pago?",
-        "a": "Normalmente 50% al aprobar y 50% en la entrega, por transferencia, Pix o tarjeta. Los proyectos grandes pueden dividirse por etapas."
-      },
-      "ownership": {
-        "q": "¿El código es mío?",
-        "a": "Sí. Al final, el código fuente, los accesos y la documentación son 100% tuyos."
-      },
-      "scope": {
-        "q": "¿Y si el alcance cambia a mitad de camino?",
-        "a": "Los cambios son bienvenidos: evaluamos el impacto en plazo y costo y lo registramos todo antes de seguir."
-      },
-      "maintenance": {
-        "q": "¿Ofreces mantenimiento después de la entrega?",
-        "a": "Sí. Además de la garantía de corrección, puedes contratar la Alianza continua o soporte puntual."
+        "a": "Los planes son mensuales y prepagos: la cuota se cobra al inicio de cada ciclo, mediante Pix, boleto o tarjeta. No hay cuota de alta."
       },
       "cancel": {
-        "q": "¿Puedo cancelar la Alianza continua?",
-        "a": "Sí, con aviso previo de 30 días y sin penalización. Conservas todo lo entregado."
+        "q": "¿Cómo funciona la cancelación?",
+        "a": "La cancelación solo requiere un aviso previo de 30 días, sin penalización. Toda la base de datos y la información de tu negocio se exportan y se te entregan, porque los datos son tuyos, aunque el código de la plataforma es licenciado. {domainClause}"
       },
-      "lgpd": {
-        "q": "¿Cómo se tratan los datos sensibles y de salud?",
-        "a": "Con atención a la LGPD: control de acceso, cifrado, registro de auditoría y recolección mínima de datos. Nunca uso datos reales en demostraciones."
+      "domain": {
+        "q": "¿El dominio queda a mi nombre?",
+        "a": "Sí. El dominio se registra a tu nombre (CPF o CNPJ, en Brasil), con Manpe como contacto técnico — nos ocupamos de la renovación anual y de la configuración del DNS. {domainClause}"
       },
       "invoice": {
-        "q": "¿Emites factura?",
-        "a": "Sí, todo proyecto tiene contrato y factura."
+        "q": "¿Emiten factura?",
+        "a": "Actualmente trabajo como profesional autónomo. El servicio se factura mediante un recibo de prestación de servicios (persona física) y se formaliza con un contrato con validez jurídica."
+      },
+      "security": {
+        "q": "¿Cómo se trata la seguridad de los datos (LGPD)?",
+        "a": "La seguridad es un pilar. Implementamos ofuscación, cifrado y buenas prácticas de arquitectura para que los datos se transmitan y almacenen de acuerdo con las directrices de protección de datos."
+      },
+      "scope": {
+        "q": "¿Y si necesito algo fuera del plan?",
+        "a": "Los cambios y funcionalidades extra pasan por un análisis de alcance (Discovery). Cuando es necesario, el ajuste se suma como un adicional a la cuota mensual — siempre acordado contigo antes."
+      },
+      "maintenance": {
+        "q": "¿El mantenimiento está incluido?",
+        "a": "Sí. El mantenimiento bajo demanda está incluido en todos los planes; lo que cambia es la prioridad en los cambios y el tiempo de respuesta, de hasta 48 h a hasta 12 h, según el plan."
+      },
+      "ownership": {
+        "q": "¿De quién son el código y los datos?",
+        "a": "El código de la plataforma se licencia para su uso mientras el plan esté activo. Los datos de tu negocio y el dominio son tuyos — en caso de cancelación, exportamos y te entregamos toda la información."
       }
     },
-    "from": "desde",
-    "items": {
-      "landing": {
-        "name": "Sitio / Landing",
-        "audience": "Para quien necesita presencia profesional y captar contactos.",
-        "features": [
-          "Hasta 5 páginas responsive",
-          "Diseño a medida para la marca",
-          "SEO técnico y rendimiento",
-          "Formulario y WhatsApp integrados",
-          "Publicación y dominio configurados"
-        ],
-        "cta": "Quiero un sitio"
-      },
-      "sistema": {
-        "name": "Sistema a medida",
-        "audience": "Para empresas que necesitan automatizar procesos y gestión.",
-        "features": [
-          "Login, perfiles y permisos",
-          "Panel administrativo",
-          "Integraciones (APIs, TISS, pagos)",
-          "Informes y dashboards",
-          "Pruebas automatizadas y documentación"
-        ],
-        "cta": "Quiero un sistema"
-      },
-      "parceria": {
-        "name": "Alianza continua",
-        "audience": "Para productos en evolución con un socio técnico dedicado.",
-        "features": [
-          "Horas mensuales para mejoras",
-          "Prioridad y respuesta en 8 h",
-          "Monitoreo y actualizaciones",
-          "Reunión mensual de planificación"
-        ],
-        "cta": "Quiero una alianza"
-      },
-      "sob-consulta": {
-        "name": "A consultar",
-        "audience": "Para alcances complejos, integraciones críticas o equipos.",
-        "features": [
-          "Diagnóstico y arquitectura",
-          "Cronograma por etapas",
-          "SLA y soporte dedicados",
-          "Condiciones comerciales flexibles"
-        ],
-        "cta": "Agendar conversación"
+    "cta": "Quiero este plan",
+    "region": {
+      "label": "Región y moneda",
+      "names": {
+        "BR": "Brasil",
+        "US": "Estados Unidos",
+        "EU": "Europa",
+        "MX": "México",
+        "CL": "Chile",
+        "CO": "Colombia",
+        "AR": "Argentina",
+        "LATAM": "Latinoamérica"
       }
-    }
+    },
+    "domainClause": "El dominio es propiedad del cliente. Si la suscripción se cancela antes de los 12 meses, se cobrará una tarifa de transferencia y costos de registro de {fee} para la liberación administrativa y técnica del dominio hacia otro alojamiento."
   },
   "contact": {
     "title": "Contacto",
@@ -347,11 +483,11 @@
     "openNow": "Abrir ahora",
     "cancel": "Cancelar",
     "preparing": "Preparando la conversación",
-    "whatsappText": "¡Hola, Miguel! Vi tu portafolio y me gustaría conversar sobre un proyecto.",
-    "emailSubject": "Contacto desde el portafolio",
-    "planMessage": "¡Hola, Miguel! Me interesa el plan \"{plan}\" ({billing}, valores en {currency}). ¿Podemos conversar?"
+    "whatsappText": "¡Hola, Miguel! Vi el sitio de Manpe y me gustaría hablar sobre un proyecto.",
+    "emailSubject": "Contacto desde el portafolio — Manpe",
+    "planMessage": "¡Hola, Miguel! Me interesa el plan {category} — {plan} ({price}/mes). ¿Podemos hablar?"
   },
   "footer": {
-    "text": "Tu Nombre. Todos los derechos reservados."
+    "text": "Manpe · Miguel Ribeiro"
   }
 }

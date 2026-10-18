@@ -1,11 +1,12 @@
-# Portfólio — orientado a dados (PT/ES/EN)
+# Manpe — Portfólio de Miguel Ribeiro (PT/ES/EN)
 
 Portfólio profissional em **Vite + React**, com renderização **orientada a dados**: todo o conteúdo
 (textos, projetos, planos, ordem das seções, tema) vive em arquivos JSON. Adicionar, remover,
 traduzir ou reordenar conteúdo **não exige mexer em componentes**.
 
-> ⚠️ Todo o conteúdo atual é **exemplo/placeholder** ("Seu Nome", "Projeto Exemplo", preços zerados).
-> Substitua antes de publicar oficialmente.
+> **v2 (MVP)**: conteúdo real da marca **Manpe** (Miguel Ribeiro — Líder Técnico & Desenvolvedor Full Stack),
+> bento de diferenciais, projetos em trilho horizontal, "Como funciona", planos mensais por região e
+> seletor de idioma próprio. Veja a seção [v2](#v2--manpe-mvp).
 
 ---
 
@@ -66,16 +67,17 @@ site.json ──► sections[] (ordem + enabled)
 
 ### Decisão: onde ficam os textos?
 **Separação estrutura × texto.**
-- `projects.json` e `site.json → plans` guardam só o que **não se traduz** (id, tags, status,
-  imagens, links, preços por moeda, tipo de CTA).
+- `projects.json`, `site.json → plansConfig` e `site.json → pricing` guardam só o que **não se traduz**
+  (id, tags, status, imagens, links, preços por região, tipo de CTA).
 - Todos os textos ficam em `locales/<idioma>.json`, **indexados pelo id** (`projects.items.<id>`,
-  `plans.items.<id>`).
+  `plans.categories.<cat>.plans.<id>`).
 
 Vantagem: para traduzir o site inteiro, basta um arquivo por idioma; o validador acusa o que faltar.
 
 ### Seções disponíveis (registry)
-`hero`, `stats` (alias `counters`), `about`, `capabilities` (alias `skills`), `marquee`, `projects`, `experience` (alias `timeline`),
-`testimonials` (desativada por padrão), `plans` (alias `pricing`), `contact`, `footer`.
+`hero`, `bento` (aliases `stats`, `counters`, `capabilities`, `skills`), `about`, `marquee`, `projects`,
+`experience` (alias `timeline`), `testimonials` (desativada), `process` (alias `steps`), `plans` (alias `pricing`),
+`contact`, `footer`.
 
 ---
 
@@ -92,11 +94,12 @@ portfolio/
 │  │  ├─ site.json                # config compartilhada: tema, seções, contatos, planos, idiomas
 │  │  ├─ projects.json            # projetos (dados estruturais)
 │  │  └─ locales/{pt-BR,es,en}.json
-│  ├─ engine/                     # registry, PageRenderer, loader, validação, tema, efeitos, tipos
+│  ├─ engine/                     # registry, PageRenderer, loader, validação, tema, efeitos, tipos, region (preços)
 │  ├─ i18n/                       # provider + hook useI18n
-│  ├─ components/                 # Header, Section, Loader, SmartImage, Segmented, ChannelOverlay/Link, PlansCompare…
+│  ├─ components/                 # Header, Wordmark, ListSelect/LanguageSelect/RegionSelect, Flag, ThemeToggle,
+│  │                              # Section, Loader, Counter, Icon, SmartImage, Segmented, ChannelOverlay/Link, PlansCompare…
 │  ├─ sections/                   # um componente por tipo de seção
-│  ├─ hooks/                      # useCardFx, useMagnetic, usePlanCta
+│  ├─ hooks/                      # useCardFx, useMagnetic, usePlanCta, useMediaQuery
 │  ├─ App.jsx  main.jsx  styles.css
 ├─ index.html  vite.config.js  eslint.config.js
 └─ LICENSE  .editorconfig  .gitignore
@@ -107,64 +110,92 @@ portfolio/
 ## 5. Como editar o conteúdo (passo a passo)
 
 ### 5.1 Adicionar um projeto
-1. Crie a pasta `public/projects/meu-projeto/`.
-2. Adicione `cover.webp` e `gallery-1.webp`, `gallery-2.webp`… (veja o README dentro de cada pasta).
-3. Em `src/data/projects.json`, adicione:
+1. Crie a pasta `public/projects/meu-projeto/` com `cover.webp` (e, se quiser, `gallery-1.webp`…).
+2. Em `src/data/projects.json`, adicione:
    ```json
    {
      "id": "meu-projeto",
      "tags": ["React", "Node.js"],
      "status": "production",
+     "confidential": false,
      "cover": "cover.webp",
-     "gallery": ["gallery-1.webp", "gallery-2.webp"],
+     "gallery": ["gallery-1.webp"],
      "links": { "demo": "https://...", "repo": "" },
      "testDrive": { "enabled": false, "url": "" }
    }
    ```
-   `status`: `production` | `in-progress` | `archived`. Links vazios não são exibidos.
-4. Em **cada** `locales/*.json`, em `projects.items`, adicione:
-   ```json
-   "meu-projeto": { "title": "...", "description": "...", "alt": "Descrição da imagem" }
-   ```
-5. `npm run dev` e confira o console (o validador aponta o que faltar).
+   - `status`: `production` | `in-progress` | `archived` | `internal` ("Em produção · Uso corporativo") | `completed` ("Concluído").
+   - `confidential: true` mostra o selo **Confidencial** (use sem links).
+   - Links vazios não aparecem; com `gallery` vazia a capa não abre o lightbox.
+   - A numeração "01", "02" é automática (ordem do array). O card final "Seu projeto aqui" é sempre o último.
+3. Em **cada** `locales/*.json → projects.items`: `"meu-projeto": { "title", "description", "alt" }`.
+   Tags traduzíveis: `projects.tags.<Tag>` (ex.: `"Arquitetura": "Architecture"`); sem entrada, a tag aparece como está.
 
-### 5.2 Adicionar/trocar imagens
-- Formato WebP, ~1200×750 (16:10), até ~200 KB.
-- Nomes: `cover.webp`, `gallery-1.webp`, `gallery-2.webp`…
-- Atualize `cover`/`gallery` no `projects.json`. Os `.svg` atuais são placeholders.
+### 5.2 Trocar as capas pelas prints reais
+As capas atuais (`public/projects/sinapse/cover.svg`, `public/projects/bankup/cover.svg`) são **ilustrações
+abstratas** — os sistemas são corporativos e não expõem telas. Para usar prints reais:
+1. Capture em 1600×1000 ou 1200×750 (16:10), **com dados fictícios** (nunca dados de clientes/colaboradores).
+2. Exporte em WebP (~80% de qualidade, até ~200 KB): `cwebp -q 80 print.png -o cover.webp`.
+3. Salve em `public/projects/<id>/cover.webp` (+ `gallery-1.webp`, `gallery-2.webp`… se quiser galeria).
+4. Atualize `cover` / `gallery` no `projects.json` e revise o `alt` nos 3 idiomas.
+A capa fica escurecida/dessaturada por padrão e ganha cor no hover/foco — não é preciso editar a imagem.
 
-### 5.3 Planos (cards, toggle, comparativo e FAQ)
-**Cards** — `site.json → plans` (formato antigo continua válido: `prices` = preço por projeto):
-```json
-{ "id": "sistema", "highlight": true, "inherits": true,
-  "prices": { "BRL": 12000, "USD": 2800, "EUR": 2600 },
-  "pricesMonthly": { "BRL": 1200, "USD": 280, "EUR": 260 },
-  "cta": { "type": "whatsapp" } }
-```
-- `highlight`: card "Recomendado" (borda em gradiente, scale 1.02, CTA de destaque).
-- `inherits`: mostra "Tudo do anterior +" antes dos itens.
-- `prices`/`pricesMonthly`: preço "a partir de" por moeda. Se o modo escolhido não existir, mostra o
-  outro com o período certo ("cobrança mensal"). Sem nenhum dos dois → "Proposta sob medida".
-- `cta.type`: `whatsapp` (abre o overlay e depois o WhatsApp com plano + modo + moeda) | `email` | `url` (com `href`).
-- Textos em `locales/*.json → plans.items.<id>`: `name`, `audience`, `features[]`, `cta`.
-- A moeda vem de `currency` em cada idioma (pt-BR → BRL, es/en → USD); a nota "Valores em …" é automática.
+### 5.3 Planos (abas, cards, comparativo, notas, FAQ)
+Todos os planos são **mensais, pré-pagos, sem taxa de adesão**. Estrutura em `site.json → plansConfig`:
 
-**`site.json → plansConfig`**
 | Chave | O que faz |
 |---|---|
-| `billing` | `{ "default": "project", "options": ["project", "monthly"] }` — toggle Projeto/Mensal |
-| `examplePrices` | `true` exibe "Valores de exemplo — a definir." (**desligue quando os preços forem reais**) |
+| `categories[]` | abas (`sites`, `systems`): `{ id, priceKey, plans[], compare.groups[] }` |
+| `categories[].plans[]` | `{ id, highlight, inherits, cta? }` — `highlight` = "Recomendado"; `inherits` = "Tudo do anterior +" |
+| `compare.groups[]` | `{ id, rows: [{ id, values: { <planoId>: true \| false \| "price" \| "v:<id>" }, footnotes?: [1,2] }] }` |
+| `customBand` | faixa "Sob Medida" (`cta.type`: whatsapp/email/url) |
 | `trust` | ids da faixa de garantias → `plans.trust.<id>` |
-| `compare.categories[]` | `{ id, rows: [{ id, values: { <planoId>: true \| false \| "v:<id>" } }] }` → rótulos em `plans.categories.<id>`, `plans.rows.<id>.{label,tip}`, textos em `plans.values.<id>` |
+| `footnotes` | notas ¹ ² exibidas sob a tabela → `plans.footnotes.<n>` |
+| `disclaimer` | `true` exibe `plans.disclaimer` sob a tabela |
 | `faq` | ids das perguntas → `plans.faq.<id>.{q,a}` |
 
-Valores na tabela: `true` = check, `false` = "—", `"v:w2_4"` = `plans.values.w2_4` (traduzido).
-O validador (dev) avisa sobre plano inexistente na tabela, chaves `v:` sem tradução, etc.
+Textos: `plans.categories.<cat>.{label, plans.<id>.{name, audience, features[]}}`, `plans.groups.<id>`,
+`plans.rows.<id>.{label,tip}`, `plans.values.<id>`. Na tabela, `"price"` mostra a mensalidade da região.
+O CTA abre o overlay e depois o WhatsApp com `contact.planMessage`
+(`{category}`, `{plan}`, `{price}` = preço regional formatado).
+
+### 5.3.1 Preços por região (`site.json → pricing`)
+O preço **não depende do idioma** da interface, e sim da **região**:
+1. escolha manual no seletor "Brasil · BRL" da seção Planos (salva em `localStorage` → `portfolio.region`);
+2. senão, a primeira tag de `navigator.languages` cujo país esteja em `countries` (ex.: `es-MX` → MX, `en-GB` → EU, `es-PE` → LATAM);
+3. senão, o idioma sem região em `languages` (`pt` → BR, `en` → US, `es` → LATAM, `de`/`fr`/`it`… → EU);
+4. senão, `defaultRegion` (US).
+
+```json
+{ "id": "MX", "currency": "MXN", "locale": "es-MX", "flag": "MX",
+  "countries": ["MX"], "languages": [],
+  "sites": { "essencial": 499, "profissional": 999, "premium": 1899, "premiumPainel": 2999 },
+  "sistemas": { "essencial": 2499, "profissional": 4499, "premium": 8499 },
+  "domainFee": { "amount": 500, "currency": "MXN" } }
+```
+- Formatação: `Intl.NumberFormat(locale, { style: 'currency', currency })`, sem casas decimais.
+- `domainFee` = taxa de transferência/registro do domínio em cancelamentos antes de 12 meses; entra no
+  `{fee}` de `plans.domainClause` (nota ² e FAQ de cancelamento/domínio).
+- Nome da região em `plans.region.names.<id>` (3 idiomas). Regiões fora do BRL mostram `plans.currencyNote`.
+- **Argentina**: cobrada em USD (inflação). A tabela em ARS fica em `alternatives` com `enabled: false`;
+  para ativar, copie os valores para `sites`/`sistemas`/`domainFee` e troque `currency` para `ARS`.
+- Nova região: adicione o objeto em `pricing.regions`, o nome em `plans.region.names` e, se quiser, a bandeira em `components/Flag.jsx`.
+
+| Região | Moeda | Sites (Ess./Prof./Prem./Prem.+Painel) | Sistemas (Ess./Prof./Prem.) | Taxa domínio |
+|---|---|---|---|---|
+| BR | BRL | 149 / 297 / 549 / 897 | 697 / 1.297 / 2.497 | 150 |
+| US | USD | 49 / 99 / 199 / 299 | 249 / 499 / 899 | 50 |
+| EU | EUR | 45 / 89 / 179 / 279 | 229 / 449 / 849 | 50 |
+| MX | MXN | 499 / 999 / 1.899 / 2.999 | 2.499 / 4.499 / 8.499 | 500 |
+| CL | CLP | 24.990 / 49.990 / 89.990 / 149.990 | 119.990 / 229.990 / 449.990 | 25.000 |
+| CO | COP | 99.900 / 199.900 / 389.900 / 619.900 | 489.900 / 899.900 / 1.749.900 | 100.000 |
+| AR | USD | 49 / 99 / 199 / 299 | 249 / 499 / 899 | 50 (alt. ARS 30.000, desativada) |
+| LATAM | USD | 49 / 99 / 199 / 299 | 249 / 499 / 899 | 50 |
 
 ### 5.4 Adicionar ou traduzir um idioma
 1. Copie `locales/pt-BR.json` para `locales/fr.json` e traduza.
 2. Em `src/engine/content.js`: `import fr from '../data/locales/fr.json'` e inclua em `messages`.
-3. Em `site.json → locales`: `{ "code": "fr", "label": "FR", "name": "Français", "flag": "🇫🇷" }`.
+3. Em `site.json → locales`: `{ "code": "fr", "label": "FR", "name": "Français" }` e, para a bandeira, um SVG em `components/Flag.jsx`.
 
 ### 5.5 Reordenar / ativar / desativar seções
 Edite a ordem do array `site.json → sections` ou altere `enabled`. Ex.: para mostrar depoimentos,
@@ -223,14 +254,14 @@ Todas as combinações de texto foram checadas para contraste **WCAG AA** nos do
 ### 6.3 Efeitos (`effects`)
 | Chave | Efeito |
 |---|---|
-| `loader` | monograma `brand.monogram` desenhado (stroke) + varredura + fade, ≤700ms, 1ª visita da sessão |
+| `loader` | wordmark Manpe: "M" desenhado (stroke) + revelação do texto + varredura + fade, ≤700ms, 1ª visita da sessão |
 | `heroMesh` / `ambientBlobs` | blobs do hero / movimento lento 30–45s (pausa com aba oculta ou hero fora da tela) |
 | `grain` / `bgGrid` | ruído SVG (~4%) e grade no hero |
 | `headlineReveal` | título palavra por palavra com máscara (~40ms) + sublinhado em gradiente que cresce |
 | `scrollReveal` | fade + 16px ao rolar (CSS scroll-driven com `@supports`; fallback IntersectionObserver) |
 | `skeleton` | shimmer enquanto imagens carregam (aspect-ratio fixo, sem CLS) |
-| `parallax` | camadas do hero (blobs, mockup e cards flutuantes; 30–60px) |
-| `magnetic` | CTA principal "magnético" (máx. 4px) |
+| `parallax` | camadas do hero (malha e texto; 40–80px) |
+| `magnetic` | CTAs "magnéticos" (Ver projetos, Fale comigo, planos; máx. 7px) |
 | `cardTilt` | inclinação 3D dos cards (máx. 6deg) — **desligado por padrão** |
 | `cursorSpotlight` | brilho + borda em gradiente que seguem o cursor nos cards |
 | `marquee` / `counters` | faixa de tecnologias / contagem animada |
@@ -238,24 +269,28 @@ Todas as combinações de texto foram checadas para contraste **WCAG AA** nos do
 | `smoothScroll` | Lenis (carregado só se ligado) — **desligado por padrão** |
 
 Micro-interações fixas: gradiente que desliza nos botões + seta que avança, checks da tabela que se
-redesenham no hover da linha, pílula deslizante nos toggles (idioma, Projeto/Mensal, abas).
+redesenham no hover da linha, pílula deslizante nas abas (Sites/Sistemas, comparativo mobile).
 
 **Movimento reduzido** (`prefers-reduced-motion`): `MotionConfig reducedMotion="user"` + CSS — sem loader,
 blobs estáticos, skeleton estático, só fades simples, overlays de contato abrem o link na hora.
 
 ### 6.4 Contadores e tecnologias
-- `site.json → stats`: `{ "id", "value", "decimals?", "prefix?", "suffix?", "example": true }`;
-  rótulos em `locales/*.json → stats.items.<id>`. Com `example: true` aparece o aviso `stats.note`.
-  **Os números atuais são de exemplo.**
+- `site.json → stats`: `{ "id", "value", "decimals?", "prefix?", "suffix?" }`; rótulos em `stats.items.<id>`.
+  O separador decimal segue o idioma (99,9% / 99.9%).
+- `site.json → capabilities`: ids → `capabilities.items.<id>.{name, description}`.
+- `site.json → bento.items`: `{ "ref": "stat:<id>" | "cap:<id>", "size": "sm" | "md" | "xl", "icon": "shield" }`
+  (ícones em `components/Icon.jsx`). `xl` = caixa grande com brilho animado.
 - `site.json → marquee.items`: nomes de tecnologias (não traduzidos); título em `marquee.title`.
 - Título do hero: `hero.headline`; o trecho entre `[[ ]]` recebe o gradiente.
-- Mockup do painel (hero): textos em `hero.mockup` — ilustrativo, sem dados reais.
+- Marca: `site.json → brand.name` + `components/Wordmark.jsx` (header, loader e rodapé) e `public/favicon.svg`.
+  Para trocar o logo, altere só esses dois arquivos.
 
 ---
 
 ## 7. Estratégia de i18n
 
-- Seletor **PT / ES / EN** sempre visível no cabeçalho (`aria-pressed` indica o ativo).
+- Seletor de idioma próprio no cabeçalho (bandeira SVG + código): listbox ARIA com setas, Enter, Esc,
+  typeahead, clique fora e retorno de foco. O mesmo componente (`ListSelect`) é usado no seletor de região.
 - Ordem de detecção: `?lang=` na URL → `localStorage` → idioma do navegador → `defaultLocale`.
 - Ao trocar, o idioma é salvo e a URL é atualizada com `?lang=` (link compartilhável).
 - SEO por idioma: `<html lang>`, `title`, `description` e `og:*` vêm de `meta` em cada locale.
@@ -278,6 +313,25 @@ planos, contato, validação de conteúdo, workflow de deploy.
 - **Fase C** ✅ paleta "Rosé & Wine", nova tipografia, loader com monograma, skeletons, blobs ambientes,
   título animado, micro-interações, títulos de seção sem duplicação, planos comparativos (toggle,
   tabela, garantias, FAQ) e contatos reais com overlay de abertura.
+
+### v2 — Manpe (MVP) ✅
+- **Identidade**: marca Manpe (wordmark SVG com "M" desenhado no loader, favicon M), títulos/meta novos.
+- **Conteúdo real** nos 3 idiomas: hero, sobre, diferenciais, experiência, projetos Sinapse e Bankup; sem "(exemplo)".
+- **Hero** mínimo e imersivo (malha animada, título gigante com destaque em brilho, CTAs magnéticos); mockup removido.
+- **Bento** unindo números (contadores animados) e diferenciais.
+- **Projetos** em trilho horizontal fixo no desktop (scroll vertical → horizontal) e swipe com scroll-snap no mobile/
+  movimento reduzido; capa dessaturada que ganha cor no hover, tags que sobem em sequência, card "Seu projeto aqui".
+- **Como funciona**: stepper de 4 etapas (sem prazos), avanço automático lento e pausável.
+- **Planos** mensais pré-pagos com abas Sites/Sistemas, faixa Sob Medida, tabelas por categoria com notas ¹ ²,
+  aviso de escopo, garantias e **preços por região** (BRL, USD, EUR, MXN, CLP, COP).
+- **Cabeçalho**: seletor de idioma em dropdown, botão de tema com morph sol/lua centralizado.
+
+### Próximos passos
+- Prints reais (WebP, dados fictícios) no lugar das capas abstratas; OG image por idioma.
+- Depoimentos reais (ativar `testimonials`).
+- Domínio próprio (CNAME), `sitemap.xml`, `robots.txt`.
+- Checkout/assinatura (Pix, boleto, cartão internacional) e página de termos/contrato.
+- Estudos de caso detalhados (Sinapse, Bankup).
 
 ### Fase 2 — Conteúdo real + imagens + domínio
 - Textos reais (bio, competências, experiência) nos 3 idiomas.
@@ -328,13 +382,14 @@ Importe o repositório; framework Vite; build `npm run build`; output `dist`. N�
 
 ## 11. Checklist de TODOs
 
-- [ ] Substituir "Seu Nome" e todos os textos de exemplo (3 idiomas)
+- [x] Substituir todos os textos de exemplo (3 idiomas) — v2
 - [x] Preencher `site.json → contact` com dados reais
-- [ ] Adicionar projetos reais e imagens WebP; remover os projetos de exemplo
-- [ ] Definir planos e preços reais e desligar `plansConfig.examplePrices`
+- [x] Adicionar projetos reais; remover os projetos de exemplo
+- [ ] Trocar as capas SVG por prints reais em WebP
+- [x] Definir planos e preços reais por região
 - [ ] Ativar GitHub Pages (fonte: GitHub Actions) ou conectar Vercel
 - [ ] Domínio próprio, OG image, sitemap e robots
-- [ ] Substituir os números de exemplo em `site.json → stats`
+- [x] Números reais em `site.json → stats`
 - [ ] Revisar acessibilidade (Lighthouse) e performance
 - [ ] Planejar Fase 3 (Test Drive)
 

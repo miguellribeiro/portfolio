@@ -16,7 +16,7 @@ export default function App() {
           <a className="skip-link" href="#main">Skip / Pular</a>
           <Header mode={mode} onToggleTheme={toggleMode} />
           <PageRenderer />
-          <Loader monogram={site.brand?.monogram} />
+          <Loader name={site.brand?.name} />
         </ChannelProvider>
       </EffectsProvider>
     </I18nProvider>
