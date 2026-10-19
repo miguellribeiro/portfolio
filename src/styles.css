@@ -226,42 +226,125 @@ strong, b { font-weight: 500; }
 .tilt { transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform .15s ease-out, border-color .3s, box-shadow .3s; }
 
 
-.about__wrap { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; align-items: center; }
-.about__shape { position: relative; max-width: 320px; width: 100%; justify-self: center; }
+/* Sobre: texto + sistema solar grande, parcialmente fora do quadro */
+.about { overflow: hidden; }
+.about__wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 1.5rem 2rem;
+  align-items: center;
+  position: relative;
+}
+.about__shape {
+  position: relative;
+  width: 100%;
+  max-width: none;
+  aspect-ratio: 1;
+  justify-self: stretch;
+  /* Janela de recorte: o .solar é maior e deslocado para “vazar” à direita/baixo */
+  overflow: hidden;
+  pointer-events: none;
+  min-height: 280px;
+}
 
 /* ---------- Sistema solar (Sobre) ----------
-   Tudo em cqw (relativo ao próprio quadrado). Translação = rotação do braço;
-   rotação própria = animação do planeta. Ângulo inicial via `rotate` (fica mesmo sem animação). */
-.solar { --T: 16s; position: relative; aspect-ratio: 1; width: 100%; container-type: inline-size; contain: layout paint style; }
+   Órbita = rotação do braço. O .solar__body contra-gira no mesmo --p para a
+   orientação do planeta (anel/mancha/lua) permanecer estável — sem spin axial.
+   Escala > 100% + offset = sistema imersivo cortado pelo frame. */
+.solar {
+  --T: 18s;
+  --scale: 1.72;
+  position: absolute;
+  width: calc(100% * var(--scale));
+  aspect-ratio: 1;
+  /* Empurra o centro para a direita/baixo: órbitas/sol saem do quadro */
+  left: 18%;
+  top: 8%;
+  container-type: inline-size;
+  contain: layout paint style;
+}
 .solar > * { position: absolute; }
 .solar__orbit { inset: var(--in); border-radius: 50%; border: 1px dashed color-mix(in srgb, var(--c-primary) 34%, transparent); }
 .solar__orbit--1 { --in: 30%; }
 .solar__orbit--2 { --in: 18.5%; border-style: solid; border-color: color-mix(in srgb, var(--c-primary) 16%, transparent); }
 .solar__orbit--3 { --in: 8%; }
-.solar__sun { left: 50%; top: 50%; width: 15cqw; height: 15cqw; margin: -7.5cqw 0 0 -7.5cqw; border-radius: 50%;
+.solar__sun {
+  left: 50%; top: 50%; width: 16cqw; height: 16cqw; margin: -8cqw 0 0 -8cqw; border-radius: 50%;
   background: radial-gradient(circle at 35% 30%, #fff8 0, transparent 38%), var(--grad);
-  box-shadow: 0 0 4cqw color-mix(in srgb, var(--c-primary) 55%, transparent), 0 0 12cqw color-mix(in srgb, var(--c-secondary) 30%, transparent); }
-.solar__sun::before { content: ''; position: absolute; inset: -60%; border-radius: 50%; background: radial-gradient(closest-side, color-mix(in srgb, var(--c-primary) 30%, transparent), transparent); animation: sun-breathe calc(var(--T) / 2) ease-in-out infinite alternate; }
-.solar__arm { inset: var(--in); border-radius: 50%; rotate: var(--a0); animation: spin var(--p) linear infinite; }
-.solar__arm--1 { --in: 30%; --p: var(--T); --a0: 40deg; }
-.solar__arm--2 { --in: 18.5%; --p: calc(var(--T) * 2); --a0: 200deg; }
-.solar__arm--3 { --in: 8%; --p: calc(var(--T) * 3); --a0: 300deg; }
-.solar__body { position: absolute; left: 50%; top: 0; width: 0; height: 0; }
-.planet { position: absolute; left: 0; top: 0; width: var(--d); height: var(--d); margin: calc(var(--d) / -2) 0 0 calc(var(--d) / -2); border-radius: 50%; overflow: hidden; animation: spin var(--s) linear infinite; }
-.planet--1 { --d: 6cqw; --s: calc(var(--T) / 4); background: linear-gradient(140deg, var(--c-secondary), var(--c-primary)); }
-.planet--2 { --d: 9cqw; --s: calc(var(--T) / 2); background: linear-gradient(160deg, var(--c-primary), var(--c-accent)); box-shadow: 0 0 3cqw -1cqw var(--glow); }
-.planet--3 { --d: 7.5cqw; --s: calc(var(--T) / 3); overflow: visible; background: linear-gradient(130deg, var(--c-accent), color-mix(in srgb, var(--c-accent) 55%, #000)); }
+  box-shadow:
+    0 0 5cqw color-mix(in srgb, var(--c-primary) 55%, transparent),
+    0 0 14cqw color-mix(in srgb, var(--c-secondary) 30%, transparent);
+}
+.solar__sun::before {
+  content: ''; position: absolute; inset: -60%; border-radius: 50%;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--c-primary) 30%, transparent), transparent);
+  animation: sun-breathe calc(var(--T) / 2) ease-in-out infinite alternate;
+}
+.solar__arm {
+  inset: var(--in); border-radius: 50%;
+  /* --a0 via animation-delay (não misturar com property rotate + transform) */
+  animation: solar-orbit var(--p) linear infinite;
+  animation-delay: calc(var(--a0) / 360 * var(--p) * -1);
+}
+.solar__arm--1 { --in: 30%; --p: var(--T); --a0: 40; }
+.solar__arm--2 { --in: 18.5%; --p: calc(var(--T) * 2); --a0: 200; }
+.solar__arm--3 { --in: 8%; --p: calc(var(--T) * 3); --a0: 300; }
+.solar__body {
+  position: absolute; left: 50%; top: 0; width: 0; height: 0;
+  /* Contra-gira no mesmo ritmo: anel/mancha/lua estáveis, só órbita */
+  animation: solar-orbit var(--p) linear infinite reverse;
+  animation-delay: calc(var(--a0) / 360 * var(--p) * -1);
+}
+.planet {
+  position: absolute; left: 0; top: 0;
+  width: var(--d); height: var(--d);
+  margin: calc(var(--d) / -2) 0 0 calc(var(--d) / -2);
+  border-radius: 50%;
+  overflow: hidden;
+  /* Sem rotação axial */
+}
+.planet--1 { --d: 7cqw; background: linear-gradient(140deg, var(--c-secondary), var(--c-primary)); }
+.planet--2 { --d: 10cqw; background: linear-gradient(160deg, var(--c-primary), var(--c-accent)); box-shadow: 0 0 3.5cqw -1cqw var(--glow); }
+.planet--3 {
+  --d: 8.5cqw; overflow: visible;
+  background: linear-gradient(130deg, var(--c-accent), color-mix(in srgb, var(--c-accent) 55%, #000));
+}
 [data-theme='light'] .planet--3 { background: linear-gradient(130deg, var(--c-primary), var(--c-accent)); }
 .planet__spot { position: absolute; left: 18%; top: 16%; width: 30%; height: 30%; border-radius: 50%; background: rgb(255 255 255 / .6); }
 .planet__band { position: absolute; left: -10%; right: -10%; top: 56%; height: 18%; background: color-mix(in srgb, var(--c-secondary) 70%, transparent); transform: rotate(-12deg); }
-.planet__ring { position: absolute; left: -45%; right: -45%; top: 38%; height: 24%; border-radius: 50%; border: .5cqw solid color-mix(in srgb, var(--c-secondary) 85%, transparent); transform: rotate(-24deg); }
-.solar__moonarm { position: absolute; left: -8cqw; top: -8cqw; width: 16cqw; height: 16cqw; border-radius: 50%; animation: spin calc(var(--T) / 4) linear infinite reverse; }
-.moon { position: absolute; left: 50%; top: 0; width: 2.6cqw; height: 2.6cqw; margin: -1.3cqw 0 0 -1.3cqw; border-radius: 50%; background: var(--c-text); opacity: .85; }
-@keyframes spin { to { transform: rotate(1turn); } }
+.planet__ring {
+  position: absolute; left: -45%; right: -45%; top: 38%; height: 24%; border-radius: 50%;
+  border: .55cqw solid color-mix(in srgb, var(--c-secondary) 85%, transparent);
+  transform: rotate(-24deg);
+}
+/* Lua fixa em relação ao planeta (sem órbita própria — evita “spin estranho”) */
+.solar__body > .moon {
+  position: absolute; left: 7cqw; top: -2.2cqw;
+  width: 2.8cqw; height: 2.8cqw; margin: 0;
+  border-radius: 50%; background: var(--c-text); opacity: .85;
+}
+@keyframes solar-orbit { to { transform: rotate(1turn); } }
 @keyframes sun-breathe { from { transform: scale(.85); opacity: .7; } to { transform: scale(1.1); opacity: 1; } }
-.solar.is-paused *, .solar.is-paused *::before, .tab-hidden .solar *, .tab-hidden .solar *::before { animation-play-state: paused !important; }
-@media (prefers-reduced-motion: reduce) { .solar *, .solar *::before { animation: none !important; } }
-@media (max-width: 720px) { .about__wrap { grid-template-columns: 1fr; } .about__shape { max-width: 220px; } }
+.solar.is-paused *, .solar.is-paused *::before,
+.tab-hidden .solar *, .tab-hidden .solar *::before { animation-play-state: paused !important; }
+@media (prefers-reduced-motion: reduce) {
+  .solar *, .solar *::before { animation: none !important; }
+}
+@media (max-width: 900px) {
+  .about__wrap { grid-template-columns: 1fr; }
+  .about__shape {
+    max-width: 100%;
+    width: min(100%, 420px);
+    justify-self: end;
+    margin-inline-start: auto;
+    min-height: 200px;
+  }
+  .solar { --scale: 1.55; left: 22%; top: 12%; }
+}
+@media (max-width: 520px) {
+  .about__shape { width: min(100%, 280px); min-height: 160px; }
+  .solar { --scale: 1.65; left: 28%; top: 18%; }
+}
 
 /* Projetos */
 .project__links { display: flex; gap: .5rem; margin-top: auto; padding-top: .5rem; }

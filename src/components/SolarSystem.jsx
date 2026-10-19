@@ -1,9 +1,10 @@
 import { useEffect, useRef } from 'react';
 
 /**
- * Sistema solar abstrato (decorativo). Só CSS transforms: cada "braço" gira em torno
- * do sol (translação) e o planeta gira no próprio eixo (rotação). Períodos proporcionais
- * a --T (1×, 2×, 3×). Pausa fora da tela; estático com prefers-reduced-motion.
+ * Sistema solar abstrato (decorativo). Só órbita (translação): o braço gira em
+ * torno do sol; o corpo contra-gira no mesmo período para a orientação do planeta
+ * (anel, mancha, lua) ficar estável — sem rotação axial. Períodos 1× / 2× / 3×.
+ * Pausa fora da tela; estático com prefers-reduced-motion.
  */
 export default function SolarSystem() {
   const ref = useRef(null);
@@ -32,7 +33,7 @@ export default function SolarSystem() {
       <span className="solar__arm solar__arm--2">
         <span className="solar__body">
           <span className="planet planet--2"><span className="planet__band" /><span className="planet__spot" /></span>
-          <span className="solar__moonarm"><span className="moon" /></span>
+          <span className="moon" />
         </span>
       </span>
 
