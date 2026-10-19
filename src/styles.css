@@ -322,10 +322,18 @@ strong, b { font-weight: 500; }
   border: .55cqw solid color-mix(in srgb, var(--c-secondary) 85%, transparent);
   transform: rotate(-24deg);
 }
-.solar__body > .moon {
-  position: absolute; left: 7cqw; top: -2.2cqw;
-  width: 2.6cqw; height: 2.6cqw; margin: 0;
+/* Lua: único movimento local — gira em volta do planeta (origem = centro do planeta)
+   e contra-gira para manter a orientação. Período T/2 (9s) harmoniza com T/2T/3T. */
+.moon-orbit {
+  --pm: calc(var(--T) / 2);
+  position: absolute; left: 0; top: 0; width: 0; height: 0;
+  animation: solar-orbit var(--pm) linear infinite;
+}
+.moon-orbit > .moon {
+  position: absolute; left: 7.6cqw; top: 0;
+  width: 2.6cqw; height: 2.6cqw; margin: -1.3cqw 0 0 -1.3cqw;
   border-radius: 50%; background: var(--c-text); opacity: .85;
+  animation: solar-orbit var(--pm) linear infinite reverse;
 }
 @keyframes solar-orbit { to { transform: rotate(1turn); } }
 @keyframes sun-breathe { from { transform: scale(.85); opacity: .7; } to { transform: scale(1.1); opacity: 1; } }
@@ -335,23 +343,33 @@ strong, b { font-weight: 500; }
   .solar *, .solar *::before { animation: none !important; }
 }
 @media (max-width: 900px) {
+  /* Mobile: a máscara ganha uma faixa própria ABAIXO do texto (padding extra),
+     então sol/planetas nunca ficam atrás das palavras; a diagonal ainda recorta.
+     Sol menor, ancorado no canto inferior direito; bordas superior/esquerda
+     dissolvem em elipse (sem corte reto). */
+  .about { --mask-w: min(62vw, 360px); --mask-h: min(44vw, 300px); }
+  .about.section--alt,
+  [data-fx-dividers='diagonal'] .about.section--alt {
+    padding-bottom: calc(2.5rem + var(--mask-h) + var(--divider, 0px));
+  }
   .about .prose { max-width: 66ch; }
   .about__mask {
-    width: min(62vw, 360px);
+    width: var(--mask-w);
     top: auto;
-    height: min(58vw, 340px);
+    height: var(--mask-h);
     bottom: 0;
-    -webkit-mask-image: linear-gradient(to top left, #000 45%, transparent 92%);
-    mask-image: linear-gradient(to top left, #000 45%, transparent 92%);
+    -webkit-mask-image: radial-gradient(ellipse 100% 100% at 100% 100%, #000 58%, transparent 100%);
+    mask-image: radial-gradient(ellipse 100% 100% at 100% 100%, #000 58%, transparent 100%);
   }
-  .solar { width: 190%; right: -62%; bottom: -58%; }
+  .solar {
+    width: calc(var(--mask-w) * 1.7);
+    right: calc(var(--mask-w) * -0.55);
+    /* centro do sol a 30% da altura da faixa, acima da borda inferior */
+    bottom: calc(var(--mask-h) * 0.3 - var(--mask-w) * 0.85);
+  }
 }
 @media (max-width: 520px) {
-  .about__mask {
-    width: min(78vw, 280px);
-    height: min(70vw, 260px);
-  }
-  .solar { width: 195%; right: -65%; bottom: -60%; }
+  .about { --mask-w: min(78vw, 280px); --mask-h: min(54vw, 210px); }
 }
 
 /* Projetos */
