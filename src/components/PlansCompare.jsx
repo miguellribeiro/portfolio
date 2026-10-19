@@ -1,4 +1,5 @@
 import { Fragment, useId, useState } from 'react';
+import Breakable from './Breakable.jsx';
 import { useI18n } from '../i18n/context.js';
 import Check from './Check.jsx';
 import Segmented from './Segmented.jsx';
@@ -145,7 +146,7 @@ export function Footnotes({ ids }) {
   const list = ids || ['1', '2'];
   return (
     <ol className="cmp__notes small">
-      {list.map((n) => <li key={n} id={`fn-${n}`}><sup>{n}</sup> {withDomainFee(t(`plans.footnotes.${n}`), region, t)}</li>)}
+      {list.map((n) => <li key={n} id={`fn-${n}`}><sup>{n}</sup> <Breakable text={withDomainFee(t(`plans.footnotes.${n}`), region, t)} /></li>)}
     </ol>
   );
 }

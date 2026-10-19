@@ -6,6 +6,7 @@ import Section from '../components/Section.jsx';
 import Segmented from '../components/Segmented.jsx';
 import Check from '../components/Check.jsx';
 import PlansCompare from '../components/PlansCompare.jsx';
+import Breakable from '../components/Breakable.jsx';
 import { useCardFx } from '../hooks/useCardFx.js';
 import { useMagnetic } from '../hooks/useMagnetic.js';
 import { ctaProps, usePlanCta } from '../hooks/usePlanCta.js';
@@ -45,7 +46,7 @@ function PlanCard({ cat, p, i }) {
       <p className="plan__note mono">{t('plans.priceNote')}</p>
       {p.inherits && <p className="plan__inherits mono">{t('plans.everything')}</p>}
       <ul className="plan__features">
-        {text.features.map((f) => <li key={f}><Check />{f}</li>)}
+        {text.features.map((f) => <li key={f}><Check /><span><Breakable text={f} /></span></li>)}
       </ul>
       <a className={`btn ${p.highlight ? 'btn--highlight' : 'btn--ghost'}`} {...cta(cat, p)} {...magnetic}>
         {t('plans.cta')} <span className="btn__arrow" aria-hidden="true">→</span>
@@ -125,7 +126,7 @@ export default function Plans({ id }) {
             {c.faq.map((k, i) => (
               <details key={k} className="faq__item reveal" style={{ '--i': i % 4 }}>
                 <summary>{t(`plans.faq.${k}.q`)}<span className="faq__icon" aria-hidden="true" /></summary>
-                <p>{withDomainFee(t(`plans.faq.${k}.a`), region, t)}</p>
+                <p><Breakable text={withDomainFee(t(`plans.faq.${k}.a`), region, t)} /></p>
               </details>
             ))}
           </div>

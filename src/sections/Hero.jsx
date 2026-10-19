@@ -8,13 +8,23 @@ import { ChannelAnchor } from '../components/ChannelLink.jsx';
 import { useMagnetic } from '../hooks/useMagnetic.js';
 
 /**
- * "Texto [[destaque]] texto": cada palavra entra com máscara (stagger curto, ~30ms;
- * o texto está sempre no DOM para SEO). O destaque ganha cor contrastante + brilho sutil.
+ * "Texto [[destaque]] texto": cada palavra entra com máscara (stagger curto;
+ * o texto está sempre no DOM para SEO). O destaque (Instrument Serif itálico +
+ * gradiente) NÃO usa overflow:hidden — o overhang do itálico seria clipado.
  */
 function Headline({ text }) {
   let n = 0;
   const word = (w, key) => (
     <span key={key} className="word"><span className="word__in" style={{ '--w': n++ }}>{w}</span></span>
+  );
+  // Letter-spacing em ZWSP expande a content-box (background-clip:text no Chrome
+  // só pinta nela; padding CSS não cobre o overhang do Instrument Serif itálico).
+  const hlWord = (w, key) => (
+    <span key={key} className="hl-word" style={{ '--w': n++ }}>
+      <span className="hl-word__gap" aria-hidden="true">{'\u200B'}</span>
+      {w}
+      <span className="hl-word__gap" aria-hidden="true">{'\u200B'}</span>
+    </span>
   );
   const parts = text.split(/\[\[(.+?)\]\]/);
   const out = [];
@@ -26,10 +36,12 @@ function Headline({ text }) {
       const punct = (next.match(/^[^\s\w\u00C0-\u024F]+/) || [''])[0];
       if (punct) parts[i + 1] = next.slice(punct.length);
       const words = part.split(/\s+/).filter(Boolean);
-      const body = words.map((w, j) => <Fragment key={j}>{j > 0 && ' '}{word(w, `w${j}`)}</Fragment>);
+      const body = words.map((w, j) => <Fragment key={j}>{j > 0 && ' '}{hlWord(w, `w${j}`)}</Fragment>);
       out.push(
         <span key={i} className="hl-wrap">
-          <span className="hl" style={{ '--hl': n + words.length }}><span className="hl__text">{body}</span></span>
+          <span className="hl" style={{ '--hl': n }}>
+            <span className="hl__text">{body}</span>
+          </span>
           {punct && word(punct, 'p')}
         </span>,
       );
