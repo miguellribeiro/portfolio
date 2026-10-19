@@ -226,40 +226,51 @@ strong, b { font-weight: 500; }
 .tilt { transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform .15s ease-out, border-color .3s, box-shadow .3s; }
 
 
-/* Sobre: texto + sistema solar grande, parcialmente fora do quadro */
-.about { overflow: hidden; }
-.about__wrap {
-  display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-  gap: 1.5rem 2rem;
-  align-items: center;
+/* Sobre: texto fluindo; solar como máscara no canto da seção (clipado nela) */
+/* Sobre: solar como máscara no canto da seção — clipado nela, sem vazar abaixo */
+.about {
   position: relative;
+  overflow: hidden; /* hard clip + section--alt clip-path = zero bleed */
+  isolation: isolate;
 }
-.about__shape {
+.about .section__inner,
+.about .section__body,
+.about .prose {
   position: relative;
-  width: 100%;
-  max-width: none;
-  aspect-ratio: 1;
-  justify-self: stretch;
-  /* Janela de recorte: o .solar é maior e deslocado para “vazar” à direita/baixo */
-  overflow: hidden;
+  z-index: 1;
+}
+/* Texto à esquerda; máscara não compete com a leitura */
+.about .prose { max-width: min(50ch, 46%); }
+
+/* Camada decorativa: faixa direita / canto inferior-direito da SEÇÃO (não do card) */
+.about__mask {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 0;
+  width: min(52vw, 680px);
   pointer-events: none;
-  min-height: 280px;
+  overflow: hidden;
+  /* Dissolve à esquerda para não “caixote” nem cobrir o texto */
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 32%, #000 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 32%, #000 100%);
+}
+/* Com divisor diagonal, a borda inferior direita sobe --divider: encolhe a máscara */
+[data-fx-dividers='diagonal'] .about.section--alt .about__mask {
+  bottom: var(--divider);
 }
 
-/* ---------- Sistema solar (Sobre) ----------
-   Órbita = rotação do braço. O .solar__body contra-gira no mesmo --p para a
-   orientação do planeta (anel/mancha/lua) permanecer estável — sem spin axial.
-   Escala > 100% + offset = sistema imersivo cortado pelo frame. */
+/* ---------- Sistema solar ----------
+   Só órbita (braço + contra-giro do body). Sol ancorado no canto BR da máscara. */
 .solar {
   --T: 18s;
-  --scale: 1.72;
   position: absolute;
-  width: calc(100% * var(--scale));
+  width: 185%;
   aspect-ratio: 1;
-  /* Empurra o centro para a direita/baixo: órbitas/sol saem do quadro */
-  left: 18%;
-  top: 8%;
+  /* Centro do sol no canto BR: só um quarto do disco fica visível */
+  right: -62%;
+  bottom: -58%;
   container-type: inline-size;
   contain: layout paint style;
 }
@@ -269,20 +280,19 @@ strong, b { font-weight: 500; }
 .solar__orbit--2 { --in: 18.5%; border-style: solid; border-color: color-mix(in srgb, var(--c-primary) 16%, transparent); }
 .solar__orbit--3 { --in: 8%; }
 .solar__sun {
-  left: 50%; top: 50%; width: 16cqw; height: 16cqw; margin: -8cqw 0 0 -8cqw; border-radius: 50%;
+  left: 50%; top: 50%; width: 20cqw; height: 20cqw; margin: -10cqw 0 0 -10cqw; border-radius: 50%;
   background: radial-gradient(circle at 35% 30%, #fff8 0, transparent 38%), var(--grad);
   box-shadow:
-    0 0 5cqw color-mix(in srgb, var(--c-primary) 55%, transparent),
-    0 0 14cqw color-mix(in srgb, var(--c-secondary) 30%, transparent);
+    0 0 6cqw color-mix(in srgb, var(--c-primary) 55%, transparent),
+    0 0 16cqw color-mix(in srgb, var(--c-secondary) 32%, transparent);
 }
 .solar__sun::before {
-  content: ''; position: absolute; inset: -60%; border-radius: 50%;
-  background: radial-gradient(closest-side, color-mix(in srgb, var(--c-primary) 30%, transparent), transparent);
+  content: ''; position: absolute; inset: -55%; border-radius: 50%;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--c-primary) 32%, transparent), transparent);
   animation: sun-breathe calc(var(--T) / 2) ease-in-out infinite alternate;
 }
 .solar__arm {
   inset: var(--in); border-radius: 50%;
-  /* --a0 via animation-delay (não misturar com property rotate + transform) */
   animation: solar-orbit var(--p) linear infinite;
   animation-delay: calc(var(--a0) / 360 * var(--p) * -1);
 }
@@ -291,7 +301,6 @@ strong, b { font-weight: 500; }
 .solar__arm--3 { --in: 8%; --p: calc(var(--T) * 3); --a0: 300; }
 .solar__body {
   position: absolute; left: 50%; top: 0; width: 0; height: 0;
-  /* Contra-gira no mesmo ritmo: anel/mancha/lua estáveis, só órbita */
   animation: solar-orbit var(--p) linear infinite reverse;
   animation-delay: calc(var(--a0) / 360 * var(--p) * -1);
 }
@@ -301,12 +310,11 @@ strong, b { font-weight: 500; }
   margin: calc(var(--d) / -2) 0 0 calc(var(--d) / -2);
   border-radius: 50%;
   overflow: hidden;
-  /* Sem rotação axial */
 }
-.planet--1 { --d: 7cqw; background: linear-gradient(140deg, var(--c-secondary), var(--c-primary)); }
-.planet--2 { --d: 10cqw; background: linear-gradient(160deg, var(--c-primary), var(--c-accent)); box-shadow: 0 0 3.5cqw -1cqw var(--glow); }
+.planet--1 { --d: 6.5cqw; background: linear-gradient(140deg, var(--c-secondary), var(--c-primary)); }
+.planet--2 { --d: 9.5cqw; background: linear-gradient(160deg, var(--c-primary), var(--c-accent)); box-shadow: 0 0 3.5cqw -1cqw var(--glow); }
 .planet--3 {
-  --d: 8.5cqw; overflow: visible;
+  --d: 8cqw; overflow: visible;
   background: linear-gradient(130deg, var(--c-accent), color-mix(in srgb, var(--c-accent) 55%, #000));
 }
 [data-theme='light'] .planet--3 { background: linear-gradient(130deg, var(--c-primary), var(--c-accent)); }
@@ -317,10 +325,9 @@ strong, b { font-weight: 500; }
   border: .55cqw solid color-mix(in srgb, var(--c-secondary) 85%, transparent);
   transform: rotate(-24deg);
 }
-/* Lua fixa em relação ao planeta (sem órbita própria — evita “spin estranho”) */
 .solar__body > .moon {
   position: absolute; left: 7cqw; top: -2.2cqw;
-  width: 2.8cqw; height: 2.8cqw; margin: 0;
+  width: 2.6cqw; height: 2.6cqw; margin: 0;
   border-radius: 50%; background: var(--c-text); opacity: .85;
 }
 @keyframes solar-orbit { to { transform: rotate(1turn); } }
@@ -331,19 +338,26 @@ strong, b { font-weight: 500; }
   .solar *, .solar *::before { animation: none !important; }
 }
 @media (max-width: 900px) {
-  .about__wrap { grid-template-columns: 1fr; }
-  .about__shape {
-    max-width: 100%;
-    width: min(100%, 420px);
-    justify-self: end;
-    margin-inline-start: auto;
-    min-height: 200px;
+  .about .prose { max-width: 66ch; }
+  .about__mask {
+    width: min(62vw, 360px);
+    top: auto;
+    height: min(58vw, 340px);
+    bottom: 0;
+    -webkit-mask-image: linear-gradient(to top left, #000 45%, transparent 92%);
+    mask-image: linear-gradient(to top left, #000 45%, transparent 92%);
   }
-  .solar { --scale: 1.55; left: 22%; top: 12%; }
+  [data-fx-dividers='diagonal'] .about.section--alt .about__mask {
+    bottom: var(--divider);
+  }
+  .solar { width: 190%; right: -62%; bottom: -58%; }
 }
 @media (max-width: 520px) {
-  .about__shape { width: min(100%, 280px); min-height: 160px; }
-  .solar { --scale: 1.65; left: 28%; top: 18%; }
+  .about__mask {
+    width: min(78vw, 280px);
+    height: min(70vw, 260px);
+  }
+  .solar { width: 195%; right: -65%; bottom: -60%; }
 }
 
 /* Projetos */

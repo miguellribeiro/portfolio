@@ -5,14 +5,18 @@ import SolarSystem from '../components/SolarSystem.jsx';
 export default function About({ id }) {
   const { t } = useI18n();
   return (
-    <Section id={id} title={t('about.title')} className="about">
-      <div className="about__wrap">
-        <div className="prose">
-          {t('about.paragraphs').map((p, i) => <p key={i} className="reveal" style={{ '--i': i }}>{p}</p>)}
-        </div>
-        <div className="about__shape">
+    <Section
+      id={id}
+      title={t('about.title')}
+      className="about"
+      after={(
+        <div className="about__mask" aria-hidden="true">
           <SolarSystem />
         </div>
+      )}
+    >
+      <div className="prose">
+        {t('about.paragraphs').map((p, i) => <p key={i} className="reveal" style={{ '--i': i }}>{p}</p>)}
       </div>
     </Section>
   );
