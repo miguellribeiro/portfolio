@@ -31,6 +31,19 @@ export default function SolarSystem() {
         </span>
       </span>
 
+      {/* Órbita interna com 3 corpos a 120°: o arco visível (≥120° em todos os
+          breakpoints, medido) garante ao menos um planeta sempre à vista. */}
+      <span className="solar__arm solar__arm--1b">
+        <span className="solar__body">
+          <span className="planet planet--1b"><span className="planet__spot" /></span>
+        </span>
+      </span>
+      <span className="solar__arm solar__arm--1c">
+        <span className="solar__body">
+          <span className="planet planet--1c"><span className="planet__spot" /></span>
+        </span>
+      </span>
+
       <span className="solar__arm solar__arm--2">
         <span className="solar__body">
           <span className="planet planet--2"><span className="planet__band" /><span className="planet__spot" /></span>
