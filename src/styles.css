@@ -613,16 +613,18 @@ strong, b { font-weight: 500; }
 .lsel__chev { color: var(--c-muted); transition: transform .25s var(--ease); }
 .lsel.is-open .lsel__chev { transform: rotate(180deg); }
 .flag { display: block; flex: none; border-radius: 50%; }
-.lsel__list { position: absolute; right: 0; top: calc(100% + 8px); z-index: 45; min-width: 224px; padding: 6px; border-radius: 16px; border: 1px solid var(--c-border); background: var(--lsel-glass); -webkit-backdrop-filter: blur(22px) saturate(1.5); backdrop-filter: blur(22px) saturate(1.5); box-shadow: var(--lsel-edge), 0 24px 50px -20px rgb(0 0 0 / .55); transform-origin: top right; animation: pop .18s var(--ease); outline: none; }
+.lsel__list { position: absolute; right: 0; top: calc(100% + 8px); z-index: 45; min-width: 224px; padding: 6px; border-radius: 16px; border: 1px solid var(--c-border); background: var(--lsel-glass); -webkit-backdrop-filter: blur(24px) saturate(1.7); backdrop-filter: blur(24px) saturate(1.7); box-shadow: var(--lsel-edge), 0 24px 50px -20px rgb(0 0 0 / .55); transform-origin: top right; animation: pop .18s var(--ease); outline: none; }
 .lsel__list[hidden] { display: none; }
 /* Vidro fosco: superfície do tema com alpha alto + blur; conteúdo atrás vira só borrão */
 :root {
-  --lsel-glass: color-mix(in srgb, var(--c-surface) 60%, transparent);
-  --lsel-edge: inset 0 1px 0 rgb(255 255 255 / .09), inset 0 0 0 1px rgb(255 255 255 / .04);
+  --lsel-glass: color-mix(in srgb, var(--c-surface) 50%, transparent);
+  --lsel-edge: inset 0 1px 0 rgb(255 255 255 / .13), inset 0 0 0 1px rgb(255 255 255 / .07);
+  --lsel-text-shadow: 0 1px 2px rgb(0 0 0 / .35);
 }
 [data-theme='light'] {
-  --lsel-glass: color-mix(in srgb, var(--c-surface) 64%, transparent);
-  --lsel-edge: inset 0 1px 0 rgb(255 255 255 / .85), inset 0 0 0 1px rgb(255 255 255 / .35);
+  --lsel-glass: color-mix(in srgb, var(--c-surface) 53%, transparent);
+  --lsel-edge: inset 0 1px 0 rgb(255 255 255 / .9), inset 0 0 0 1px rgb(255 255 255 / .5);
+  --lsel-text-shadow: 0 1px 0 rgb(255 255 255 / .55);
 }
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .lsel__list { background: var(--c-surface); }
@@ -633,7 +635,8 @@ strong, b { font-weight: 500; }
 .fx-reveal .reveal:has(.lsel.is-open) { animation: none; transition: none; opacity: 1; translate: 0 0; }
 @keyframes pop { from { opacity: 0; transform: scale(.94) translateY(-4px); } }
 .lsel__opt { display: grid; grid-template-columns: 22px 1fr auto 16px; align-items: center; gap: .65rem; padding: .55rem .65rem; border-radius: 10px; cursor: pointer; font-size: .92rem; transition: background-color .15s; }
-.lsel__opt.is-active { background: color-mix(in srgb, var(--c-primary) 20%, transparent); }
+.lsel__opt { text-shadow: var(--lsel-text-shadow, none); }
+.lsel__opt.is-active { background: color-mix(in srgb, var(--c-primary) 24%, transparent); }
 .lsel__list:focus-visible .lsel__opt.is-active { box-shadow: inset 0 0 0 1.5px var(--c-primary-text); }
 .lsel__optcode { font-size: .72rem; color: var(--c-muted); }
 .lsel__check { color: var(--c-primary-text); opacity: 0; transform: scale(.6); transition: opacity .15s, transform .2s var(--ease); }
