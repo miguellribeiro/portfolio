@@ -360,8 +360,8 @@ strong, b { font-weight: 500; }
      Sol menor, ancorado no canto inferior direito; bordas superior/esquerda
      dissolvem em elipse (sem corte reto). */
   .about { --mask-w: min(62vw, 360px); --mask-h: min(44vw, 300px); }
-  .about.section--alt,
-  [data-fx-dividers='diagonal'] .about.section--alt {
+  .about--solar.section--alt,
+  [data-fx-dividers='diagonal'] .about--solar.section--alt {
     padding-bottom: calc(2.5rem + var(--mask-h) + var(--divider, 0px));
   }
   .about .prose { max-width: 66ch; }
@@ -886,3 +886,45 @@ button.pcard__cover { cursor: zoom-in; }
 
 /* Tags dos cards de projeto: ≥ 12px no mobile (desktop segue .72rem) */
 @media (max-width: 680px) { .tag { font-size: .78rem; } }
+
+/* ==========================================================================
+   v3 — Épico 1: sistema solar como fundo do hero no mobile (≤ 680px)
+   O mesmo <SolarSystem/> sai do Sobre e entra em .hero__bg. O plano das órbitas
+   é "achatado" (scaleY --sq, efeito de perspectiva) e só planetas, lua e sol são
+   desachatados (propriedade `scale`, que compõe por fora da animação), então o
+   sistema inteiro cabe na faixa livre acima do selo (--band, medida no Hero.jsx).
+   ========================================================================== */
+.hero__sky, .hero__solar, .hero__veil { display: none; }
+@media (max-width: 680px) {
+  /* Conteúdo ancorado embaixo: a faixa de "céu" acima do selo fica ≥ 9.5rem */
+  .hero { align-items: end; padding-top: 9.5rem; padding-bottom: 3rem; }
+  .hero__sky { display: block; position: absolute; inset: 0; pointer-events: none; }
+  .hero__solar {
+    --sq: .55;          /* achatamento do plano orbital */
+    --reach: .542;      /* altura total ocupada / largura do sistema (órbita 3 + anel, lua) */
+    --W: min(calc((var(--band, 152px) - 20px) / var(--reach)), 100vw);
+    display: block; position: absolute; inset: 0; overflow: hidden;
+    opacity: .42; pointer-events: none;
+  }
+  .hero__solar .solar {
+    width: var(--W); right: auto; bottom: auto;
+    left: calc(58% - var(--W) / 2);
+    /* centro do sol: 10px + metade da altura ocupada, a partir do topo do hero */
+    top: calc(10px + var(--W) * var(--reach) / 2 - var(--W) / 2);
+    transform: scaleY(var(--sq));
+  }
+  .hero__solar .planet, .hero__solar .moon-orbit { scale: 1 calc(1 / var(--sq)); }
+  .hero__solar .solar__sun { scale: .8 calc(.8 / var(--sq)); }
+  .hero__solar .solar__arm { will-change: transform; }
+  .hero.is-offscreen .solar *, .hero.is-offscreen .solar *::before { animation-play-state: paused !important; }
+  /* Véu: do selo para baixo vira a cor de fundo, opaco no início do parágrafo */
+  .hero__veil {
+    display: block; position: absolute; left: 0; right: 0; bottom: -48px; top: var(--band, 0px); /* -48px: cobre o parallax (até -40px) */
+    background: linear-gradient(to bottom, transparent 0, var(--c-bg) max(1px, calc(var(--text, 0px) - var(--band, 0px))));
+  }
+}
+@media (max-width: 680px) and (prefers-reduced-motion: reduce) {
+  /* Estático: cada corpo na sua fase inicial (não todos empilhados no topo) */
+  .hero__solar .solar__arm { transform: rotate(calc(var(--a0) * 1deg)); will-change: auto; }
+  .hero__solar .solar__body { transform: rotate(calc(var(--a0) * -1deg)); }
+}

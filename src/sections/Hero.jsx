@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef } from 'react';
+import { Fragment, useEffect, useLayoutEffect, useRef } from 'react';
 import { useScroll, useTransform } from 'motion/react';
 import * as M from 'motion/react-m';
 import { useI18n } from '../i18n/context.js';
@@ -6,6 +6,9 @@ import { useEffects } from '../engine/effects.js';
 import { getChannels } from '../engine/channels.js';
 import { ChannelAnchor } from '../components/ChannelLink.jsx';
 import { useMagnetic } from '../hooks/useMagnetic.js';
+import { useMediaQuery } from '../hooks/useMediaQuery.js';
+import SolarSystem from '../components/SolarSystem.jsx';
+import { MOBILE_HERO_SOLAR } from '../engine/breakpoints.js';
 
 /**
  * "Texto [[destaque]] texto": cada palavra entra com máscara (stagger curto;
@@ -66,6 +69,27 @@ export default function Hero({ id }) {
   const yCopy = useTransform(scrollYProgress, [0, 1], [0, -40 * k]);
   const magnetic = useMagnetic();
   const wa = getChannels(t).find((c) => c.key === 'whatsapp');
+  const solar = useMediaQuery(MOBILE_HERO_SOLAR);
+
+  // Mobile: mede (só em resize, via offsetTop — sem ler durante o scroll) a faixa
+  // livre acima do selo (--band) e o início do parágrafo (--text). O CSS usa as
+  // duas para dimensionar o sistema solar dentro da faixa e o véu opaco do texto.
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!solar || !el) return undefined;
+    const inner = el.querySelector('.hero__inner');
+    const top = (n) => (n ? inner.offsetTop + n.offsetTop : 0);
+    const measure = () => {
+      el.style.setProperty('--band', `${top(inner.querySelector('.hero__eyebrow'))}px`);
+      el.style.setProperty('--text', `${top(inner.querySelector('.hero__subtitle'))}px`);
+    };
+    measure();
+    if (!('ResizeObserver' in window)) return undefined;
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    ro.observe(inner);
+    return () => { ro.disconnect(); el.style.removeProperty('--band'); el.style.removeProperty('--text'); };
+  }, [solar, t]);
 
   // Pausa a malha animada quando o hero sai da tela.
   useEffect(() => {
@@ -88,6 +112,13 @@ export default function Hero({ id }) {
           </M.div>
         )}
         {fx.bgGrid && <div className="hero__grid" />}
+        {solar && (
+          // Mesmo deslocamento de parallax do texto: a geometria sol/planetas × texto não muda no scroll.
+          <M.div className="hero__sky" style={{ y: yCopy }}>
+            <div className="hero__solar"><SolarSystem /></div>
+            <div className="hero__veil" />
+          </M.div>
+        )}
         {fx.grain && <div className="hero__grain" />}
         <div className="hero__fade" />
       </div>
