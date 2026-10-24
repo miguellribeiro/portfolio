@@ -661,6 +661,7 @@
       }
     ],
     "customBand": {
+      "mergeIntoNotice": true,
       "cta": {
         "type": "whatsapp"
       }

@@ -33,7 +33,7 @@
  *
  * @typedef {Object} PlansConfig
  * @property {PlanCategory[]} categories
- * @property {{cta: {type: 'whatsapp'|'email'|'url', href?: string}}} [customBand]  Faixa "Sob Medida"
+ * @property {{cta: {type: 'whatsapp'|'email'|'url', href?: string}, mergeIntoNotice?: boolean}} [customBand]  Faixa "Sob Medida" (mergeIntoNotice: some quando há card de categoria oculta, que vira o único CTA sob medida)
  * @property {string[]} trust  Ids da faixa de garantias (plans.trust.<id>)
  * @property {number[]} footnotes  Notas exibidas sob a tabela (plans.footnotes.<n>)
  * @property {boolean} disclaimer  Exibe plans.disclaimer sob a tabela

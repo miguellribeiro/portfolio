@@ -135,7 +135,7 @@ export default function Plans({ id }) {
 
       {notices.map((x) => <HiddenNotice key={x.id} cat={x} />)}
 
-      <CustomBand />
+      {!(c.customBand?.mergeIntoNotice && notices.length) && <CustomBand />}
 
       {c.trust?.length > 0 && (
         <ul className="trust reveal" aria-label={t('plans.trustLabel')}>

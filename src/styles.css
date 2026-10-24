@@ -837,7 +837,7 @@ button.pcard__cover { cursor: zoom-in; }
   }
   .marquee__rtrack { display: flex; width: max-content; }
   .marquee__rlist { display: flex; gap: .6rem; padding-right: .6rem; margin: 0; list-style: none; }
-  .marquee__rows .marquee__item { font-size: .8125rem; padding: .6rem .95rem; line-height: 1.2; }
+  .marquee__rows .marquee__item { padding: .6rem .95rem; line-height: 1.2; }
   .marquee--on .marquee__rows { pointer-events: none; }
   .marquee--on .marquee__rtrack { will-change: transform; animation: marquee-row 40s linear infinite; }
   .marquee--on .marquee__row--2 .marquee__rtrack { animation-duration: 28s; animation-direction: reverse; }
@@ -877,3 +877,5 @@ button.pcard__cover { cursor: zoom-in; }
   .header__cta::before { content: none; }
   .header__cta::after { content: ''; position: absolute; left: 50%; top: 50%; width: max(100%, 44px); height: max(100%, 44px); transform: translate(-50%, -50%); border-radius: inherit; }
 }
+/* Tags dos cards de projeto: ≥ 12px no mobile (desktop segue .72rem) */
+@media (max-width: 680px) { .tag { font-size: .78rem; } }
