@@ -3,6 +3,7 @@
   "lang": "Language",
   "theme": "Toggle theme",
   "headerCta": "Let's talk",
+  "headerCtaAria": "Chat with me on WhatsApp",
   "loader": "Loading",
   "meta": {
     "title": "Manpe — Miguel Ribeiro | Tech Lead & Full Stack Developer",
@@ -166,6 +167,7 @@
   "plans": {
     "title": "Plans",
     "subtitle": "Prepaid monthly plans with no setup fee and no lock-in. Choose your project type:",
+    "subtitleSingle": "Prepaid monthly plans with no setup fee and no lock-in.",
     "categoryLabel": "Project type",
     "period": "/mo",
     "priceNote": "No setup fee · prepaid",
@@ -243,6 +245,12 @@
       },
       "systems": {
         "label": "Systems",
+        "notice": {
+          "title": "Custom-built systems",
+          "text": "For complex systems, we align directly with you to understand your needs and design the right scope and price.",
+          "cta": "Talk about my project",
+          "message": "Hi Miguel! I'd like to talk about building a custom system."
+        },
         "plans": {
           "essencial": {
             "name": "Essential",

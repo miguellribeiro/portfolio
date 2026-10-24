@@ -819,3 +819,61 @@ button.pcard__cover { cursor: zoom-in; }
 .url { display: inline; font-size: .9em; overflow-wrap: anywhere; word-break: break-word; padding: .05em .25em; border-radius: 6px; background: color-mix(in srgb, var(--c-primary) 10%, transparent); color: var(--c-text); -webkit-box-decoration-break: clone; box-decoration-break: clone; max-width: 100%; }
 .faq__item p, .cmp__notes li, .plans__disclaimer, .cmp__mrow dt, .cmp__mrow dd { min-width: 0; overflow-wrap: break-word; }
 .faq > *, .faq__item summary { min-width: 0; }
+
+/* ==========================================================================
+   v3 — mobile: marquee em 3 linhas + alvos de toque ≥ 44px + aviso "Sistemas"
+   ========================================================================== */
+
+/* ---------- Marquee: 3 linhas no mobile (desktop inalterado) ---------- */
+.marquee__rows, .marquee__sr { display: none; }
+@media (max-width: 680px) {
+  .marquee__viewport--desk { display: none; }
+  .marquee__sr { display: block; }
+  .marquee__rows { display: grid; gap: 12px; }
+  .marquee__row {
+    height: 52px; width: 100%; display: flex; align-items: center; overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  }
+  .marquee__rtrack { display: flex; width: max-content; }
+  .marquee__rlist { display: flex; gap: .6rem; padding-right: .6rem; margin: 0; list-style: none; }
+  .marquee__rows .marquee__item { font-size: .8125rem; padding: .6rem .95rem; line-height: 1.2; }
+  .marquee--on .marquee__rows { pointer-events: none; }
+  .marquee--on .marquee__rtrack { will-change: transform; animation: marquee-row 40s linear infinite; }
+  .marquee--on .marquee__row--2 .marquee__rtrack { animation-duration: 28s; animation-direction: reverse; }
+  .marquee--on .marquee__row--3 .marquee__rtrack { animation-duration: 52s; }
+  /* Estática (reduced-motion / efeito desligado): uma cópia, centralizada */
+  .marquee:not(.marquee--on) .marquee__row { height: auto; min-height: 52px; overflow: visible; -webkit-mask-image: none; mask-image: none; justify-content: center; }
+  .marquee:not(.marquee--on) .marquee__rtrack { width: auto; max-width: 100%; }
+  .marquee:not(.marquee--on) .marquee__rlist { flex-wrap: wrap; justify-content: center; padding: 0 1rem; }
+}
+@keyframes marquee-row { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(-50%, 0, 0); } }
+.tab-hidden .marquee__rtrack { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .marquee__track, .marquee__rtrack { animation: none !important; transform: none !important; will-change: auto; }
+}
+
+/* ---------- Aviso no lugar de categoria oculta (ex.: Sistemas) ---------- */
+.plan-notice { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; margin-top: 1.5rem; padding: 1.5rem 2rem; border-radius: var(--radius); border: 1px dashed color-mix(in srgb, var(--c-primary) 45%, var(--c-border)); background: color-mix(in srgb, var(--c-surface) 55%, transparent); }
+.plan-notice h3 { margin: 0 0 .3rem; font-size: 1.3rem; }
+.plan-notice p { margin: 0; max-width: 68ch; }
+.plan-notice .btn { flex: none; }
+@media (max-width: 680px) {
+  .plan-notice { flex-direction: column; align-items: stretch; padding: 1.3rem 1.25rem; gap: 1.1rem; }
+  .plan-notice .btn { padding-inline: 1rem; text-align: center; }
+}
+
+/* ---------- Alvos de toque ≥ 44×44 no mobile (área invisível, visual igual) ---------- */
+@media (max-width: 680px), (pointer: coarse) {
+  .theme-btn, .lsel__btn, .footer__icon, .chan__copy { position: relative; }
+  .theme-btn::after, .lsel__btn::after, .footer__icon::after, .chan__copy::after {
+    content: ''; position: absolute; left: 50%; top: 50%; width: max(100%, 44px); height: max(100%, 44px); transform: translate(-50%, -50%); border-radius: inherit;
+  }
+}
+/* CTA do header: o .btn recorta (overflow hidden) o preenchimento de hover; no mobile
+   (toque, sem hover) ele sai para a área de toque poder passar dos 40px. */
+@media (max-width: 680px) {
+  .header__cta { overflow: visible; }
+  .header__cta::before { content: none; }
+  .header__cta::after { content: ''; position: absolute; left: 50%; top: 50%; width: max(100%, 44px); height: max(100%, 44px); transform: translate(-50%, -50%); border-radius: inherit; }
+}

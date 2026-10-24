@@ -28,6 +28,8 @@
  * @property {string} id  "sites" | "systems" (aba). Rótulo em plans.categories.<id>.label
  * @property {string} [priceKey]  Chave da tabela de preços em cada região ("sites" | "sistemas"); padrão = id
  * @property {{groups: {id: string, rows: CompareRow[]}[]}} compare  Grupos (rótulos em plans.groups.<id>)
+ * @property {boolean} [hidden]  Oculta a categoria (aba, grade e comparativo) sem apagar planos/preços
+ * @property {{cta: {type: 'whatsapp'|'email'|'url', href?: string}}} [notice]  Com hidden: card no lugar dos planos (plans.categories.<id>.notice.{title,text,cta,message})
  *
  * @typedef {Object} PlansConfig
  * @property {PlanCategory[]} categories

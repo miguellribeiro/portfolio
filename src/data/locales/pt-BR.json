@@ -3,6 +3,7 @@
   "lang": "Idioma",
   "theme": "Alternar tema",
   "headerCta": "Fale comigo",
+  "headerCtaAria": "Fale comigo pelo WhatsApp",
   "loader": "Carregando",
   "meta": {
     "title": "Manpe — Miguel Ribeiro | Líder Técnico & Desenvolvedor Full Stack",
@@ -166,6 +167,7 @@
   "plans": {
     "title": "Planos",
     "subtitle": "Mensalidades pré-pagas, sem taxa de adesão e sem fidelidade. Escolha o tipo de projeto:",
+    "subtitleSingle": "Mensalidades pré-pagas, sem taxa de adesão e sem fidelidade.",
     "categoryLabel": "Tipo de projeto",
     "period": "/mês",
     "priceNote": "Sem taxa de adesão · pré-pago",
@@ -243,6 +245,12 @@
       },
       "systems": {
         "label": "Sistemas",
+        "notice": {
+          "title": "Sistemas sob medida",
+          "text": "Para o desenvolvimento de sistemas complexos, fazemos um alinhamento direto com você para entender a necessidade e desenhar o escopo e o valor ideais.",
+          "cta": "Conversar sobre meu projeto",
+          "message": "Olá, Miguel! Gostaria de conversar sobre o desenvolvimento de um sistema sob medida."
+        },
         "plans": {
           "essencial": {
             "name": "Essencial",

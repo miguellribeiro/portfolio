@@ -72,7 +72,9 @@ export function validateContent({ site, projects, messages }) {
   // Planos (plansConfig.categories[].plans + compare.groups)
   const pc = site.plansConfig || {};
   const notes = new Set((pc.footnotes || []).map(String));
+  if ((pc.categories || []).length && (pc.categories || []).every((c) => c.hidden)) warn('plansConfig: todas as categorias estão ocultas (hidden).');
   (pc.categories || []).forEach((c) => {
+    if (c.notice?.cta && !['whatsapp', 'email', 'url'].includes(c.notice.cta.type)) warn(`Categoria "${c.id}": notice.cta.type inválido.`);
     const planIds = new Set(c.plans.map((p) => p.id));
     c.plans.forEach((p) => {
       (site.pricing?.regions || []).forEach((r) => {
@@ -120,6 +122,7 @@ export function validateContent({ site, projects, messages }) {
     (pc.categories || []).forEach((c) => {
       const mc = m.plans?.categories?.[c.id];
       if (!mc) return warn(`[${code}] plans.categories.${c.id} ausente`);
+      if (c.hidden && c.notice) ['title', 'text', 'cta', 'message'].forEach((k) => !mc.notice?.[k] && warn(`[${code}] plans.categories.${c.id}.notice.${k} ausente`));
       c.plans.forEach((p) => !mc.plans?.[p.id] && warn(`[${code}] plans.categories.${c.id}.plans.${p.id} ausente`));
       (c.compare?.groups || []).forEach((g) => {
         if (!m.plans?.groups?.[g.id]) warn(`[${code}] plans.groups.${g.id} ausente`);

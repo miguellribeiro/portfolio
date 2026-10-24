@@ -74,18 +74,44 @@ function CustomBand() {
   );
 }
 
+/**
+ * Aviso no lugar de uma categoria oculta (site.json → categories[].hidden + notice).
+ * Textos em plans.categories.<id>.notice.{title,text,cta,message}.
+ */
+function HiddenNotice({ cat }) {
+  const { t } = useI18n();
+  const { launch } = useChannel();
+  const magnetic = useMagnetic();
+  const k = `plans.categories.${cat.id}.notice`;
+  const hid = `notice-${cat.id}`;
+  return (
+    <aside className="plan-notice reveal" aria-labelledby={hid}>
+      <div>
+        <h3 id={hid}>{t(`${k}.title`)}</h3>
+        <p className="muted">{t(`${k}.text`)}</p>
+      </div>
+      <a className="btn btn--ghost" {...ctaProps(cat.notice.cta, t(`${k}.message`), `${t('contact.emailSubject')} — ${t(`${k}.title`)}`, launch)} {...magnetic}>
+        {t(`${k}.cta`)} <span className="btn__arrow" aria-hidden="true">→</span>
+      </a>
+    </aside>
+  );
+}
+
 export default function Plans({ id }) {
   const { t } = useI18n();
   const [region] = useRegion();
   const c = cfg();
-  const cats = c.categories || [];
+  const all = c.categories || [];
+  // hidden: true tira a categoria da página (abas, grade, comparativo) sem apagar os dados.
+  const cats = all.filter((x) => !x.hidden);
+  const notices = all.filter((x) => x.hidden && x.notice);
   const [catId, setCatId] = useState(cats[0]?.id);
   const cat = cats.find((x) => x.id === catId) || cats[0];
   if (!cat) return null;
   const notes = (c.footnotes || []).map(String);
 
   return (
-    <Section id={id} title={t('plans.title')} subtitle={t('plans.subtitle')} className="plans-section">
+    <Section id={id} title={t('plans.title')} subtitle={t(cats.length > 1 ? 'plans.subtitle' : 'plans.subtitleSingle')} className="plans-section">
       <div className="plans__bar reveal">
         {cats.length > 1 && (
           <Segmented
@@ -106,6 +132,8 @@ export default function Plans({ id }) {
       <div key={`grid-${cat.id}`} className={`plans-grid plans-grid--${cat.plans.length}`} style={{ '--n': cat.plans.length }}>
         {cat.plans.map((p, i) => <PlanCard key={p.id} cat={cat} p={p} i={i} />)}
       </div>
+
+      {notices.map((x) => <HiddenNotice key={x.id} cat={x} />)}
 
       <CustomBand />
 

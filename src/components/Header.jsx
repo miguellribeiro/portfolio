@@ -31,7 +31,7 @@ export default function Header({ mode, onToggleTheme }) {
           <LanguageSelect />
           <ThemeToggle mode={mode} onToggle={onToggleTheme} label={t('theme')} />
           {wa && (
-            <ChannelAnchor ch={wa} className="btn btn--sm btn--primary header__cta" {...magnetic}>
+            <ChannelAnchor ch={wa} className="btn btn--sm btn--primary header__cta" aria-label={t('headerCtaAria')} {...magnetic}>
               <BrandIcon name="whatsapp" size={16} />
               <span className="header__cta-label">{t('headerCta')}</span>
             </ChannelAnchor>
