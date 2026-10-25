@@ -1,5 +1,10 @@
 name: Deploy GitHub Pages
 
+# Fase 1 da migração para https://manpestudio.com.br (Cloudflare Worker "manpestudio"):
+# o Pages deixa de publicar o app e passa a publicar só páginas de redirecionamento
+# (canonical + meta refresh + JS) para as URLs equivalentes do domínio oficial.
+# Fase 2 (depois da reindexação): desativar este workflow.
+
 on:
   push:
     branches: [main]
@@ -23,15 +28,16 @@ jobs:
         with:
           node-version: 20
           cache: npm
+      # lint + build continuam como verificação (o deploy real é o build do Cloudflare)
       - run: npm ci
       - run: npm run lint
       - run: npm run build
+      - run: node scripts/pages-redirect.js _pages
         env:
           BASE_PATH: /${{ github.event.repository.name }}/
-      - run: cp dist/index.html dist/404.html
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: _pages
   deploy:
     needs: build
     runs-on: ubuntu-latest

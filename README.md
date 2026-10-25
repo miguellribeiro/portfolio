@@ -378,10 +378,17 @@ Aba/rota dedicada para **acesso limitado e guiado** aos sistemas desenvolvidos:
 
 ## 10. Deploy
 
-### GitHub Pages
-O workflow `.github/workflows/deploy.yml` roda lint + build a cada push na `main` e publica `dist/`.
-O `base` do Vite é definido por `BASE_PATH=/<nome-do-repo>/` no workflow.
-**Necessário uma vez**: em *Settings → Pages → Build and deployment*, selecionar **GitHub Actions**.
+### Cloudflare Workers (oficial: https://manpestudio.com.br)
+Worker `manpestudio`, deploy a cada push na `main`. `wrangler.jsonc` publica `dist/` como static assets.
+O `html_handling` padrão (`auto-trailing-slash`) já serve `/en/` → `dist/en/index.html`
+(e redireciona `/en` e `/en/index.html` → `/en/`). Caminhos inexistentes → 404.
+Teste local: `npm run build && npx wrangler dev` (sem login; requer Node 22+).
+
+### GitHub Pages (migração — fase 1)
+O workflow `.github/workflows/deploy.yml` continua rodando lint + build, mas publica só páginas de
+redirecionamento (`scripts/pages-redirect.js`): cada caminho em `/<repo>/` responde com canonical,
+meta refresh 0 e `location.replace` para a URL equivalente em `siteUrl`.
+Fase 2 (depois da reindexação): desativar o workflow.
 
 ### Vercel
 Importe o repositório; framework Vite; build `npm run build`; output `dist`. Não defina `BASE_PATH`.
