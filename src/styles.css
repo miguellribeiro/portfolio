@@ -916,16 +916,23 @@ button.pcard__cover { cursor: zoom-in; }
   .hero__sky { display: block; position: absolute; inset: 0; pointer-events: none; }
   .hero__solar {
     --sq: .55;          /* achatamento do plano orbital */
-    --reach: .542;      /* altura total ocupada / largura do sistema (órbita 3 + anel, lua) */
-    --W: min(calc((var(--band, 152px) - 20px) / var(--reach)), 100vw);
+    --reach: .55;       /* altura ocupada pelos corpos / largura do sistema (planeta 3, lua; medido .544) */
+    --oreach: .462;     /* altura da órbita 3 (linha) / largura do sistema */
+    --hreach: .99;      /* largura ocupada (órbita 3 + anel do planeta 3) / largura do sistema */
+    --edge: 10px;       /* folga lateral do corpo mais externo até a borda da tela */
+    /* Maior escala que cabe: na largura (folga --edge dos dois lados) e na faixa entre
+       o header e o selo (≥ 10px dos corpos e ≥ 16px das linhas de órbita, em cima e embaixo) */
+    --W: min(calc((100vw - 2 * var(--edge)) / var(--hreach)),
+             calc((var(--band, 152px) - 20px) / var(--reach)),
+             calc((var(--band, 152px) - 32px) / var(--oreach)));
     display: block; position: absolute; inset: 0; overflow: hidden;
     opacity: .42; pointer-events: none;
   }
   .hero__solar .solar {
     width: var(--W); right: auto; bottom: auto;
-    left: calc(58% - var(--W) / 2);
-    /* centro do sol: 10px + metade da altura ocupada, a partir do topo do hero */
-    top: calc(10px + var(--W) * var(--reach) / 2 - var(--W) / 2);
+    /* Centro do sol: no meio da tela (x) e no meio da faixa livre header→selo (y) */
+    left: calc(50% - var(--W) / 2);
+    top: calc(var(--band, 152px) / 2 - var(--W) / 2);
     transform: scaleY(var(--sq));
   }
   .hero__solar .planet, .hero__solar .moon-orbit { scale: 1 calc(1 / var(--sq)); }
