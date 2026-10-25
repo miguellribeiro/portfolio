@@ -746,7 +746,9 @@ strong, b { font-weight: 500; }
   .bento__strip-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0; padding: 0; list-style: none; position: relative; z-index: 2; }
   .bento__strip-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .3rem; min-width: 0; padding: .1rem .25rem; text-align: center; }
   .bento__strip-item + .bento__strip-item { border-left: 1px solid var(--c-border); }
-  .bento__strip .bento__value { font-size: 1.6rem; }
+  /* Fonte do corpo com algarismos tabulares: a vírgula de "99,9%" fica estreita (no mono ocupava uma célula
+     inteira) e os dígitos não tremem durante a contagem; texto centralizado na largura reservada pelo Counter. */
+  .bento__strip .bento__value { font-family: var(--font-body); font-size: 1.6rem; font-feature-settings: normal; font-variant-numeric: tabular-nums; letter-spacing: -0.03em; text-align: center; }
   .bento__strip .counter__suffix { color: var(--c-primary-text); }
   .bento__strip .bento__label { font-size: .8rem; line-height: 1.25; overflow-wrap: break-word; }
   .bento__caps { padding: .15rem 1.1rem; }
