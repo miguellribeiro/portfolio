@@ -594,21 +594,31 @@ strong, b { font-weight: 500; }
    v2 — Manpe
    ========================================================================== */
 
-/* ---------- Wordmark ---------- */
-.wordmark { display: inline-flex; align-items: flex-end; font-family: var(--font-heading); font-weight: 700; font-size: 1.4rem; line-height: 1; letter-spacing: -0.045em; color: var(--c-text); }
+/* ---------- Wordmark (logo v3: M cursivo + cometa) ---------- */
+/* Cores do símbolo por tema = manpe-symbol-dark/-light.svg */
+:root { --logo-1: #FF5FA2; --logo-2: #FFB38A; --logo-3: #F5C26B; }
+[data-theme='light'] { --logo-1: #B81756; --logo-2: #A43E26; --logo-3: #B7791F; }
+/* Proporções do lockup (unidade = 1em/44): símbolo 68×64, "anpe" começa 4u antes do fim
+   do símbolo e a linha de base do texto fica 12u acima do pé do M. */
+.wordmark { display: inline-flex; align-items: baseline; font-family: var(--font-heading); font-weight: 700; font-size: 1.4rem; line-height: 1; letter-spacing: -0.045em; color: var(--c-text); }
 .wordmark--sm { font-size: 1.15rem; }
 .wordmark--xl { font-size: clamp(3rem, 9vw, 4.6rem); }
-.wordmark__m { width: 1.02em; height: 1.02em; margin: 0 .02em -.11em -.08em; display: block; flex: none; overflow: visible; }
-.wordmark__rest { display: block; }
-.wordmark__dot { width: .2em; height: .2em; margin: 0 0 .02em .07em; border-radius: 50%; background: var(--grad); box-shadow: 0 0 .5em var(--glow); flex: none; }
-.wordmark--draw .mmark path { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw .45s var(--ease) forwards; }
+.wordmark__m { width: 1.5455em; height: 1.4545em; margin: 0 -.0909em -.2727em 0; display: block; flex: none; overflow: visible; }
+.wordmark__rest { display: block; position: relative; }
+.mmark__s1 { stop-color: var(--logo-1); }
+.mmark__s2 { stop-color: var(--logo-2); }
+.mmark__s3 { stop-color: var(--logo-3); }
+.mmark__joint { fill: var(--logo-2); }
+.mmark__head { fill: var(--logo-3); }
+.mmark__planet { transform-box: fill-box; transform-origin: center; }
+.wordmark--draw .mmark__m { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw .45s var(--ease) forwards; }
+.wordmark--draw .mmark__comet { opacity: 0; animation: wm-fade .26s .3s ease forwards; }
 .wordmark--draw .wordmark__rest { clip-path: inset(0 100% 0 0); animation: wm-reveal .32s .22s var(--ease) forwards; }
-.wordmark--draw .wordmark__dot { transform: scale(0); animation: wm-dot .3s .44s cubic-bezier(.3, 1.6, .5, 1) forwards; }
 @keyframes wm-reveal { to { clip-path: inset(0 0 0 0); } }
-@keyframes wm-dot { to { transform: scale(1); } }
+@keyframes wm-fade { to { opacity: 1; } }
 .brand { text-decoration: none; display: inline-flex; align-items: center; padding: .2rem .1rem; }
-.brand:hover .wordmark__dot { animation: wm-pulse .6s var(--ease); }
-@keyframes wm-pulse { 50% { transform: scale(1.6); } }
+.brand:hover .mmark__planet { animation: wm-pulse .6s var(--ease); }
+@keyframes wm-pulse { 50% { transform: scale(1.35); } }
 
 /* ---------- Header controls (mesma altura: 40px) ---------- */
 .header__cta { height: 40px; }

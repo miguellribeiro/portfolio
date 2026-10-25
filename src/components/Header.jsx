@@ -19,7 +19,7 @@ export default function Header({ mode, onToggleTheme }) {
   return (
     <header className="header">
       <div className="container header__inner">
-        <a href="#main" className="brand" aria-label={`${brand} — ${t('hero.title')}`}>
+        <a href="#main" className="brand" aria-label={brand}>
           <Wordmark name={brand} />
         </a>
         <nav aria-label={t('nav')} className="nav">
