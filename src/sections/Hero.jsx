@@ -124,7 +124,16 @@ export default function Hero({ id }) {
       </div>
 
       <M.div className="container hero__inner" style={{ y: yCopy }}>
-        <p className="eyebrow mono hero__eyebrow"><span className="dot" aria-hidden="true" /><span className="hero__who">{t('hero.title')}</span><span aria-hidden="true">·</span>{t('hero.eyebrow')}</p>
+        {/* Nome e cargo em blocos nowrap; se o cargo quebrar para a 2ª linha, o "·" fica
+            na margem negativa (cortada) do início da linha — nunca pendurado no fim da 1ª. */}
+        <p className="eyebrow mono hero__eyebrow">
+          <span className="hero__badge">
+            <span className="hero__badge-row">
+              <span className="hero__who"><span className="dot" aria-hidden="true" />{t('hero.title')}</span>
+              <span className="hero__role"><span className="hero__sep" aria-hidden="true">·</span>{t('hero.eyebrow')}</span>
+            </span>
+          </span>
+        </p>
         <h1 id={`${id}-title`} className="hero__title">
           <span className="sr-only">{t('hero.title')} — </span>
           <Headline text={t('hero.headline')} />

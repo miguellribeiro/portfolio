@@ -674,6 +674,13 @@ strong, b { font-weight: 500; }
 .hero__inner { position: relative; width: 100%; }
 .hero__eyebrow { gap: .5rem; }
 .hero__who { color: var(--c-text); }
+/* Selo "• Nome · Cargo": nome e cargo nowrap; o "·" fica no início do bloco do cargo e a
+   linha tem margem negativa do tamanho dele — se o cargo quebrar, o "·" cai na área cortada. */
+.hero__badge { display: block; min-width: 0; overflow: hidden; padding: 4px 0 4px 6px; margin: -4px 0 -4px -6px; }
+.hero__badge-row { --sep: calc(1ch + .02em + 1rem); display: flex; flex-wrap: wrap; align-items: center; margin-left: calc(-1 * var(--sep)); }
+.hero__who { display: inline-flex; align-items: center; gap: .5rem; margin-left: var(--sep); }
+.hero__role { white-space: nowrap; }
+.hero__sep { margin: 0 .5rem; } /* "·" mono = 1ch + letter-spacing .02em → --sep */
 .hero__title { font-size: clamp(2.8rem, 8.2vw, 7.2rem); line-height: .96; letter-spacing: -0.05em; max-width: 15ch; margin: 0; text-wrap: balance; }
 [data-fx-headline='true'] .word__in { animation-duration: .6s; animation-delay: calc(var(--w) * 30ms + 40ms); }
 .hero__subtitle { font-size: clamp(1.05rem, 1.6vw, 1.25rem); max-width: 58ch; margin-top: 1.6rem; }
@@ -827,7 +834,7 @@ button.pcard__cover { cursor: zoom-in; }
 @media (max-width: 680px) { .lsel--region .lsel__list { right: auto; left: 0; transform-origin: top left; } }
 .hl-wrap { white-space: nowrap; }
 .hero__who { white-space: nowrap; }
-@media (max-width: 560px) { .hero__eyebrow { flex-wrap: wrap; border-radius: 14px; font-size: .72rem; row-gap: .2rem; } }
+@media (max-width: 560px) { .hero__eyebrow { border-radius: 14px; font-size: .72rem; } .hero__badge-row { row-gap: .2rem; } }
 .plans__bar { position: relative; z-index: 20; }
 
 /* Domínios longos (ex.: seunegocio.manpestudio.com.br): quebram nos pontos (<wbr>) ou onde precisar */
