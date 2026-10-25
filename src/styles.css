@@ -166,6 +166,11 @@ strong, b { font-weight: 500; }
   height: .07em; border-radius: 1em; background: var(--grad); transform-origin: left;
   box-shadow: 0 0 .55em color-mix(in srgb, var(--c-primary) 50%, transparent);
 }
+/* Tema claro: degradê mais escuro no destaque para contraste AA (≥ 4.5:1) sobre o fundo real do hero
+   (sistema solar no mobile, blobs do mesh no desktop) em PT/EN/ES. Família #C2185B → #B4442A, escurecida
+   o mínimo necessário: os tons puros dão 4.25:1 no pior pixel ("Secure" em 1440px). */
+[data-theme='light'] .hl-word,
+[data-theme='light'] .hl-word::after { background-image: linear-gradient(135deg, #B81756, #A43E26); }
 [data-fx-headline='true'] .hl-word {
   opacity: 0; transform: translateY(.35em);
   animation: hl-in .65s var(--ease) forwards;
