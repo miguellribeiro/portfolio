@@ -711,7 +711,7 @@ strong, b { font-weight: 500; }
 .bento__box--xl .bento__value { font-size: clamp(4.5rem, 11vw, 9rem); background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; padding: .06em .1em .1em; margin: -.06em -.1em -.1em; }
 .counter__suffix { font-size: .62em; margin-left: .04em; }
 .bento__box--sm .counter__suffix, .bento__box--md .counter__suffix { color: var(--c-primary-text); }
-.bento__label { margin: 0; font-family: var(--font-body); font-size: .95rem; font-weight: 500; letter-spacing: 0; color: var(--c-muted); }
+.bento__label { margin: 0; font-family: var(--font-body); font-size: .95rem; font-weight: 500; line-height: 1.08; letter-spacing: 0; color: var(--c-muted); } /* <p>; line-height igual ao dos títulos (antes era h3) */
 .bento__box--xl .bento__label { font-family: var(--font-heading); font-size: clamp(1.3rem, 2vw, 1.7rem); font-weight: 600; color: var(--c-text); letter-spacing: -0.02em; }
 .bento__cap h3 { margin: 0 0 .35rem; }
 .bento__cap p { margin: 0; font-size: .95rem; }

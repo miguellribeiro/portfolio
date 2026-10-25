@@ -43,15 +43,18 @@
     "items": {
       "frontend": {
         "name": "Front-end & UX",
-        "description": "Dynamic, responsive interfaces built for usability and performance."
+        "description": "Dynamic, responsive interfaces built for usability and performance.",
+        "descriptionShort": "Responsive interfaces built for usability and performance."
       },
       "backend": {
         "name": "Back-end & Architecture",
-        "description": "Robust APIs, database architecture and scalable business logic."
+        "description": "Robust APIs, database architecture and scalable business logic.",
+        "descriptionShort": "Robust APIs, databases and scalable business logic."
       },
       "security": {
         "name": "Security & Technical Leadership",
-        "description": "Data governance, end-to-end encryption, agile methodologies (Scrum) and development team management."
+        "description": "Data governance, end-to-end encryption, agile methodologies (Scrum) and development team management.",
+        "descriptionShort": "Data governance, encryption, Scrum and team leadership."
       }
     }
   },

@@ -43,15 +43,18 @@
     "items": {
       "frontend": {
         "name": "Front-end & UX",
-        "description": "Criação de interfaces dinâmicas e responsivas com foco em usabilidade e performance."
+        "description": "Criação de interfaces dinâmicas e responsivas com foco em usabilidade e performance.",
+        "descriptionShort": "Interfaces dinâmicas e responsivas, com foco em usabilidade."
       },
       "backend": {
         "name": "Back-end & Arquitetura",
-        "description": "Desenvolvimento de APIs robustas, arquitetura de banco de dados e lógica de negócios escalável."
+        "description": "Desenvolvimento de APIs robustas, arquitetura de banco de dados e lógica de negócios escalável.",
+        "descriptionShort": "APIs robustas, bancos de dados e lógica de negócio escalável."
       },
       "security": {
         "name": "Segurança & Liderança Técnica",
-        "description": "Governança de dados, criptografia de ponta a ponta, metodologias ágeis (Scrum) e gestão de equipes de desenvolvimento."
+        "description": "Governança de dados, criptografia de ponta a ponta, metodologias ágeis (Scrum) e gestão de equipes de desenvolvimento.",
+        "descriptionShort": "Governança de dados, criptografia, Scrum e gestão de equipes."
       }
     }
   },

@@ -34,7 +34,7 @@ function Box({ item, i }) {
       {r.kind === 'stat' ? (
         <div className="bento__stat">
           <Counter stat={r.stat} animate={fx.counters} locale={locale} className="bento__value" />
-          <h3 className="bento__label">{t(`stats.items.${r.id}`)}</h3>
+          <p className="bento__label">{t(`stats.items.${r.id}`)}</p>
         </div>
       ) : (
         <div className="bento__cap">
@@ -60,12 +60,19 @@ function StatStrip({ items, i }) {
         {rows.map((r) => (
           <li key={r.id} className="bento__strip-item">
             <Counter stat={r.stat} animate={fx.counters} locale={locale} className="bento__value" />
-            <h3 className="bento__label">{t(`stats.items.${r.id}`)}</h3>
+            <p className="bento__label">{t(`stats.items.${r.id}`)}</p>
           </li>
         ))}
       </ul>
     </li>
   );
+}
+
+/** Mobile: descriptionShort quando existir no locale; senão a descrição completa. */
+function shortDesc(t, id) {
+  const key = `capabilities.items.${id}.descriptionShort`;
+  const v = t(key);
+  return v && v !== key ? v : t(`capabilities.items.${id}.description`);
 }
 
 /** Mobile: os diferenciais viram um único card com lista (ícone 36px, título, descrição em até 2 linhas). */
@@ -82,7 +89,7 @@ function CapList({ items, i }) {
             <span className="bento__icon"><Icon name={it.icon} size={18} /></span>
             <div className="bento__cap">
               <h3>{t(`capabilities.items.${r.id}.name`)}</h3>
-              <p className="muted">{t(`capabilities.items.${r.id}.description`)}</p>
+              <p className="muted">{shortDesc(t, r.id)}</p>
             </div>
           </li>
         ))}
