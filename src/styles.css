@@ -731,6 +731,34 @@ strong, b { font-weight: 500; }
   .bento__box--sm .bento__stat { flex-direction: row; align-items: baseline; gap: .8rem; flex-wrap: wrap; }
 }
 
+/* Destaques compactos (≤ 680px, MOBILE_BENTO em engine/breakpoints.js; o spec do design era ≤ 600px).
+   Ordem: destaque grande → faixa única com os 3 stats → um card com a lista de diferenciais. */
+@media (max-width: 680px) {
+  .bento-section:has(.bento--compact) { padding-block: 3rem; }
+  .bento-section:has(.bento--compact) .section__head { margin-bottom: 1.25rem; }
+  .bento--compact { grid-template-columns: minmax(0, 1fr); grid-auto-rows: auto; gap: .5rem; }
+  .bento--compact > .bento__box { grid-column: auto; grid-row: auto; }
+  .bento--compact .bento__box--xl { min-height: 180px; padding: 1.25rem 1.4rem; justify-content: flex-end; gap: 0; }
+  .bento--compact .bento__box--xl .bento__icon { position: absolute; top: 1.1rem; right: 1.1rem; width: 44px; height: 44px; border-radius: 13px; }
+  .bento--compact .bento__box--xl .bento__value { font-size: 4rem; }
+  .bento--compact .bento__box--xl .bento__label { font-size: 1.25rem; }
+  .bento__strip { min-height: 96px; padding: .8rem 0; justify-content: center; }
+  .bento__strip-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0; padding: 0; list-style: none; position: relative; z-index: 2; }
+  .bento__strip-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .3rem; min-width: 0; padding: .1rem .25rem; text-align: center; }
+  .bento__strip-item + .bento__strip-item { border-left: 1px solid var(--c-border); }
+  .bento__strip .bento__value { font-size: 1.6rem; }
+  .bento__strip .counter__suffix { color: var(--c-primary-text); }
+  .bento__strip .bento__label { font-size: .8rem; line-height: 1.25; overflow-wrap: break-word; }
+  .bento__caps { padding: .15rem 1.1rem; }
+  .bento__cap-list { margin: 0; padding: 0; list-style: none; position: relative; z-index: 2; }
+  .bento__cap-row { display: flex; align-items: flex-start; gap: .85rem; padding: .6rem 0; }
+  .bento__cap-row + .bento__cap-row { border-top: 1px solid var(--c-border); }
+  .bento__cap-row .bento__icon { flex: none; width: 36px; height: 36px; border-radius: 11px; }
+  .bento__cap-row .bento__cap { min-width: 0; }
+  .bento__cap-row h3 { margin: 0 0 .15rem; font-size: 1rem; line-height: 1.3; }
+  .bento__cap-row p { margin: 0; font-size: .85rem; line-height: 1.35; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
+}
+
 /* ---------- Projetos (trilho horizontal) ---------- */
 .projects-section { overflow-x: clip; }
 .hproj__track { display: flex; gap: 1.5rem; margin: 0; padding: 0; }

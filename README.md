@@ -326,6 +326,8 @@ planos, contato, validação de conteúdo, workflow de deploy.
 - **Conteúdo real** nos 3 idiomas: hero, sobre, diferenciais, experiência, projetos Sinapse e Bankup; sem "(exemplo)".
 - **Hero** mínimo e imersivo (malha animada, título gigante com destaque em brilho, CTAs magnéticos); mockup removido.
 - **Bento** unindo números (contadores animados) e diferenciais.
+- **Destaques no mobile (≤ 680px, `MOBILE_BENTO`)**: bento compacto — destaque grande (min. 180px), stats pequenos
+  numa faixa única de 3 colunas e diferenciais num card com lista (descrição limitada a 2 linhas); desktop inalterado.
 - **Projetos** em trilho horizontal fixo no desktop (scroll vertical → horizontal) e swipe com scroll-snap no mobile/
   movimento reduzido; capa dessaturada que ganha cor no hover, tags que sobem em sequência, card "Seu projeto aqui".
 - **Projetos no mobile (≤ 680px, `MOBILE_DECK`)**: deck de cards empilhados (`ProjectDeck.jsx`) — palco sticky,
