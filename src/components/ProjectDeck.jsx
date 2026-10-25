@@ -9,6 +9,7 @@ import SmartImage from './SmartImage.jsx';
  * Deck de projetos (mobile ≤ 680px; ver engine/breakpoints.js → MOBILE_DECK).
  *
  * - Palco "sticky" com os cards sobrepostos; a rolagem pela altura do .deck avança o deck.
+ *   Como um baralho: o card seguinte sobe por cima e o anterior vai para a pilha, atrás.
  * - Movimento: CSS scroll-driven (`animation-timeline: view()` anima --t 0→1 no .deck; cada card
  *   calcula a própria posição a partir de --t). Sem suporte: IntersectionObserver em sentinelas
  *   (uma por card) define o card da frente e o --t vai em degraus, com transição.

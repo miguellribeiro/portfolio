@@ -960,9 +960,11 @@ button.pcard__cover { cursor: zoom-in; }
 
 /* ==========================================================================
    v3 — Épico 3: deck de projetos no mobile (≤ 680px; ProjectDeck.jsx)
-   Palco sticky com até 3 cards visíveis (trás: 95% / 90%, deslocados 14px / 28px).
+   Palco sticky com até 3 cards visíveis. Como um baralho: o próximo card sobe POR CIMA
+   da pilha e o que sai fica ATRÁS (95% / 90%, 14px / 28px acima, escurecido ~0,85 / 0,7).
    --t (0→1) vem de animation-timeline: view() no .deck (modo --sdt) ou, sem suporte,
-   do IntersectionObserver em degraus com transição (modo --io). Cada card: --d = i − t·(n−1).
+   do IntersectionObserver em degraus com transição (modo --io). Cada card: --d = i − t·(n−1)
+   (d < 0: já passou, na pilha; d = 0: frente; 0 < d ≤ 1: entrando por baixo).
    ========================================================================== */
 @property --t { syntax: '<number>'; inherits: true; initial-value: 0; }
 @keyframes deck-t { from { --t: 0; } to { --t: 1; } }
@@ -977,19 +979,26 @@ button.pcard__cover { cursor: zoom-in; }
   .deck__sentinel { position: absolute; left: 0; width: 1px; top: 0; height: 1px; pointer-events: none; visibility: hidden; }
   .deck__stage { position: sticky; top: calc(var(--header-h) + 12px); height: var(--stage-h); }
   .deck__count { display: flex; align-items: center; justify-content: flex-end; height: var(--count-h); margin: 0; font-family: var(--font-mono); font-size: .8rem; letter-spacing: .04em; color: var(--c-muted); }
-  .deck__list { position: relative; height: calc(2 * var(--peek) + var(--card-h)); margin: 0; padding: 0; list-style: none; clip-path: inset(0 -40px -80px); } /* o card que sai some pela borda de cima */
+  .deck__list { position: relative; height: calc(2 * var(--peek) + var(--card-h)); margin: 0; padding: 0; list-style: none; }
   .deck__item {
     --d: calc(var(--i) - var(--t) * (var(--n) - 1));
+    --back: clamp(0, -1 * var(--d), 2);   /* 0 = frente, 1–2 = níveis na pilha (atrás) */
+    --in: clamp(0, var(--d), 2);          /* 0 = frente, 1 = esperando logo abaixo, 2 = fila (fora da tela) */
     position: absolute; left: 0; right: 0; bottom: 0; height: var(--card-h);
-    z-index: calc(20 - var(--i)); transform-origin: 50% 0;
+    z-index: calc(10 + var(--i)); /* o card seguinte sempre por cima do anterior */
+    transform-origin: 50% 0;
     transform:
-      translateY(calc(clamp(0, var(--d), 2) * -1 * var(--peek) + clamp(-1, 1.25 * var(--d), 0) * 104%))
-      scale(calc(1 - .05 * clamp(0, var(--d), 2)));
-    opacity: clamp(0, calc(3 - var(--d)), 1); /* no máx. 3 visíveis; o que sai continua opaco (recortado em cima) */
+      translateY(calc(var(--in) * (100% + 24px) - var(--back) * var(--peek)))
+      scale(calc(1 - .05 * var(--back)));
+    /* no máx. 3 visíveis: frente + 2 na pilha (+ o próximo entrando por baixo) */
+    opacity: clamp(0, min(calc(3 + var(--d)), calc(2 - var(--d))), 1);
     will-change: transform, opacity;
   }
+  /* Escurecimento de quem está na pilha (≈ brightness .85 no 1º nível, .7 no 2º) */
+  .deck__item::after { content: ''; position: absolute; inset: 0; border-radius: var(--radius); background: #000; opacity: calc(.15 * var(--back)); pointer-events: none; }
   .deck__item.is-past, .deck__item.is-behind { pointer-events: none; }
   .deck--io .deck__item { transition: transform .45s var(--ease), opacity .45s var(--ease); }
+  .deck--io .deck__item::after { transition: opacity .45s var(--ease); }
   .deck__card {
     display: flex; flex-direction: column; width: 100%; height: 100%; padding: 0; margin: 0; overflow: hidden;
     text-align: left; font: inherit; color: var(--c-text); cursor: pointer;
@@ -1008,13 +1017,14 @@ button.pcard__cover { cursor: zoom-in; }
   .deck__tags .tag { white-space: nowrap; }
   .deck__more { font-size: .75rem; color: var(--c-primary-text); }
 
-  /* Painel inferior (<dialog>): sobe até 88svh, alça 36×4, fundo escurecido a 60% */
+  /* Painel inferior (<dialog>): altura do conteúdo até no máx. 88svh (rola por dentro só se
+     passar disso), alça 36×4, fundo escurecido a 60% */
   html.has-sheet { overflow: hidden; }
   .sheet { position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: transparent; color: var(--c-text); overflow: hidden; }
   .sheet::backdrop { background: rgb(0 0 0 / .6); opacity: 0; transition: opacity .28s var(--ease); }
   .sheet.is-in::backdrop { opacity: 1; }
   .sheet__panel {
-    position: absolute; left: 0; right: 0; bottom: 0; height: 88svh; display: flex; flex-direction: column;
+    position: absolute; left: 0; right: 0; bottom: 0; height: auto; max-height: 88svh; display: flex; flex-direction: column;
     border-radius: 22px 22px 0 0; background: var(--c-surface); border-top: 1px solid var(--c-border);
     box-shadow: 0 -20px 50px -20px rgb(0 0 0 / .5);
     transform: translateY(100%); transition: transform .28s var(--ease);
@@ -1025,7 +1035,7 @@ button.pcard__cover { cursor: zoom-in; }
   .sheet__handle { position: absolute; left: 50%; top: 10px; width: 36px; height: 4px; margin-left: -18px; border-radius: 4px; background: color-mix(in srgb, var(--c-muted) 55%, transparent); }
   .sheet__close { position: absolute; right: 6px; top: 2px; width: 48px; height: 48px; display: grid; place-items: center; padding: 0; border: 0; border-radius: 999px; background: transparent; color: var(--c-text); cursor: pointer; }
   .sheet__close:focus-visible { outline: 2px solid var(--c-primary); outline-offset: -2px; }
-  .sheet__scroll { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 0 1.25rem calc(1.5rem + env(safe-area-inset-bottom)); }
+  .sheet__scroll { flex: 0 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 0 1.25rem calc(1.5rem + env(safe-area-inset-bottom)); }
   .sheet__content { display: flex; flex-direction: column; gap: .8rem; }
   .sheet__content h3 { margin: .2rem 0 0; font-size: 1.6rem; }
   .sheet__content p { margin: 0; }
@@ -1038,6 +1048,7 @@ button.pcard__cover { cursor: zoom-in; }
   .deck__stage { position: static; height: auto; }
   .deck__list { height: auto; display: grid; gap: 1rem; clip-path: none; }
   .deck__item { position: relative; height: auto; transform: none; opacity: 1; transition: none; will-change: auto; }
+  .deck__item::after { content: none; }
   .deck__cover { flex: none; }
   .deck__cover .smart-img { height: auto; aspect-ratio: 16 / 10 !important; }
   .deck__cover--end { aspect-ratio: 16 / 7; }
