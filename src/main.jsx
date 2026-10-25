@@ -9,10 +9,15 @@ import '@fontsource/inter/latin-500.css';
 import '@fontsource/jetbrains-mono/latin-400.css';
 import '@fontsource/instrument-serif/latin-400-italic.css';
 import App from './App.jsx';
+import { redirectLegacyLang, restoreLangScroll } from './i18n/I18nProvider.jsx';
 import './styles.css';
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-);
+// ?lang=xx (links antigos) → /xx/; senão monta o app no idioma do caminho.
+if (!redirectLegacyLang()) {
+  createRoot(document.getElementById('root')).render(
+    <StrictMode>
+      <App />
+    </StrictMode>,
+  );
+  restoreLangScroll();
+}

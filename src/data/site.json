@@ -1,21 +1,31 @@
 {
   "$comment": "Configuração compartilhada (não traduzível). Textos ficam em locales/*.json.",
   "defaultLocale": "pt-BR",
+  "siteUrl": "https://manpestudio.com.br",
   "locales": [
     {
       "code": "pt-BR",
       "label": "PT",
-      "name": "Português"
+      "name": "Português",
+      "path": "/",
+      "ogLocale": "pt_BR",
+      "ogImage": "/og-pt.png"
     },
     {
       "code": "es",
       "label": "ES",
-      "name": "Español"
+      "name": "Español",
+      "path": "/es/",
+      "ogLocale": "es_ES",
+      "ogImage": "/og-es.png"
     },
     {
       "code": "en",
       "label": "EN",
-      "name": "English"
+      "name": "English",
+      "path": "/en/",
+      "ogLocale": "en_US",
+      "ogImage": "/og-en.png"
     }
   ],
   "brand": {

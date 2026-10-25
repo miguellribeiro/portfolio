@@ -291,9 +291,17 @@ blobs estáticos, skeleton estático, só fades simples, overlays de contato abr
 
 - Seletor de idioma próprio no cabeçalho (bandeira SVG + código): listbox ARIA com setas, Enter, Esc,
   typeahead, clique fora e retorno de foco. O mesmo componente (`ListSelect`) é usado no seletor de região.
-- Ordem de detecção: `?lang=` na URL → `localStorage` → idioma do navegador → `defaultLocale`.
-- Ao trocar, o idioma é salvo e a URL é atualizada com `?lang=` (link compartilhável).
-- SEO por idioma: `<html lang>`, `title`, `description` e `og:*` vêm de `meta` em cada locale.
+- **Uma URL por idioma** (`site.json → locales[].path`): `/` (pt-BR), `/en/`, `/es/`. O idioma vem
+  **só do caminho** (sem detecção pelo navegador), para o conteúdo nunca divergir do `<head>` da URL.
+- Ao trocar, o seletor navega para a URL do idioma (mantendo a rolagem). Links antigos com `?lang=xx`
+  redirecionam para `/xx/`. A região/preço continua independente do idioma.
+- **SEO pré-renderizado** (`scripts/seo-heads.js`, plugin do Vite): o build gera `dist/index.html`,
+  `dist/en/index.html` e `dist/es/index.html`, cada um com `<html lang>`, `title`/`description`
+  (de `meta` no locale), canonical absoluto, `hreflang` (+ `x-default` → `/`), `og:*`, `twitter:*`
+  e JSON-LD (Person + ProfessionalService). Nada disso é trocado via JS — crawlers e prévias de
+  link não executam JS. `siteUrl`, `ogLocale` e `ogImage` ficam em `site.json`.
+- `public/robots.txt` e `public/sitemap.xml` (com alternates `xhtml:link`) apontam para `siteUrl`.
+- Assets do `index.html` com caminho absoluto (`/favicon.svg`), para funcionar também em `/en/` e `/es/`.
 - Chave ausente → fallback para o idioma padrão + aviso no console (dev).
 
 ---
@@ -388,7 +396,7 @@ Importe o repositório; framework Vite; build `npm run build`; output `dist`. N�
 - [ ] Trocar as capas SVG por prints reais em WebP
 - [x] Definir planos e preços reais por região
 - [ ] Ativar GitHub Pages (fonte: GitHub Actions) ou conectar Vercel
-- [ ] Domínio próprio, OG image, sitemap e robots
+- [x] Domínio próprio, OG image, sitemap e robots
 - [x] Números reais em `site.json → stats`
 - [ ] Revisar acessibilidade (Lighthouse) e performance
 - [ ] Planejar Fase 3 (Test Drive)
