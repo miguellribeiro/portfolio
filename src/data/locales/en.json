@@ -71,6 +71,10 @@
     "prev": "Previous",
     "next": "Next",
     "confidential": "Confidential",
+    "deck": {
+      "counter": "{n} of {total}",
+      "open": "View details"
+    },
     "status": {
       "production": "In production",
       "in-progress": "In development",

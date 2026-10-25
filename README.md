@@ -328,6 +328,10 @@ planos, contato, validação de conteúdo, workflow de deploy.
 - **Bento** unindo números (contadores animados) e diferenciais.
 - **Projetos** em trilho horizontal fixo no desktop (scroll vertical → horizontal) e swipe com scroll-snap no mobile/
   movimento reduzido; capa dessaturada que ganha cor no hover, tags que sobem em sequência, card "Seu projeto aqui".
+- **Projetos no mobile (≤ 680px, `MOBILE_DECK`)**: deck de cards empilhados (`ProjectDeck.jsx`) — palco sticky,
+  `animation-timeline: view()` (fallback IntersectionObserver), até 3 cards visíveis, contador "1 de N"
+  (`projects.deck.*`), painel inferior `<dialog>` com os detalhes (fecha por X, arrasto, Esc, fundo e "voltar").
+  Com movimento reduzido vira lista simples.
 - **Como funciona**: stepper de 4 etapas (sem prazos), avanço automático lento e pausável.
 - **Planos** mensais pré-pagos com abas Sites/Sistemas, faixa Sob Medida, tabelas por categoria com notas ¹ ²,
   aviso de escopo, garantias e **preços por região** (BRL, USD, EUR, MXN, CLP, COP).

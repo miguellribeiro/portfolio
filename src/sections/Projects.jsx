@@ -11,6 +11,8 @@ import SmartImage from '../components/SmartImage.jsx';
 import { ChannelAnchor } from '../components/ChannelLink.jsx';
 import { useMediaQuery } from '../hooks/useMediaQuery.js';
 import { useMagnetic } from '../hooks/useMagnetic.js';
+import ProjectDeck from '../components/ProjectDeck.jsx';
+import { MOBILE_DECK } from '../engine/breakpoints.js';
 
 const asset = (id, file) => `${import.meta.env.BASE_URL}projects/${id}/${file}`;
 
@@ -93,31 +95,42 @@ function EndCard() {
 /**
  * Projetos em trilho horizontal.
  * Desktop (≥1024px, com movimento): seção "sticky" — a rolagem vertical move o trilho (useScroll/useTransform);
- * a altura da seção = distância horizontal + 1 viewport. Mobile / reduced motion: swipe nativo com scroll-snap.
+ * a altura da seção = distância horizontal + 1 viewport. 681–1023px / reduced motion: swipe nativo com scroll-snap.
+ * Mobile (≤ 680px): deck de cards empilhados + painel inferior (components/ProjectDeck.jsx).
  */
 export default function Projects({ id }) {
   const { t } = useI18n();
   const fx = useEffects();
   const wide = useMediaQuery('(min-width: 1024px)');
+  const mobile = useMediaQuery(MOBILE_DECK);
   const pinned = wide && !fx.reducedMotion;
   const outer = useRef(null);
   const track = useRef(null);
   const [dist, setDist] = useState(0);
 
   useLayoutEffect(() => {
-    if (!pinned) { setDist(0); return undefined; }
     const el = track.current;
+    // mobile: o deck substitui o trilho (as duas media queries podem mudar em eventos separados)
+    if (!pinned || mobile || !el) { setDist(0); return undefined; }
     const measure = () => setDist(Math.max(0, el.scrollWidth - el.parentElement.clientWidth));
     measure();
     const ro = new ResizeObserver(measure);
     ro.observe(el);
     ro.observe(el.parentElement);
     return () => ro.disconnect();
-  }, [pinned]);
+  }, [pinned, mobile]);
 
   const { scrollYProgress } = useScroll({ target: outer, offset: ['start start', 'end end'] });
   const x = useTransform(scrollYProgress, (v) => -v * dist);
   const bar = useTransform(scrollYProgress, [0, 1], [0.08, 1]);
+
+  if (mobile) {
+    return (
+      <Section id={id} title={t('projects.title')} subtitle={t('projects.subtitle')} className="projects-section is-deck" sectionRef={outer}>
+        <ProjectDeck projects={projects} />
+      </Section>
+    );
+  }
 
   return (
     <Section

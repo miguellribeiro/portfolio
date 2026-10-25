@@ -957,3 +957,90 @@ button.pcard__cover { cursor: zoom-in; }
   .hero__solar .solar__arm { transform: rotate(calc(var(--a0) * 1deg)); will-change: auto; }
   .hero__solar .solar__body { transform: rotate(calc(var(--a0) * -1deg)); }
 }
+
+/* ==========================================================================
+   v3 — Épico 3: deck de projetos no mobile (≤ 680px; ProjectDeck.jsx)
+   Palco sticky com até 3 cards visíveis (trás: 95% / 90%, deslocados 14px / 28px).
+   --t (0→1) vem de animation-timeline: view() no .deck (modo --sdt) ou, sem suporte,
+   do IntersectionObserver em degraus com transição (modo --io). Cada card: --d = i − t·(n−1).
+   ========================================================================== */
+@property --t { syntax: '<number>'; inherits: true; initial-value: 0; }
+@keyframes deck-t { from { --t: 0; } to { --t: 1; } }
+@media (max-width: 680px) {
+  .projects-section.is-deck { overflow-x: clip; }
+  .deck {
+    --card-h: 60svh; --peek: 14px; --count-h: 2.25rem; --step: 55svh;
+    --stage-h: calc(var(--count-h) + 2 * var(--peek) + var(--card-h));
+    position: relative; height: calc(var(--stage-h) + (var(--n) - 1) * var(--step));
+  }
+  .deck--sdt { animation: deck-t linear both; animation-timeline: view(); animation-range: contain 0% contain 100%; }
+  .deck__sentinel { position: absolute; left: 0; width: 1px; top: 0; height: 1px; pointer-events: none; visibility: hidden; }
+  .deck__stage { position: sticky; top: calc(var(--header-h) + 12px); height: var(--stage-h); }
+  .deck__count { display: flex; align-items: center; justify-content: flex-end; height: var(--count-h); margin: 0; font-family: var(--font-mono); font-size: .8rem; letter-spacing: .04em; color: var(--c-muted); }
+  .deck__list { position: relative; height: calc(2 * var(--peek) + var(--card-h)); margin: 0; padding: 0; list-style: none; clip-path: inset(0 -40px -80px); } /* o card que sai some pela borda de cima */
+  .deck__item {
+    --d: calc(var(--i) - var(--t) * (var(--n) - 1));
+    position: absolute; left: 0; right: 0; bottom: 0; height: var(--card-h);
+    z-index: calc(20 - var(--i)); transform-origin: 50% 0;
+    transform:
+      translateY(calc(clamp(0, var(--d), 2) * -1 * var(--peek) + clamp(-1, 1.25 * var(--d), 0) * 104%))
+      scale(calc(1 - .05 * clamp(0, var(--d), 2)));
+    opacity: clamp(0, calc(3 - var(--d)), 1); /* no máx. 3 visíveis; o que sai continua opaco (recortado em cima) */
+    will-change: transform, opacity;
+  }
+  .deck__item.is-past, .deck__item.is-behind { pointer-events: none; }
+  .deck--io .deck__item { transition: transform .45s var(--ease), opacity .45s var(--ease); }
+  .deck__card {
+    display: flex; flex-direction: column; width: 100%; height: 100%; padding: 0; margin: 0; overflow: hidden;
+    text-align: left; font: inherit; color: var(--c-text); cursor: pointer;
+    border-radius: var(--radius); border: 1px solid var(--c-border); background: var(--c-surface); box-shadow: var(--shadow);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .deck__card:focus-visible { outline: 2px solid var(--c-primary); outline-offset: 3px; }
+  .deck__cover { position: relative; flex: 1 1 auto; min-height: 0; display: block; background: var(--c-surface2); overflow: hidden; }
+  .deck__cover .smart-img { height: 100%; aspect-ratio: auto !important; }
+  .deck__cover .pcard__num { font-size: 4rem; }
+  .deck__cover--end { display: grid; place-items: center; background: radial-gradient(120% 80% at 0% 0%, color-mix(in srgb, var(--c-primary) 18%, transparent), transparent 60%), var(--c-surface2); }
+  .deck__card--end { border: 1.5px dashed color-mix(in srgb, var(--c-primary) 50%, transparent); }
+  .deck__body { display: flex; flex-direction: column; gap: .6rem; padding: 1.1rem 1.25rem 1.2rem; }
+  .deck__title { font-family: var(--font-heading); font-weight: 700; font-size: 1.5rem; line-height: 1.1; letter-spacing: -0.02em; }
+  .deck__tags { flex-wrap: nowrap; overflow: hidden; }
+  .deck__tags .tag { white-space: nowrap; }
+  .deck__more { font-size: .75rem; color: var(--c-primary-text); }
+
+  /* Painel inferior (<dialog>): sobe até 88svh, alça 36×4, fundo escurecido a 60% */
+  html.has-sheet { overflow: hidden; }
+  .sheet { position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: transparent; color: var(--c-text); overflow: hidden; }
+  .sheet::backdrop { background: rgb(0 0 0 / .6); opacity: 0; transition: opacity .28s var(--ease); }
+  .sheet.is-in::backdrop { opacity: 1; }
+  .sheet__panel {
+    position: absolute; left: 0; right: 0; bottom: 0; height: 88svh; display: flex; flex-direction: column;
+    border-radius: 22px 22px 0 0; background: var(--c-surface); border-top: 1px solid var(--c-border);
+    box-shadow: 0 -20px 50px -20px rgb(0 0 0 / .5);
+    transform: translateY(100%); transition: transform .28s var(--ease);
+  }
+  .sheet.is-in .sheet__panel { transform: translateY(0); }
+  .sheet__panel.is-dragging { transition: none; }
+  .sheet__grab { position: relative; flex: none; height: 52px; touch-action: none; cursor: grab; }
+  .sheet__handle { position: absolute; left: 50%; top: 10px; width: 36px; height: 4px; margin-left: -18px; border-radius: 4px; background: color-mix(in srgb, var(--c-muted) 55%, transparent); }
+  .sheet__close { position: absolute; right: 6px; top: 2px; width: 48px; height: 48px; display: grid; place-items: center; padding: 0; border: 0; border-radius: 999px; background: transparent; color: var(--c-text); cursor: pointer; }
+  .sheet__close:focus-visible { outline: 2px solid var(--c-primary); outline-offset: -2px; }
+  .sheet__scroll { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 0 1.25rem calc(1.5rem + env(safe-area-inset-bottom)); }
+  .sheet__content { display: flex; flex-direction: column; gap: .8rem; }
+  .sheet__content h3 { margin: .2rem 0 0; font-size: 1.6rem; }
+  .sheet__content p { margin: 0; }
+  .sheet__cover { display: block; overflow: hidden; border-radius: var(--radius-sm); border: 1px solid var(--c-border); }
+  .sheet__content--end { align-items: flex-start; padding-top: .5rem; }
+}
+/* Reduced motion: lista empilhada simples, sem transforms nem sticky */
+@media (max-width: 680px) and (prefers-reduced-motion: reduce) {
+  .deck, .deck--sdt { height: auto; animation: none; }
+  .deck__stage { position: static; height: auto; }
+  .deck__list { height: auto; display: grid; gap: 1rem; clip-path: none; }
+  .deck__item { position: relative; height: auto; transform: none; opacity: 1; transition: none; will-change: auto; }
+  .deck__cover { flex: none; }
+  .deck__cover .smart-img { height: auto; aspect-ratio: 16 / 10 !important; }
+  .deck__cover--end { aspect-ratio: 16 / 7; }
+  .sheet::backdrop, .sheet__panel { transition: none; }
+  .sheet__panel { transform: none; }
+}
