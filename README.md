@@ -33,7 +33,7 @@ traduzir ou reordenar conteúdo **não exige mexer em componentes**.
 - [`lenis`](https://lenis.darkroom.engineering) opcional (smooth scroll, carregado sob demanda).
 - i18n próprio e leve (Context API), sem dependências extras.
 - ESLint 9 (flat config).
-- Deploy estático: **GitHub Pages** (workflow incluso) ou **Vercel**.
+- Deploy: **Cloudflare Workers** (static assets, `wrangler.jsonc`).
 
 ### Scripts
 | Comando | O que faz |
@@ -85,7 +85,6 @@ Vantagem: para traduzir o site inteiro, basta um arquivo por idioma; o validador
 
 ```
 portfolio/
-├─ .github/workflows/deploy.yml   # build + deploy GitHub Pages
 ├─ public/
 │  ├─ favicon.svg
 │  └─ projects/<project-id>/      # imagens de cada projeto (cover, gallery-N)
@@ -384,11 +383,10 @@ O `html_handling` padrão (`auto-trailing-slash`) já serve `/en/` → `dist/en/
 (e redireciona `/en` e `/en/index.html` → `/en/`). Caminhos inexistentes → 404.
 Teste local: `npm run build && npx wrangler dev` (sem login; requer Node 22+).
 
-### GitHub Pages (migração — fase 1)
-O workflow `.github/workflows/deploy.yml` continua rodando lint + build, mas publica só páginas de
-redirecionamento (`scripts/pages-redirect.js`): cada caminho em `/<repo>/` responde com canonical,
-meta refresh 0 e `location.replace` para a URL equivalente em `siteUrl`.
-Fase 2 (depois da reindexação): desativar o workflow.
+### GitHub Pages (migração concluída — fase 2)
+O workflow de deploy do Pages foi removido. O último deploy publicado continua no ar com as páginas de
+redirecionamento (canonical, meta refresh 0 e `location.replace` para a URL equivalente em `siteUrl`).
+Para republicá-las, se preciso: `BASE_PATH=/portfolio/ node scripts/pages-redirect.js _pages`.
 
 ### Vercel
 Importe o repositório; framework Vite; build `npm run build`; output `dist`. Não defina `BASE_PATH`.
@@ -402,7 +400,7 @@ Importe o repositório; framework Vite; build `npm run build`; output `dist`. N�
 - [x] Adicionar projetos reais; remover os projetos de exemplo
 - [ ] Trocar as capas SVG por prints reais em WebP
 - [x] Definir planos e preços reais por região
-- [ ] Ativar GitHub Pages (fonte: GitHub Actions) ou conectar Vercel
+- [x] Deploy na Cloudflare (Worker `manpestudio`) e GitHub Pages só com redirecionamentos
 - [x] Domínio próprio, OG image, sitemap e robots
 - [x] Números reais em `site.json → stats`
 - [ ] Revisar acessibilidade (Lighthouse) e performance
