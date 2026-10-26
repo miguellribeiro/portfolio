@@ -86,7 +86,8 @@ Vantagem: para traduzir o site inteiro, basta um arquivo por idioma; o validador
 ```
 portfolio/
 ├─ public/
-│  ├─ favicon.svg
+│  ├─ favicon.svg, favicon{,-light}-{16,32}.png, apple-touch-icon.png   # ícones (logo A1, traço fino)
+│  ├─ og-{pt,en,es}.png          # imagens de prévia 1200×630
 │  └─ projects/<project-id>/      # imagens de cada projeto (cover, gallery-N)
 ├─ src/
 │  ├─ data/
@@ -281,8 +282,9 @@ blobs estáticos, skeleton estático, só fades simples, overlays de contato abr
   (ícones em `components/Icon.jsx`). `xl` = caixa grande com brilho animado.
 - `site.json → marquee.items`: nomes de tecnologias (não traduzidos); título em `marquee.title`.
 - Título do hero: `hero.headline`; o trecho entre `[[ ]]` recebe o gradiente.
-- Marca: `site.json → brand.name` + `components/Wordmark.jsx` (header, loader e rodapé) e `public/favicon.svg`.
-  Para trocar o logo, altere só esses dois arquivos.
+- Marca (logo A1, macaco + "manpe"): `site.json → brand.name` + `components/Wordmark.jsx` (lockup símbolo +
+  "manpe" no header, loader e rodapé; texto real em Bricolage; `symbolOnly` abaixo de ~24px) e os ícones em `public/` (`favicon.svg`,
+  `favicon-16/32.png` escuros + `favicon-light-16/32.png` por `prefers-color-scheme`, `apple-touch-icon.png`, `og-*.png`). Para trocar o logo, altere só esses arquivos.
 
 ---
 
@@ -300,7 +302,8 @@ blobs estáticos, skeleton estático, só fades simples, overlays de contato abr
   e JSON-LD (Person + ProfessionalService). Nada disso é trocado via JS — crawlers e prévias de
   link não executam JS. `siteUrl`, `ogLocale` e `ogImage` ficam em `site.json`.
 - `public/robots.txt` e `public/sitemap.xml` (com alternates `xhtml:link`) apontam para `siteUrl`.
-- Assets do `index.html` com caminho absoluto (`/favicon.svg`), para funcionar também em `/en/` e `/es/`.
+- Assets do `index.html` com caminho absoluto (`/favicon.svg`, `/favicon-32.png`, `/apple-touch-icon.png`),
+  para funcionar também em `/en/` e `/es/`.
 - Chave ausente → fallback para o idioma padrão + aviso no console (dev).
 
 ---

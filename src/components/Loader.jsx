@@ -4,7 +4,7 @@ import { useI18n } from '../i18n/context.js';
 import Wordmark from './Wordmark.jsx';
 
 const KEY = 'portfolio.loaded';
-const MIN = 420; // tempo mínimo para o traço do "M"
+const MIN = 420; // tempo mínimo para o traço do símbolo
 const MAX = 560; // + 140ms de fade = máx. 700ms
 
 function firstVisit() {
@@ -12,7 +12,7 @@ function firstVisit() {
 }
 
 /**
- * Loader inicial: o "M" do wordmark é desenhado (stroke-dashoffset), o resto da
+ * Loader inicial: o traço do símbolo do wordmark é desenhado (stroke-dashoffset), o resto da
  * marca revela por máscara, varredura em gradiente e fade. Só na 1ª visita da sessão;
  * sobre o conteúdo já renderizado; sai em document.fonts.ready (máx. ~700ms).
  */
@@ -43,7 +43,7 @@ export default function Loader({ name = 'Manpe' }) {
   if (state === 'done') return null;
   return (
     <div className={`loader ${state === 'out' ? 'loader--out' : ''}`} role="status" aria-label={t('loader')}>
-      <Wordmark name={name} size="xl" draw />
+      <Wordmark name={name} size="xl" draw decorative />
       <span className="loader__sweep" aria-hidden="true" />
     </div>
   );

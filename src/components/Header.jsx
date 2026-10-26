@@ -20,7 +20,7 @@ export default function Header({ mode, onToggleTheme }) {
     <header className="header">
       <div className="container header__inner">
         <a href="#main" className="brand" aria-label={brand}>
-          <Wordmark name={brand} />
+          <Wordmark name={brand} decorative />
         </a>
         <nav aria-label={t('nav')} className="nav">
           {NAV.filter((n) => enabled.has(n)).map((n) => (
