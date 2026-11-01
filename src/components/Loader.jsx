@@ -186,6 +186,7 @@ export default function Loader() {
       offSkip();
       html.classList.remove('is-loading');
       setOn(false);
+      window.dispatchEvent(new Event('manpe:loader-done')); // Fase 4: libera os bichos (lazy)
     };
     // O site vai aparecer: libera header/main; fonte da 1ª dobra que ainda não chegou fica no fallback
     // nesta visita (como font-display: optional), para não trocar depois com o site já visível.

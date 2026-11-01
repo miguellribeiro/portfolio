@@ -1,0 +1,32 @@
+/* Fase 4 — bichos (chunk lazy). Só transform/opacity; as animações internas só existem com o bicho no DOM. */
+:root { --bicho: #9A4D72; --bicho-ave: #C0628E; }
+[data-theme='light'] { --bicho-ave: #9A4D72; } /* claro: rosa escuro p/ contraste (Leonardo) */
+.fscene__bichos, .bichos-host { overflow: clip; pointer-events: none; }
+.bichos-host { position: absolute; z-index: 1; }
+.bicho, .bicho__flip, .bicho__pose { position: absolute; left: 0; top: 0; transform-origin: 0 0; pointer-events: none; }
+.bicho svg { position: absolute; display: block; overflow: visible; }
+.bicho .b { fill: var(--bicho); }
+.bicho .bs { stroke: var(--bicho); }
+.bicho .ave { fill: var(--bicho-ave); }
+.bicho .olho { fill: #F5C26B; }
+.bicho .orelha { fill: #E9D7DF; opacity: .8; }
+.is-hang .bicho__pose { transform: rotate(180deg); }
+/* capivara: pares de pernas alternados + balanço do corpo */
+.bicho--capivara .pernas-a, .bicho--capivara .pernas-b { transform-origin: 0 -4px; }
+.is-walk .pernas-a { animation: bicho-passo .36s ease-in-out infinite alternate; }
+.is-walk .pernas-b { animation: bicho-passo .36s ease-in-out -.36s infinite alternate-reverse; }
+.is-walk svg { animation: bicho-bob .36s ease-in-out infinite alternate; }
+/* pássaro: asa batendo só em voo */
+.bicho--passaro .asa { transform-origin: 0 0; }
+.bicho--passaro.is-fly .asa { animation: bicho-asa .18s ease-in-out infinite alternate; }
+.bicho--passaro.is-fly svg { animation: bicho-bob .36s ease-in-out infinite alternate; }
+/* sagui: cauda e pernas soltas */
+.bicho--sagui .cauda { transform-origin: -18px -10px; animation: bicho-cauda .7s ease-in-out infinite alternate; }
+.bicho--sagui .pernas-a { transform-origin: -10px -4px; animation: bicho-perna .5s ease-in-out infinite alternate; }
+.bicho--sagui .pernas-b { transform-origin: 12px -4px; animation: bicho-perna .5s ease-in-out infinite alternate-reverse; }
+@keyframes bicho-passo { from { transform: skewX(-20deg); } to { transform: skewX(20deg); } }
+@keyframes bicho-bob { from { transform: translateY(0); } to { transform: translateY(-1.5px); } }
+@keyframes bicho-asa { from { transform: rotate(20deg); } to { transform: rotate(-55deg); } }
+@keyframes bicho-cauda { from { transform: rotate(-12deg); } to { transform: rotate(10deg); } }
+@keyframes bicho-perna { from { transform: rotate(-10deg); } to { transform: rotate(12deg); } }
+@media (prefers-reduced-motion: reduce) { .bicho { display: none; } }

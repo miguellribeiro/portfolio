@@ -114,7 +114,8 @@
     "dividers": "wave",
     "smoothScroll": false,
     "decor": true,
-    "footerScene": true
+    "footerScene": true,
+    "bichos": true
   },
   "sections": [
     {

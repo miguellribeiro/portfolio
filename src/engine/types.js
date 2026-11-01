@@ -94,6 +94,7 @@
  * @property {'diagonal'|'wave'|'none'} dividers  Divisores entre seções
  * @property {boolean} smoothScroll    Lenis (carregado sob demanda)
  * @property {boolean} decor           Tipografia decorativa (src/data/keywords.js): vertical, curva, gigante, tags
+ * @property {boolean} bichos          Bichos esporádicos (Fase 4; chunk lazy src/bichos/). QA: ?bichos=debug
  * @property {boolean} footerScene     Cena orgânica no footer (grama, árvores, vaga-lumes; SVG lazy). Leva a palavra gigante consigo
  *
  * @typedef {Object} StatDef  Rótulo em locales/*.json → stats.items.<id>

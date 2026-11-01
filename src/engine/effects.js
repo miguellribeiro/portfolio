@@ -20,6 +20,7 @@ export const DEFAULT_EFFECTS = {
   smoothScroll: false,
   decor: true,
   footerScene: true,
+  bichos: true,
 };
 
 /** Efeitos de movimento desligados quando o usuário pede prefers-reduced-motion.

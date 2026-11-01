@@ -3,6 +3,7 @@ import Header from './components/Header.jsx';
 import Loader from './components/Loader.jsx';
 import { ChannelProvider } from './components/ChannelOverlay.jsx';
 import PageRenderer from './engine/PageRenderer.jsx';
+import Bichos from './engine/useBichos.js';
 import { EffectsProvider } from './engine/EffectsProvider.jsx';
 import { useTheme } from './engine/useTheme.js';
 import { site } from './engine/content.js';
@@ -17,6 +18,7 @@ export default function App() {
           <Header mode={mode} onToggleTheme={toggleMode} />
           <PageRenderer />
           <Loader name={site.brand?.name} />
+          <Bichos />
         </ChannelProvider>
       </EffectsProvider>
     </I18nProvider>
