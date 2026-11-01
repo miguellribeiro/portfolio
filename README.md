@@ -254,7 +254,7 @@ Todas as combinações de texto foram checadas para contraste **WCAG AA** nos do
 ### 6.3 Efeitos (`effects`)
 | Chave | Efeito |
 |---|---|
-| `loader` | "Desenho vivo": traço do macaco desenhado, mandíbula com pulinho, olhos dourados piscam e o símbolo voa em arco até o header (FLIP, só WAAPI). Overlay `aria-hidden` sobre o site; espera `load` + `document.fonts.ready` + `decode()` das imagens da 1ª dobra (mín. ~1,5s, teto 4s); 1ª visita da sessão (`sessionStorage portfolio.loaded`). Ritmo: `TIME_SCALE` em `Loader.jsx` |
+| `loader` | "Desenho vivo": traço do macaco desenhado, mandíbula com pulinho, olhos dourados piscam e o símbolo voa em arco até o header (FLIP, só WAAPI). Overlay `aria-hidden` sobre o site; espera `load` + `document.fonts.ready` + `document.fonts.load()` das fontes do header/hero (peso/estilo exatos) + `decode()` das imagens da 1ª dobra (mín. ~1,5s, teto 4s); enquanto essas fontes não chegam o site fica com opacity 0 sob o overlay, e a que não chegar até o teto fica no fallback nessa visita (sem troca = sem CLS). Toque/clique ou qualquer tecla pula (~150ms). 1ª visita da sessão (`sessionStorage portfolio.loaded`). Ritmo: `TIME_SCALE` em `Loader.jsx`. As fontes da 1ª dobra têm `<link rel="preload">` no `index.html` |
 | `heroMesh` / `ambientBlobs` | blobs do hero / movimento lento 30–45s (pausa com aba oculta ou hero fora da tela) |
 | `grain` / `bgGrid` | ruído SVG (~4%) e grade no hero |
 | `headlineReveal` | título palavra por palavra com máscara (~40ms) + sublinhado em gradiente que cresce |

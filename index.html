@@ -12,6 +12,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="color-scheme" content="dark light" />
     <meta name="theme-color" content="#1A0B14" />
+    <!-- Fontes da 1ª dobra (header + hero; Inter 500 = botões do hero): baixadas junto com o JS, e não só depois do 1º render,
+         para o texto já nascer na fonte real (sem troca de fonte = sem pulo de layout). -->
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/node_modules/@fontsource/bricolage-grotesque/files/bricolage-grotesque-latin-700-normal.woff2" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/node_modules/@fontsource/instrument-serif/files/instrument-serif-latin-400-italic.woff2" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/node_modules/@fontsource/inter/files/inter-latin-400-normal.woff2" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/node_modules/@fontsource/inter/files/inter-latin-500-normal.woff2" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="/node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-400-normal.woff2" />
     <!--seo-head-->
   </head>
   <body>

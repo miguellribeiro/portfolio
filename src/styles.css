@@ -75,6 +75,8 @@ strong, b { font-weight: 500; }
 .loader--static .loader__stroke { stroke-dashoffset: 0; }
 .loader--static .loader__eye { transform: none; }
 .is-loading .header .wordmark__mark { opacity: 0; }
+/* Fontes da 1ª dobra ainda chegando: o site (sob o overlay opaco) fica invisível até o loader sair */
+.fonts-pending .header, .fonts-pending main { opacity: 0; }
 @keyframes draw { to { stroke-dashoffset: 0; } }
 
 /* ---------- Skeleton / imagens ---------- */

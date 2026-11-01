@@ -13,6 +13,8 @@ const METRIC_FALLBACK = {
   Inter: "'Inter Fallback', 'Inter Fallback Roboto', ",
   'Instrument Serif': "'Instrument Fallback', 'Instrument Fallback Noto', ",
 };
+/** Pilha de fallback (sem a webfont) de uma das fontes do tema, ex.: fallbackStack('heading', 'Bricolage Grotesque'). */
+export const fallbackStack = (k, name) => `${METRIC_FALLBACK[name] || ''}${FALLBACK[k] || 'sans-serif'}`;
 const kebab = (s) => s.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`);
 
 /** Converte ["#a 0%", "#b 55%", "#c"] em linear-gradient(135deg, ...). */
@@ -40,7 +42,7 @@ export function useTheme(theme) {
     (mesh || []).forEach((c, i) => root.style.setProperty(`--mesh-${i + 1}`, c));
     if (meshOpacity != null) root.style.setProperty('--mesh-opacity', String(meshOpacity));
     Object.entries(theme.fonts || {}).forEach(([k, name]) => {
-      root.style.setProperty(`--font-${k}`, `'${name}', ${METRIC_FALLBACK[name] || ''}${FALLBACK[k] || 'sans-serif'}`);
+      root.style.setProperty(`--font-${k}`, `'${name}', ${fallbackStack(k, name)}`);
     });
     let meta = document.head.querySelector('meta[name="theme-color"]');
     if (!meta) {

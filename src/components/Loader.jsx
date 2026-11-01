@@ -1,5 +1,7 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import { useEffects } from '../engine/effects.js';
+import { site } from '../engine/content.js';
+import { fallbackStack } from '../engine/useTheme.js';
 
 /*
  * Loader "Desenho vivo" (conceito 3 do Leonardo — /loader-boards/anim.py, c3).
@@ -11,6 +13,7 @@ import { useEffects } from '../engine/effects.js';
  * Sai quando load + document.fonts.ready + decode() das imagens da 1ª dobra terminam,
  * com mínimo = a própria animação (~1,49s) e teto de segurança de 4s. Só na 1ª visita da sessão.
  * prefers-reduced-motion: sem desenho nem voo, só um fade de ~200ms.
+ * Toque/clique ou qualquer tecla pula para o fim (voo de ~150ms ou fade).
  * Só Web Animations API nativa; tudo é cancelado/removido ao desmontar.
  */
 
@@ -29,6 +32,7 @@ const T = {
 };
 const CAP = 4000; // teto de segurança (ms reais), voo incluso
 const RM_FADE = 200;
+const SKIP = 150; // pular (toque/tecla): fim em ~150ms
 const POP = 'cubic-bezier(.34, 1.8, .64, 1)';
 const STROKES = [
   ['traco-m', 'M21 72 V48 A14.5 14.5 0 0 1 50 48 A14.5 14.5 0 0 1 79 48 V72'],
@@ -43,15 +47,43 @@ function firstVisit() {
   try { return !sessionStorage.getItem(KEY); } catch { return false; }
 }
 
-/** load + fontes + decode das imagens visíveis na 1ª dobra. Devolve [promise, cleanup]. */
-function pageReady() {
+/**
+ * Fontes realmente usadas no texto da 1ª dobra (header + 1ª seção), com estilo/peso exatos,
+ * só as do tema (site.json → theme.fonts): [{ k: 'heading', name, desc: 'normal 700 16px "…"' }].
+ */
+function firstFoldFonts() {
+  const fonts = site.theme?.fonts || {};
+  const byName = new Map(Object.entries(fonts).map(([k, name]) => [name.toLowerCase(), k]));
+  const out = new Map();
+  document.querySelectorAll('.header *, main > :first-child *').forEach((el) => {
+    if (![...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())) return;
+    const cs = getComputedStyle(el);
+    const name = cs.fontFamily.split(',')[0].trim().replace(/^['"]|['"]$/g, '');
+    const k = byName.get(name.toLowerCase());
+    if (!k) return;
+    const desc = `${cs.fontStyle} ${cs.fontWeight} 16px "${name}"`;
+    if (!out.has(desc)) out.set(desc, { k, name, desc, style: cs.fontStyle, weight: Number(cs.fontWeight) });
+  });
+  return [...out.values()];
+}
+
+/** A face da webfont para esse estilo/peso já carregou? (fonts.check() dá true enquanto ainda baixa.) */
+function fontLoaded({ name, style, weight }) {
+  const faces = [...document.fonts].filter((f) => f.family.replace(/^['"]|['"]$/g, '').toLowerCase() === name.toLowerCase()
+    && f.style === style && (() => { const [a, b = a] = String(f.weight).split(' ').map(Number); return weight >= a && weight <= b; })());
+  return faces.length === 0 || faces.some((f) => f.status === 'loaded');
+}
+
+/** load + document.fonts.ready + fontes da 1ª dobra + decode das imagens visíveis. [promise, cleanup] */
+function pageReady(probes) {
   let off = () => {};
   const load = document.readyState === 'complete' ? Promise.resolve() : new Promise((ok) => {
     const on = () => ok();
     window.addEventListener('load', on, { once: true });
     off = () => window.removeEventListener('load', on);
   });
-  const fonts = document.fonts?.ready || Promise.resolve();
+  // fonts.ready sozinho pode resolver antes de o texto pedir as fontes (CPU lenta): pede explicitamente.
+  const fonts = Promise.all([document.fonts?.ready, ...probes.map((f) => document.fonts.load(f.desc).catch(() => {}))]);
   const imgs = [...document.images].filter((img) => {
     const r = img.getBoundingClientRect();
     return r.width > 0 && r.top < innerHeight && r.bottom > 0;
@@ -112,6 +144,7 @@ export default function Loader() {
   const [on, setOn] = useState(() => loader && firstVisit());
   const root = useRef(null);
   const flier = useRef(null);
+  const probes = useRef([]);
   const uid = useId().replace(/:/g, '');
   // Overlay é sempre #1A0B14 (paleta dark); no tema claro uma cópia na paleta do tema entra no voo
   // para pousar idêntica ao símbolo do header.
@@ -121,35 +154,57 @@ export default function Loader() {
     return { w, h: (w * VB_H) / VB_W };
   });
 
-  // Esconde o símbolo do header antes da 1ª pintura: o macaco do loader é quem pousa nele.
+  // Antes da 1ª pintura: esconde o símbolo do header (o macaco do loader é quem pousa nele) e, se as
+  // fontes da 1ª dobra ainda não chegaram, deixa header/main com opacity 0 sob o overlay — assim a
+  // troca fallback → fonte real acontece sem nada visível se deslocar (opacity 0 não conta no CLS).
   useLayoutEffect(() => {
-    if (!on || reducedMotion) return undefined;
+    if (!on) return undefined;
     const html = document.documentElement;
-    html.classList.add('is-loading');
-    return () => html.classList.remove('is-loading');
+    probes.current = firstFoldFonts();
+    if (!reducedMotion) html.classList.add('is-loading');
+    if (probes.current.some((f) => !fontLoaded(f))) html.classList.add('fonts-pending');
+    return () => html.classList.remove('is-loading', 'fonts-pending');
   }, [on, reducedMotion]);
 
   useEffect(() => {
     if (!on) return undefined;
     try { sessionStorage.setItem(KEY, '1'); } catch { /* modo privado */ }
     const el = root.current;
+    const html = document.documentElement;
     const t0 = performance.now();
     const anims = [];
     const timers = [];
     let alive = true;
-    const finish = () => { if (alive) { document.documentElement.classList.remove('is-loading'); setOn(false); } };
-    const [ready, offReady] = pageReady();
+    let leaving = false; // voo (ou fade) já começou
+    const [ready, offReady] = pageReady(probes.current);
+    const offSkip = () => {
+      window.removeEventListener('pointerdown', skip, true);
+      window.removeEventListener('keydown', skip, true);
+    };
+    const finish = () => {
+      if (!alive) return;
+      offSkip();
+      html.classList.remove('is-loading');
+      setOn(false);
+    };
+    // O site vai aparecer: libera header/main; fonte da 1ª dobra que ainda não chegou fica no fallback
+    // nesta visita (como font-display: optional), para não trocar depois com o site já visível.
+    const reveal = () => {
+      probes.current.filter((f) => !fontLoaded(f))
+        .forEach((f) => html.style.setProperty(`--font-${f.k}`, fallbackStack(f.k, f.name), 'important'));
+      html.classList.remove('fonts-pending');
+    };
 
+    let leave; // (dur?) → inicia a saída
     if (reducedMotion) {
-      const fade = () => {
-        if (!alive) return;
-        const a = el.animate([{ opacity: 1 }, { opacity: 0 }], { duration: RM_FADE, easing: 'ease', fill: 'forwards' });
+      leave = (dur = RM_FADE) => {
+        if (!alive || leaving) return;
+        leaving = true;
+        reveal();
+        const a = el.animate([{ opacity: 1 }, { opacity: 0 }], { duration: dur, easing: 'ease', fill: 'forwards' });
         anims.push(a);
         a.onfinish = finish;
       };
-      const cap = setTimeout(fade, CAP - RM_FADE);
-      timers.push(cap);
-      ready.then(() => { clearTimeout(cap); fade(); });
     } else {
       const parts = (p) => el.querySelectorAll(`[data-part="${p}"]`);
       const run = (nodes, kf, opt) => nodes.forEach((n) => anims.push(n.animate(kf, { fill: 'both', ...opt })));
@@ -170,41 +225,64 @@ export default function Loader() {
         { transform: 'scaleY(1)' }, { transform: 'scaleY(.1)' }, { transform: 'scaleY(1)' },
       ], { delay: s(T.blink[0]), duration: s(T.blink[1] - T.blink[0]), easing: 'ease-in-out' });
 
-      // 4. voo: espera o site estar pronto (mín. = fim da piscada + pausa; teto = CAP)
-      const flyDur = s(T.fly[1] - T.fly[0]);
-      let flying = false;
-      const fly = () => {
-        if (!alive || flying) return;
-        flying = true;
+      // 4. voo até o símbolo do header; `dur` curto = pulo (toque/tecla)
+      leave = (dur = s(T.fly[1] - T.fly[0])) => {
+        if (!alive || leaving) return;
+        leaving = true;
         const mark = document.querySelector('.header .wordmark__mark');
         const box = flier.current;
+        reveal();
         if (!mark || !box) { finish(); return; }
-        const r = mark.getBoundingClientRect();
-        const a = box.animate(flightKeyframes(size, r), { duration: flyDur, easing: 'linear', fill: 'forwards' });
+        const k = dur / s(T.fly[1] - T.fly[0]); // tempos do site/crossfade proporcionais ao voo
+        const a = box.animate(flightKeyframes(size, mark.getBoundingClientRect()), { duration: dur, easing: 'linear', fill: 'forwards' });
         anims.push(a);
-        const siteDelay = s(T.site[0] - T.fly[0]);
+        const siteDelay = s(T.site[0] - T.fly[0]) * k;
         anims.push(el.querySelector('.loader__bg').animate([{ opacity: 1 }, { opacity: 0 }],
-          { delay: siteDelay, duration: s(T.site[1] - T.site[0]), easing: 'ease-in-out', fill: 'both' }));
+          { delay: siteDelay, duration: s(T.site[1] - T.site[0]) * k, easing: 'ease-in-out', fill: 'both' }));
         if (themed) {
           // Tema claro: cruza para a paleta do tema durante o voo (pousa igual ao símbolo do header).
-          const x = { delay: siteDelay, duration: flyDur - siteDelay, easing: 'ease-in-out', fill: 'both' };
+          const x = { delay: siteDelay, duration: dur - siteDelay, easing: 'ease-in-out', fill: 'both' };
           anims.push(el.querySelector('.loader__monkey--theme').animate([{ opacity: 0 }, { opacity: 1 }], x));
           anims.push(el.querySelector('.loader__monkey--dark').animate([{ opacity: 1 }, { opacity: 0 }], x));
         }
         a.onfinish = finish;
       };
-      const minFly = s(T.fly[0]);
-      const cap = setTimeout(fly, CAP - flyDur);
-      timers.push(cap);
-      ready.then(() => {
-        if (!alive) return;
-        timers.push(setTimeout(() => { clearTimeout(cap); fly(); }, Math.max(0, minFly - (performance.now() - t0))));
+    }
+
+    // Saída normal: quando o site está pronto (mín. = fim da piscada + pausa), teto = CAP.
+    const outDur = reducedMotion ? RM_FADE : s(T.fly[1] - T.fly[0]);
+    const minOut = reducedMotion ? 0 : s(T.fly[0]);
+    const cap = setTimeout(() => leave(), CAP - outDur);
+    timers.push(cap);
+    ready.then(() => {
+      if (!alive) return;
+      timers.push(setTimeout(() => { clearTimeout(cap); leave(); }, Math.max(0, minOut - (performance.now() - t0))));
+    });
+
+    // Pular: toque/clique ou qualquer tecla → vai direto para o fim (voo de ~150ms ou fade).
+    function skip(e) {
+      if (!alive) return;
+      // A tecla que pula não age na página por baixo (Espaço/setas rolariam); atalhos do navegador seguem.
+      if (e?.type === 'keydown' && !e.ctrlKey && !e.metaKey && !e.altKey) e.preventDefault();
+      offSkip();
+      timers.forEach(clearTimeout);
+      if (!leaving) {
+        if (!reducedMotion) anims.forEach((a) => a.finish());
+        leave(SKIP);
+        return;
+      }
+      anims.forEach((a) => { // já saindo: acelera o que falta para caber em ~150ms
+        const left = a.effect.getComputedTiming().endTime - (a.currentTime ?? 0);
+        if (left > SKIP) a.updatePlaybackRate(left / SKIP);
       });
     }
+    window.addEventListener('pointerdown', skip, true);
+    window.addEventListener('keydown', skip, true);
 
     return () => {
       alive = false;
       offReady();
+      offSkip();
       timers.forEach(clearTimeout);
       anims.forEach((a) => { a.onfinish = null; a.cancel(); });
     };

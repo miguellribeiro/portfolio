@@ -152,10 +152,14 @@ export default function seoHeads() {
     writeBundle() {
       if (!template) return;
       const data = load();
+      // Assets referenciados no próprio index.html (ex.: <link rel="preload"> das fontes) ainda vêm
+      // como __VITE_ASSET__<id>__ no template capturado: resolve para o nome final com hash.
+      const html = template.replace(/__VITE_ASSET__([\w$]+)__(?:\$_(.*?)__)?/g,
+        (_, id, postfix = '') => `${base}${this.getFileName(id)}${postfix}`);
       data.site.locales.filter((l) => l.path !== '/').forEach((l) => {
         const file = resolve(outDir, `.${l.path}`, 'index.html');
         mkdirSync(dirname(file), { recursive: true });
-        writeFileSync(file, render(template, l.code, data));
+        writeFileSync(file, render(html, l.code, data));
       });
     },
   };
