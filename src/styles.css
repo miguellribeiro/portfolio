@@ -1146,7 +1146,8 @@ button.pcard__cover { cursor: zoom-in; }
 }
 
 /* 1. Palavra gigante vazada no rodapé do Contato, cortada pela borda inferior; o padding reserva a parte visível */
-.contact { --giant: clamp(4.2rem, 16vw, 15rem); overflow: clip; padding-bottom: calc(clamp(4rem, 8vw, 6rem) + var(--giant) * .5); }
+.contact--giant, .fscene { --giant: clamp(4.2rem, 16vw, 15rem); }
+.contact--giant { overflow: clip; padding-bottom: calc(clamp(4rem, 8vw, 6rem) + var(--giant) * .5); }
 .decor-giant {
   position: absolute; left: -.04em; bottom: calc(var(--giant) * -.3); white-space: nowrap;
   font-family: var(--font-heading); font-weight: 700; font-size: var(--giant); line-height: 1; letter-spacing: -.02em; text-transform: uppercase;
@@ -1183,3 +1184,64 @@ button.pcard__cover { cursor: zoom-in; }
 @keyframes decor-par { from { transform: translateY(var(--pz)); } to { transform: translateY(var(--pz-to, calc(-1 * var(--pz)))); } }
 @keyframes decor-par-v { from { translate: 0 40px; } to { translate: 0 -40px; } }
 @keyframes decor-par-x { from { transform: translateX(-3%); } to { transform: translateX(2%); } }
+
+/* ========================================================================
+   Fase 3 — footer orgânico (arte: Leonardo, fase3/footer-cena.svg)
+   Cena no topo do footer, chão (#1F3F29) contínuo sob o conteúdo do footer. Camadas (de trás p/ frente):
+   vaga-lumes + árvores do fundo · grama do fundo · FULL STACK (Fase 2) · árvores · grama do meio ·
+   [slot dos bichos, Fase 4] · grama da frente. Altura reservada por aspect-ratio (CLS 0).
+   ======================================================================== */
+.footer--scene {
+  --fs-tree-back: #2A1622; --fs-trunk-back: #3B2230; --fs-g1: #3A1E2E; --fs-tree: #1F3F29; --fs-trunk: #3B2230;
+  --fs-g2: #2E5A3A; --fs-g3: #1F3F29; --fs-fly: #F5C26B; --fs-ground: #1F3F29;
+  padding: 0; border-top: 0; position: relative; overflow-x: clip;
+}
+[data-theme='light'] .footer--scene {
+  /* claro: fundo em malva clarinho (névoa), musgo do Leonardo no meio, chão musgo escuro */
+  --fs-tree-back: #EED8E2; --fs-trunk-back: #E2C3D1; --fs-g1: #E6CAD7; --fs-tree: #6F9A78; --fs-trunk: #9A6F84;
+  --fs-g2: #4E7F5B; --fs-g3: #1F3F29; --fs-fly: #D9892B; --fs-ground: #1F3F29;
+}
+.fscene { position: relative; aspect-ratio: 1440 / 310; margin-bottom: -1px; pointer-events: none; user-select: none; overflow-x: clip; } /* o chão das gramas desce 30u além do viewBox: sem emenda com o .footer__ground */
+@media (max-width: 680px) { .fscene { aspect-ratio: 720 / 310; } }
+.fscene__l, .fscene__bichos { position: absolute; inset: 0; width: 100%; height: 100%; display: block; overflow: visible; }
+.fs-fundo .v { fill: var(--fs-fly); }
+.fs-fundo .t { fill: var(--fs-trunk-back); }
+.fs-fundo .c { fill: var(--fs-tree-back); }
+.fs-arvores .t { fill: var(--fs-trunk); }
+.fs-arvores .c { fill: var(--fs-tree); }
+.fs-gfundo { fill: var(--fs-g1); }
+.fs-gmeio { fill: var(--fs-g2); }
+.fs-gfrente { fill: var(--fs-g3); }
+[data-theme='light'] .fs-fundo .v { opacity: .55; }
+/* Palavra gigante dentro da cena: a parte de baixo some atrás da grama do meio */
+.fscene .decor-giant { bottom: auto; top: 14%; z-index: auto; }
+@media (max-width: 680px) { .fscene .decor-giant { top: 34%; } }
+/* Chão: o conteúdo do footer fica sobre o musgo, com a paleta escura nos dois temas (contraste ≥ 4.5:1) */
+.footer--scene .footer__ground {
+  background: var(--fs-ground); padding: 1.6rem 0 2rem;
+  --c-text: #FCEAF2; --c-muted: #D9C2CD; --c-border: rgb(252 234 242 / .22); --c-primary: #FF5FA2; --c-primary-text: #FF7AB3;
+  --logo-1: #FF5FA2; --logo-2: #FFB38A; --logo-3: #F5C26B; color: var(--c-text);
+}
+/* Movimento: só com is-run (≤ 5s por entrada na tela), só transform/opacity, nada com reduced-motion */
+@media (prefers-reduced-motion: no-preference) {
+  .fs-gfundo { transform-origin: 50% 64.5%; }   /* base das lâminas: y 250 no viewBox 50..360 */
+  .fs-gmeio { transform-origin: 50% 77.4%; }    /* y 290 */
+  .fs-gfrente { transform-origin: 50% 88.7%; }  /* y 325 */
+  .fscene .c { transform-origin: 0 -70px; }     /* base da copa = topo do tronco */
+  .fscene.is-run .fs-gfundo { animation: fs-sway 4.6s cubic-bezier(.45, 0, .55, 1) both; --sw: 5deg; }
+  .fscene.is-run .fs-gmeio { animation: fs-sway 4.6s cubic-bezier(.45, 0, .55, 1) .15s both; --sw: 6deg; }
+  .fscene.is-run .fs-gfrente { animation: fs-sway 4.5s cubic-bezier(.45, 0, .55, 1) .3s both; --sw: 4deg; }
+  .fscene.is-run .c { animation: fs-copa 4.6s ease-in-out .1s both; }
+  .fscene.is-run .v { animation: fs-glow 2.3s ease-in-out 2 both; }
+  .fscene.is-run .v:nth-child(3n + 2) { animation-delay: .25s; }
+  .fscene.is-run .v:nth-child(3n) { animation-delay: .5s; animation-duration: 2.1s; }
+}
+@keyframes fs-sway {
+  0%, 100% { transform: skewX(0deg); }
+  18% { transform: skewX(calc(var(--sw) * -1)); }
+  40% { transform: skewX(calc(var(--sw) * .7)); }
+  62% { transform: skewX(calc(var(--sw) * -.45)); }
+  82% { transform: skewX(calc(var(--sw) * .18)); }
+}
+@keyframes fs-copa { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-2.4deg); } 55% { transform: rotate(1.6deg); } 80% { transform: rotate(-.6deg); } }
+@keyframes fs-glow { 50% { opacity: .12; } }

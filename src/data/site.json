@@ -113,7 +113,8 @@
     "counters": true,
     "dividers": "wave",
     "smoothScroll": false,
-    "decor": true
+    "decor": true,
+    "footerScene": true
   },
   "sections": [
     {

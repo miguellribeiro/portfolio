@@ -19,6 +19,7 @@ export const DEFAULT_EFFECTS = {
   dividers: 'diagonal',
   smoothScroll: false,
   decor: true,
+  footerScene: true,
 };
 
 /** Efeitos de movimento desligados quando o usuário pede prefers-reduced-motion.
