@@ -1197,9 +1197,9 @@ button.pcard__cover { cursor: zoom-in; }
   padding: 0; border-top: 0; position: relative; overflow-x: clip;
 }
 [data-theme='light'] .footer--scene {
-  /* claro: fundo em malva clarinho (névoa), musgo do Leonardo no meio, chão musgo escuro */
-  --fs-tree-back: #EED8E2; --fs-trunk-back: #E2C3D1; --fs-g1: #E6CAD7; --fs-tree: #6F9A78; --fs-trunk: #9A6F84;
-  --fs-g2: #4E7F5B; --fs-g3: #1F3F29; --fs-fly: #D9892B; --fs-ground: #1F3F29;
+  /* claro (Leonardo): fundo em sálvia — grama #A9C3A6, copas #CFDCCB —, musgo no meio, chão musgo escuro */
+  --fs-tree-back: #CFDCCB; --fs-trunk-back: #B7C7B3; --fs-g1: #A9C3A6; --fs-tree: #6F9A78; --fs-trunk: #9A6F84;
+  --fs-g2: #4E7F5B; --fs-g3: #1F3F29; --fs-ground: #1F3F29;
 }
 .fscene { position: relative; aspect-ratio: 1440 / 310; margin-bottom: -1px; pointer-events: none; user-select: none; overflow-x: clip; } /* o chão das gramas desce 30u além do viewBox: sem emenda com o .footer__ground */
 @media (max-width: 680px) { .fscene { aspect-ratio: 720 / 310; } }
@@ -1212,7 +1212,7 @@ button.pcard__cover { cursor: zoom-in; }
 .fs-gfundo { fill: var(--fs-g1); }
 .fs-gmeio { fill: var(--fs-g2); }
 .fs-gfrente { fill: var(--fs-g3); }
-[data-theme='light'] .fs-fundo .v { opacity: .55; }
+[data-theme='light'] .fs-fundo .v { display: none; } /* de dia, sem vaga-lumes */
 /* Palavra gigante dentro da cena: a parte de baixo some atrás da grama do meio */
 .fscene .decor-giant { bottom: auto; top: 14%; z-index: auto; }
 @media (max-width: 680px) { .fscene .decor-giant { top: 34%; } }
