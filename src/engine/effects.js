@@ -20,9 +20,10 @@ export const DEFAULT_EFFECTS = {
   smoothScroll: false,
 };
 
-/** Efeitos de movimento desligados quando o usuário pede prefers-reduced-motion. */
+/** Efeitos de movimento desligados quando o usuário pede prefers-reduced-motion.
+ *  (O loader trata o reduced-motion sozinho: vira um fade curto.) */
 export const MOTION_EFFECTS = [
-  'loader', 'ambientBlobs', 'headlineReveal', 'parallax', 'magnetic', 'cardTilt',
+  'ambientBlobs', 'headlineReveal', 'parallax', 'magnetic', 'cardTilt',
   'marquee', 'counters', 'smoothScroll', 'scrollReveal',
 ];
 

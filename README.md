@@ -254,7 +254,7 @@ Todas as combinações de texto foram checadas para contraste **WCAG AA** nos do
 ### 6.3 Efeitos (`effects`)
 | Chave | Efeito |
 |---|---|
-| `loader` | wordmark Manpe: "M" desenhado (stroke) + revelação do texto + varredura + fade, ≤700ms, 1ª visita da sessão |
+| `loader` | "Desenho vivo": traço do macaco desenhado, mandíbula com pulinho, olhos dourados piscam e o símbolo voa em arco até o header (FLIP, só WAAPI). Overlay `aria-hidden` sobre o site; espera `load` + `document.fonts.ready` + `decode()` das imagens da 1ª dobra (mín. ~1,5s, teto 4s); 1ª visita da sessão (`sessionStorage portfolio.loaded`). Ritmo: `TIME_SCALE` em `Loader.jsx` |
 | `heroMesh` / `ambientBlobs` | blobs do hero / movimento lento 30–45s (pausa com aba oculta ou hero fora da tela) |
 | `grain` / `bgGrid` | ruído SVG (~4%) e grade no hero |
 | `headlineReveal` | título palavra por palavra com máscara (~40ms) + sublinhado em gradiente que cresce |
@@ -271,7 +271,7 @@ Todas as combinações de texto foram checadas para contraste **WCAG AA** nos do
 Micro-interações fixas: gradiente que desliza nos botões + seta que avança, checks da tabela que se
 redesenham no hover da linha, pílula deslizante nas abas (Sites/Sistemas, comparativo mobile).
 
-**Movimento reduzido** (`prefers-reduced-motion`): `MotionConfig reducedMotion="user"` + CSS — sem loader,
+**Movimento reduzido** (`prefers-reduced-motion`): `MotionConfig reducedMotion="user"` + CSS — loader vira só um fade de ~200ms,
 blobs estáticos, skeleton estático, só fades simples, overlays de contato abrem o link na hora.
 
 ### 6.4 Contadores e tecnologias

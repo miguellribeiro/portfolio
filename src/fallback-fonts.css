@@ -1,0 +1,32 @@
+/* ==========================================================================
+   Fallbacks com métricas ajustadas (evitam CLS na troca de fonte).
+   Enquanto as webfonts (font-display: swap) não chegam, o texto usa uma
+   fonte local redimensionada para ocupar a MESMA largura/altura da webfont.
+   Sem isso, em 360px o título do hero quebrava em 6 linhas no fallback e em
+   5 com a Bricolage → CLS 0,22. Valores calculados com fontTools sobre os
+   arquivos reais (largura média do texto do hero; ascent/descent da webfont
+   divididos pelo size-adjust). Arial/Liberation Sans (desktop, iOS, Linux)
+   e Roboto (Android) têm larguras diferentes, por isso há uma face por base.
+   ========================================================================== */
+@font-face { font-family: 'Bricolage Fallback'; font-weight: 600; src: local('Arial Bold'), local('Arial-BoldMT'), local('Liberation Sans Bold'), local('LiberationSans-Bold');
+  size-adjust: 100.84%; ascent-override: 92.23%; descent-override: 26.78%; line-gap-override: 0%; }
+@font-face { font-family: 'Bricolage Fallback'; font-weight: 700; src: local('Arial Bold'), local('Arial-BoldMT'), local('Liberation Sans Bold'), local('LiberationSans-Bold');
+  size-adjust: 102.02%; ascent-override: 91.16%; descent-override: 26.47%; line-gap-override: 0%; }
+@font-face { font-family: 'Bricolage Fallback Roboto'; font-weight: 600; src: local('Roboto Bold'), local('Roboto-Bold');
+  size-adjust: 107.25%; ascent-override: 86.71%; descent-override: 25.18%; line-gap-override: 0%; }
+@font-face { font-family: 'Bricolage Fallback Roboto'; font-weight: 700; src: local('Roboto Bold'), local('Roboto-Bold');
+  size-adjust: 108.51%; ascent-override: 85.71%; descent-override: 24.88%; line-gap-override: 0%; }
+
+@font-face { font-family: 'Inter Fallback'; font-weight: 400; src: local('Arial'), local('ArialMT'), local('Liberation Sans'), local('LiberationSans-Regular');
+  size-adjust: 106.63%; ascent-override: 90.85%; descent-override: 22.62%; line-gap-override: 0%; }
+@font-face { font-family: 'Inter Fallback'; font-weight: 500; src: local('Arial'), local('ArialMT'), local('Liberation Sans'), local('LiberationSans-Regular');
+  size-adjust: 107.71%; ascent-override: 89.94%; descent-override: 22.39%; line-gap-override: 0%; }
+@font-face { font-family: 'Inter Fallback Roboto'; font-weight: 400; src: local('Roboto'), local('Roboto-Regular');
+  size-adjust: 106.65%; ascent-override: 90.83%; descent-override: 22.62%; line-gap-override: 0%; }
+@font-face { font-family: 'Inter Fallback Roboto'; font-weight: 500; src: local('Roboto'), local('Roboto-Regular');
+  size-adjust: 107.73%; ascent-override: 89.92%; descent-override: 22.39%; line-gap-override: 0%; }
+
+@font-face { font-family: 'Instrument Fallback'; font-style: italic; font-weight: 400; src: local('Times New Roman Italic'), local('TimesNewRomanPS-ItalicMT'), local('Liberation Serif Italic'), local('LiberationSerif-Italic');
+  size-adjust: 85.04%; ascent-override: 116.41%; descent-override: 36.45%; line-gap-override: 0%; }
+@font-face { font-family: 'Instrument Fallback Noto'; font-style: italic; font-weight: 400; src: local('Noto Serif Italic'), local('NotoSerif-Italic');
+  size-adjust: 74.34%; ascent-override: 133.16%; descent-override: 41.70%; line-gap-override: 0%; }

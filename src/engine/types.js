@@ -77,7 +77,7 @@
  *   Famílias (carregadas via @fontsource em main.jsx). display = serifa itálica só na palavra [[destacada]] do hero
  *
  * @typedef {Object} Effects  Liga/desliga efeitos. prefers-reduced-motion desliga os de movimento.
- * @property {boolean} loader          Wordmark desenhado na 1ª visita da sessão (≤700ms)
+ * @property {boolean} loader          Loader "Desenho vivo" na 1ª visita da sessão (~1,5s; espera load/fontes; teto 4s)
  * @property {boolean} ambientBlobs    Blobs do hero se movendo lentamente (pausa fora da tela/aba oculta)
  * @property {boolean} headlineReveal  Título do hero palavra por palavra + sublinhado no destaque
  * @property {boolean} skeleton        Shimmer enquanto imagens carregam

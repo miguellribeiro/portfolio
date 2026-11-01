@@ -10,10 +10,10 @@
   --c-highlight: #F5C26B; --c-on-highlight: #1A0B14; --c-success: #7FE3CF;
   --grad: linear-gradient(135deg, #FF5FA2 0%, #FF7F8E 50%, #FFB38A 100%);
   --mesh-1: #FF4F9A; --mesh-2: #8A1F55; --mesh-3: #FF9E7A; --mesh-opacity: .30;
-  --font-heading: 'Bricolage Grotesque', system-ui, sans-serif;
-  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: 'Bricolage Grotesque', 'Bricolage Fallback', 'Bricolage Fallback Roboto', system-ui, sans-serif;
+  --font-body: 'Inter', 'Inter Fallback', 'Inter Fallback Roboto', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, Consolas, monospace;
-  --font-display: 'Instrument Serif', Georgia, serif;
+  --font-display: 'Instrument Serif', 'Instrument Fallback', 'Instrument Fallback Noto', Georgia, serif;
   --radius: 18px; --radius-sm: 12px; --maxw: 1200px; --header-h: 64px;
   --shadow: 0 1px 0 rgb(255 255 255 / .03) inset, 0 24px 48px -28px rgb(0 0 0 / .7);
   --glow: color-mix(in srgb, var(--c-primary) 45%, transparent);
@@ -57,12 +57,25 @@ strong, b { font-weight: 500; }
 .text-grad { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; padding: .08em .12em .14em; margin: -.08em -.12em -.14em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
 
 /* ---------- Loader ---------- */
-.loader { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; align-content: center; gap: 1rem; background: var(--c-bg); transition: opacity .14s ease; }
-.loader--out { opacity: 0; pointer-events: none; }
-.loader__sweep { width: 120px; height: 3px; border-radius: 3px; overflow: hidden; background: var(--c-border); position: relative; }
-.loader__sweep::after { content: ''; position: absolute; inset: 0; background: var(--grad); transform: translateX(-100%); animation: sweep .5s .05s var(--ease) forwards; }
+/* Loader "Desenho vivo" (Loader.jsx): overlay aria-hidden; só transform/opacity/stroke-dashoffset via WAAPI. */
+.loader { position: fixed; inset: 0; z-index: 200; pointer-events: none; --ld-1: #FF5FA2; --ld-2: #FFB38A; --ld-3: #F5C26B; }
+.loader__bg { position: absolute; inset: 0; background: #1A0B14; pointer-events: auto; }
+.loader__flier { position: absolute; left: 0; top: 0; transform-origin: 0 0; overflow: visible; will-change: transform; }
+.loader__monkey--dark .loader__s1 { stop-color: var(--ld-1); }
+.loader__monkey--dark .loader__s2 { stop-color: var(--ld-2); }
+.loader__monkey--dark rect { fill: var(--ld-3); }
+.loader__monkey--theme { opacity: 0; }
+.loader__monkey--theme .loader__s1 { stop-color: var(--logo-1); }
+.loader__monkey--theme .loader__s2 { stop-color: var(--logo-2); }
+.loader__monkey--theme rect { fill: var(--logo-3); }
+.loader__stroke { stroke-dasharray: 1; stroke-dashoffset: 1; }
+.loader__jaw { transform-box: view-box; transform-origin: 50px 85px; }
+.loader__eye, .loader__eye rect { transform-box: fill-box; transform-origin: center; }
+.loader__eye { transform: scale(0); }
+.loader--static .loader__stroke { stroke-dashoffset: 0; }
+.loader--static .loader__eye { transform: none; }
+.is-loading .header .wordmark__mark { opacity: 0; }
 @keyframes draw { to { stroke-dashoffset: 0; } }
-@keyframes sweep { to { transform: translateX(0); } }
 
 /* ---------- Skeleton / imagens ---------- */
 .skel { background: linear-gradient(100deg, var(--c-surface2) 30%, color-mix(in srgb, var(--c-primary) 12%, var(--c-surface2)) 50%, var(--c-surface2) 70%) 0 0 / 300% 100%; }
@@ -587,7 +600,6 @@ strong, b { font-weight: 500; }
   *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
   .skel, .chan-overlay .skel { animation: none !important; }
   .blob { animation: none !important; }
-  .loader { display: none; }
 }
 
 /* ==========================================================================
