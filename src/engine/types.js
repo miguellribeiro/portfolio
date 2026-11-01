@@ -93,6 +93,7 @@
  * @property {boolean} counters        Animação dos contadores
  * @property {'diagonal'|'wave'|'none'} dividers  Divisores entre seções
  * @property {boolean} smoothScroll    Lenis (carregado sob demanda)
+ * @property {boolean} decor           Tipografia decorativa (src/data/keywords.js): vertical, curva, gigante, tags
  *
  * @typedef {Object} StatDef  Rótulo em locales/*.json → stats.items.<id>
  * @property {string} id

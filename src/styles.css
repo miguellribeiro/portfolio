@@ -14,7 +14,7 @@
   --font-body: 'Inter', 'Inter Fallback', 'Inter Fallback Roboto', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, Consolas, monospace;
   --font-display: 'Instrument Serif', 'Instrument Fallback', 'Instrument Fallback Noto', Georgia, serif;
-  --radius: 18px; --radius-sm: 12px; --maxw: 1200px; --header-h: 64px;
+  --radius: 18px; --radius-sm: 12px; --radius-org: 48px 14px 48px 14px; /* cantos orgânicos assimétricos (Fase 2) */ --maxw: 1200px; --header-h: 64px;
   --shadow: 0 1px 0 rgb(255 255 255 / .03) inset, 0 24px 48px -28px rgb(0 0 0 / .7);
   --glow: color-mix(in srgb, var(--c-primary) 45%, transparent);
   --ease: cubic-bezier(.2, .7, .2, 1);
@@ -225,13 +225,20 @@ strong, b { font-weight: 500; }
 .section--alt { background: var(--c-surface2); }
 [data-theme='dark'] .section--alt { background: color-mix(in srgb, var(--c-surface2) 60%, var(--c-bg)); }
 [data-fx-dividers='diagonal'] .section--alt { clip-path: polygon(0 var(--divider), 100% 0, 100% calc(100% - var(--divider)), 0 100%); padding-block: calc(clamp(4rem, 8vw, 6rem) + var(--divider)); margin-block: calc(var(--divider) * -0.5); }
+/* Ondas (Fase 2): máscara SVG com a curva do board, escalada pela LARGURA (100% auto), então a altura
+   da onda = 128/1440 da largura; o padding em % (relativo à largura) reserva exatamente esse espaço.
+   No mobile (≤680px) a máscara tem 200% de largura (só a metade esquerda: onda mais alta e legível). */
 [data-fx-dividers='wave'] .section--alt {
-  --wave: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 40' preserveAspectRatio='none'%3E%3Cpath d='M0 20 C200 0 400 40 600 20 S1000 0 1200 20 V40 H0Z'/%3E%3C/svg%3E");
-  --wave-b: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 40' preserveAspectRatio='none'%3E%3Cpath d='M0 20 C200 40 400 0 600 20 S1000 40 1200 20 V0 H0Z'/%3E%3C/svg%3E");
-  -webkit-mask: var(--wave) top / 100% 40px no-repeat, linear-gradient(#000 0 0) center / 100% calc(100% - 78px) no-repeat, var(--wave-b) bottom / 100% 40px no-repeat;
-  mask: var(--wave) top / 100% 40px no-repeat, linear-gradient(#000 0 0) center / 100% calc(100% - 78px) no-repeat, var(--wave-b) bottom / 100% 40px no-repeat;
-  padding-block: calc(clamp(4rem, 8vw, 6rem) + 40px);
+  --wave-k: 1;
+  --divider: calc(100% * 128 / 1440 * var(--wave-k));
+  --wave-vw: calc(100vw * 128 / 1440 * var(--wave-k)); /* ≥ altura real (100vw inclui a barra de rolagem) */
+  --wave-top: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 128'%3E%3Cpath d='M0 78 C240 18 480 128 720 74 S1200 14 1440 78 V128 H0Z'/%3E%3C/svg%3E");
+  --wave-bot: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 128'%3E%3Cpath d='M0 70 C300 140 600 0 900 60 S1300 130 1440 60 V0 H0Z'/%3E%3C/svg%3E");
+  -webkit-mask: var(--wave-top) left top / calc(100% * var(--wave-k)) auto no-repeat, linear-gradient(#000 0 0) center / 100% calc(100% - 2 * var(--wave-vw) + 8px) no-repeat, var(--wave-bot) left bottom / calc(100% * var(--wave-k)) auto no-repeat;
+  mask: var(--wave-top) left top / calc(100% * var(--wave-k)) auto no-repeat, linear-gradient(#000 0 0) center / 100% calc(100% - 2 * var(--wave-vw) + 8px) no-repeat, var(--wave-bot) left bottom / calc(100% * var(--wave-k)) auto no-repeat;
+  padding-block: calc(clamp(4rem, 8vw, 6rem) + var(--divider));
 }
+@media (max-width: 680px) { [data-fx-dividers='wave'] .section--alt { --wave-k: 2; } }
 .section--split .section__inner { display: grid; grid-template-columns: minmax(220px, 1fr) 2fr; gap: 3rem; align-items: start; }
 .section--split .section__head { position: sticky; top: 100px; }
 @media (max-width: 820px) { .section--split .section__inner { grid-template-columns: 1fr; } .section--split .section__head { position: static; } }
@@ -793,7 +800,7 @@ strong, b { font-weight: 500; }
 .is-pinned .pcard { width: min(540px, 42vw, calc((100vh - 400px) * 1.6)); }
 .is-swipe .hproj__viewport { overflow-x: auto; scroll-snap-type: x mandatory; margin-inline: -1.25rem; padding: .25rem 1.25rem 1rem; scroll-padding-inline: 1.25rem; scrollbar-width: thin; overscroll-behavior-x: contain; }
 .is-swipe .pcard { scroll-snap-align: start; }
-.pcard__inner { position: relative; height: 100%; display: flex; flex-direction: column; overflow: hidden; border-radius: var(--radius); border: 1px solid var(--c-border); background: var(--c-surface); box-shadow: var(--shadow); transition: border-color .35s, box-shadow .35s, transform .35s var(--ease); }
+.pcard__inner { position: relative; height: 100%; display: flex; flex-direction: column; overflow: hidden; border-radius: var(--radius-org); border: 1px solid var(--c-border); background: var(--c-surface); box-shadow: var(--shadow); transition: border-color .35s, box-shadow .35s, transform .35s var(--ease); }
 .pcard__inner:hover, .pcard__inner:focus-within, .pcard__inner:focus-visible { border-color: color-mix(in srgb, var(--c-primary) 60%, transparent); box-shadow: 0 30px 60px -30px var(--glow); }
 .pcard__cover { position: relative; display: block; width: 100%; padding: 0; border: 0; background: var(--c-surface2); overflow: hidden; }
 button.pcard__cover { cursor: zoom-in; }
@@ -1046,14 +1053,14 @@ button.pcard__cover { cursor: zoom-in; }
     will-change: transform, opacity;
   }
   /* Escurecimento de quem está na pilha (≈ brightness .85 no 1º nível, .7 no 2º) */
-  .deck__item::after { content: ''; position: absolute; inset: 0; border-radius: var(--radius); background: #000; opacity: calc(.15 * var(--back)); pointer-events: none; }
+  .deck__item::after { content: ''; position: absolute; inset: 0; border-radius: var(--radius-org); background: #000; opacity: calc(.15 * var(--back)); pointer-events: none; }
   .deck__item.is-past, .deck__item.is-behind { pointer-events: none; }
   .deck--io .deck__item { transition: transform .45s var(--ease), opacity .45s var(--ease); }
   .deck--io .deck__item::after { transition: opacity .45s var(--ease); }
   .deck__card {
     display: flex; flex-direction: column; width: 100%; height: 100%; padding: 0; margin: 0; overflow: hidden;
     text-align: left; font: inherit; color: var(--c-text); cursor: pointer;
-    border-radius: var(--radius); border: 1px solid var(--c-border); background: var(--c-surface); box-shadow: var(--shadow);
+    border-radius: var(--radius-org); border: 1px solid var(--c-border); background: var(--c-surface); box-shadow: var(--shadow);
     -webkit-tap-highlight-color: transparent;
   }
   .deck__card:focus-visible { outline: 2px solid var(--c-primary); outline-offset: 3px; }
@@ -1106,3 +1113,73 @@ button.pcard__cover { cursor: zoom-in; }
   .sheet::backdrop, .sheet__panel { transition: none; }
   .sheet__panel { transform: none; }
 }
+
+/* ==========================================================================
+   Fase 2 — "Ecossistema Orgânico": tipografia espacial decorativa (Decor.jsx,
+   palavras em src/data/keywords.js). Tudo aria-hidden + pointer-events: none e em
+   absoluto/espaço reservado (CLS 0); só transform/opacity; parallax por
+   scroll-driven animations com @supports; reduced-motion = estático.
+   ========================================================================== */
+:root { --decor-warm: #FFB38A; --decor-pink: #FF8FB8; --decor-ink: #F3E6EC; }
+[data-theme='light'] { --decor-warm: #B4442A; --decor-pink: #C2185B; --decor-ink: #2A0F1E; }
+.decor, .decor-curve { pointer-events: none; user-select: none; }
+
+/* 3. Texto em curva = divisor (wrapper de altura 0 antes da seção alternada; mesma escala da máscara) */
+.decor-curve { position: relative; z-index: 2; height: 0; --wave-k: 1; }
+.decor-curve svg { position: absolute; left: 0; top: 0; display: block; width: calc(100% * var(--wave-k)); height: auto; overflow: visible; }
+.decor-curve__text { font-family: var(--font-mono); font-size: 20px; letter-spacing: 4px; fill: var(--decor-warm); fill-opacity: .55; }
+[data-theme='light'] .decor-curve__text { fill-opacity: .6; }
+.decor-curve { overflow-x: clip; }
+/* ≤680: o último card do deck invade a faixa da onda — sem texto em curva no celular (densidade mínima). */
+@media (max-width: 680px) { .decor-curve { display: none; } }
+[data-fx-dividers='none'] .decor-curve, [data-fx-dividers='diagonal'] .decor-curve { display: none; }
+
+/* 2. Texto vertical na margem (só onde há margem livre: ≥ 1320px) */
+.decor-vtext { display: none; }
+@media (min-width: 1320px) {
+  .decor-vtext {
+    display: block; position: absolute; top: 50%; left: calc((100% - var(--maxw)) / 4);
+    transform: translate(-50%, -50%) rotate(-90deg); white-space: nowrap;
+    font-size: 15px; letter-spacing: 6px; text-transform: uppercase; color: var(--decor-ink); opacity: .1;
+  }
+  [data-theme='light'] .decor-vtext { opacity: .14; }
+}
+
+/* 1. Palavra gigante vazada no rodapé do Contato, cortada pela borda inferior; o padding reserva a parte visível */
+.contact { --giant: clamp(4.2rem, 16vw, 15rem); overflow: clip; padding-bottom: calc(clamp(4rem, 8vw, 6rem) + var(--giant) * .5); }
+.decor-giant {
+  position: absolute; left: -.04em; bottom: calc(var(--giant) * -.3); white-space: nowrap;
+  font-family: var(--font-heading); font-weight: 700; font-size: var(--giant); line-height: 1; letter-spacing: -.02em; text-transform: uppercase;
+  color: transparent; -webkit-text-stroke: max(1.5px, .009em) color-mix(in srgb, var(--decor-pink) 16%, transparent);
+}
+[data-theme='light'] .decor-giant { -webkit-text-stroke-color: color-mix(in srgb, var(--decor-pink) 20%, transparent); }
+
+/* 4. Tags flutuantes (posição por seção), 35–50%; deriva só ao entrar na tela e para em < 5s (WCAG 2.2.2) */
+.decor-tags { position: absolute; inset: 0; z-index: 0; }
+.decor-tag { position: absolute; opacity: .5; }
+.decor-tag:nth-child(3) { opacity: .35; }
+.decor-tag__in { display: inline-block; padding: .42rem 1rem; border: 1.5px solid currentColor; border-radius: 999px; color: var(--decor-warm); font-size: .95rem; line-height: 1.2; white-space: nowrap; }
+.projects-section .section__body, .process-section .section__body { position: relative; }
+.decor-tags--projects .decor-tag:nth-child(1) { right: 6%; top: -3.4rem; }
+.decor-tags--projects .decor-tag:nth-child(2) { right: 30%; bottom: -.35rem; }
+.decor-tags--projects .decor-tag:nth-child(3) { right: 3%; bottom: -.35rem; }
+.decor-tags--process .decor-tag:nth-child(1) { right: 2%; top: -6.6rem; }
+.decor-tags--process .decor-tag:nth-child(2) { right: 22%; top: -3.6rem; }
+.decor-tags--process .decor-tag:nth-child(3) { right: 9%; top: -10rem; }
+@media (max-width: 1023px) { .decor-tags--projects .decor-tag:nth-child(2), .decor-tags--process { display: none; } }
+@media (max-width: 680px) { .decor-tags { display: none; } }
+
+@media (prefers-reduced-motion: no-preference) {
+  .decor-tags.is-on .decor-tag__in { animation: decor-float 4.4s cubic-bezier(.45, 0, .3, 1) calc(var(--i) * .2s) 1 both; }
+  @supports (animation-timeline: view()) {
+    .decor-tag { animation: decor-par linear both; animation-timeline: view(); --pz: calc(10px + var(--i) * 9px); }
+    /* tags da linha de rodapé dos projetos: só descem (nunca sobem para o trilho dos cards) */
+    .decor-tags--projects .decor-tag:nth-child(n + 2) { --pz: 14px; --pz-to: 0px; }
+    .decor-vtext { animation: decor-par-v linear both; animation-timeline: view(); }
+    .decor-giant { animation: decor-par-x linear both; animation-timeline: view(); animation-range: entry 0% exit 100%; }
+  }
+}
+@keyframes decor-float { 0% { translate: 0 0; } 30% { translate: 7px -9px; } 65% { translate: -5px 5px; } 100% { translate: 0 0; } }
+@keyframes decor-par { from { transform: translateY(var(--pz)); } to { transform: translateY(var(--pz-to, calc(-1 * var(--pz)))); } }
+@keyframes decor-par-v { from { translate: 0 40px; } to { translate: 0 -40px; } }
+@keyframes decor-par-x { from { transform: translateX(-3%); } to { transform: translateX(2%); } }

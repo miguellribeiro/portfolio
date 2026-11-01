@@ -18,6 +18,7 @@ export const DEFAULT_EFFECTS = {
   counters: true,
   dividers: 'diagonal',
   smoothScroll: false,
+  decor: true,
 };
 
 /** Efeitos de movimento desligados quando o usuário pede prefers-reduced-motion.

@@ -111,8 +111,9 @@
     "cursorSpotlight": true,
     "marquee": true,
     "counters": true,
-    "dividers": "diagonal",
-    "smoothScroll": false
+    "dividers": "wave",
+    "smoothScroll": false,
+    "decor": true
   },
   "sections": [
     {
@@ -143,7 +144,8 @@
     {
       "id": "experience",
       "type": "experience",
-      "enabled": true
+      "enabled": true,
+      "curveText": true
     },
     {
       "id": "testimonials",

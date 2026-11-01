@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useI18n } from '../i18n/context.js';
 import { site } from '../engine/content.js';
 import { useEffects } from '../engine/effects.js';
+import { FloatTags } from '../components/Decor.jsx';
 import Section from '../components/Section.jsx';
 import Icon from '../components/Icon.jsx';
 
@@ -59,6 +60,7 @@ export default function Process({ id }) {
 
   return (
     <Section id={id} title={t('process.title')} subtitle={t('process.subtitle')} className="process-section">
+      <FloatTags k="process" />
       <div
         ref={root}
         className={`process reveal ${running ? 'is-running' : ''}`}

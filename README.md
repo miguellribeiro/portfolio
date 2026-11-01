@@ -265,7 +265,8 @@ Todas as combinações de texto foram checadas para contraste **WCAG AA** nos do
 | `cardTilt` | inclinação 3D dos cards (máx. 6deg) — **desligado por padrão** |
 | `cursorSpotlight` | brilho + borda em gradiente que seguem o cursor nos cards |
 | `marquee` / `counters` | faixa de tecnologias / contagem animada |
-| `dividers` | `"diagonal"` \| `"wave"` \| `"none"` |
+| `dividers` | `"wave"` (padrão: ondas SVG por máscara nas seções alternadas, altura = largura × 128/1440, reservada no padding → sem CLS) \| `"diagonal"` \| `"none"` |
+| `decor` | "Ecossistema orgânico" (Fase 2), só decorativo (`aria-hidden`, `pointer-events: none`): texto em curva com a stack sobre a onda antes de Experiência (`"curveText": true` na seção; ≥681px), texto vertical na margem do hero (≥1320px), "FULL STACK" gigante vazado no rodapé do Contato, tags flutuantes em Projetos (≥681px) e Como funciona (≥1024px) que derivam uma vez ao entrar na tela e param em <5s. Parallax por CSS scroll-driven (`@supports`), estático com movimento reduzido. Palavras-chave (sempre em inglês) numa lista única: `src/data/keywords.js`. Cantos assimétricos 48/14 em `--radius-org` |
 | `smoothScroll` | Lenis (carregado só se ligado) — **desligado por padrão** |
 
 Micro-interações fixas: gradiente que desliza nos botões + seta que avança, checks da tabela que se

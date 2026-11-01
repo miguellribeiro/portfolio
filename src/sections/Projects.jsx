@@ -5,6 +5,7 @@ import { useI18n } from '../i18n/context.js';
 import { projects } from '../engine/content.js';
 import { useEffects } from '../engine/effects.js';
 import { getChannels, whatsappHref } from '../engine/channels.js';
+import { FloatTags } from '../components/Decor.jsx';
 import Section from '../components/Section.jsx';
 import Lightbox from '../components/Lightbox.jsx';
 import SmartImage from '../components/SmartImage.jsx';
@@ -151,6 +152,7 @@ export default function Projects({ id }) {
         <span className="mono small">{t('projects.hint')}</span>
         {pinned && <span className="hproj__bar"><M.span style={{ scaleX: bar }} /></span>}
       </div>
+      <FloatTags k="projects" />
     </Section>
   );
 }

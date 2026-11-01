@@ -8,6 +8,7 @@ import { ChannelAnchor } from '../components/ChannelLink.jsx';
 import { useMagnetic } from '../hooks/useMagnetic.js';
 import { useMediaQuery } from '../hooks/useMediaQuery.js';
 import SolarSystem from '../components/SolarSystem.jsx';
+import { MarginText } from '../components/Decor.jsx';
 import { MOBILE_HERO_SOLAR } from '../engine/breakpoints.js';
 
 /**
@@ -121,6 +122,7 @@ export default function Hero({ id }) {
         )}
         {fx.grain && <div className="hero__grain" />}
         <div className="hero__fade" />
+        <MarginText />
       </div>
 
       <M.div className="container hero__inner" style={{ y: yCopy }}>
