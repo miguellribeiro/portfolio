@@ -11,6 +11,9 @@
 .bicho .olho { fill: #F5C26B; }
 .bicho .orelha { fill: #E9D7DF; opacity: .8; }
 .is-hang .bicho__pose { transform: rotate(180deg); }
+/* galho do sagui no hero (existe só durante a aparição) */
+.bicho-galho { position: absolute; pointer-events: none; }
+.bicho-galho svg { display: block; overflow: visible; stroke: #2E5A3A; fill: #2E5A3A; }
 /* capivara: pares de pernas alternados + balanço do corpo */
 .bicho--capivara .pernas-a, .bicho--capivara .pernas-b { transform-origin: 0 -4px; }
 .is-walk .pernas-a { animation: bicho-passo .36s ease-in-out infinite alternate; }
@@ -22,6 +25,7 @@
 .bicho--passaro.is-fly svg { animation: bicho-bob .36s ease-in-out infinite alternate; }
 /* sagui: cauda e pernas soltas */
 .bicho--sagui .cauda { transform-origin: -18px -10px; animation: bicho-cauda .7s ease-in-out infinite alternate; }
+.is-tail .cauda { animation: none; } /* no hero a cauda segura o galho */
 .bicho--sagui .pernas-a { transform-origin: -10px -4px; animation: bicho-perna .5s ease-in-out infinite alternate; }
 .bicho--sagui .pernas-b { transform-origin: 12px -4px; animation: bicho-perna .5s ease-in-out infinite alternate-reverse; }
 @keyframes bicho-passo { from { transform: skewX(-20deg); } to { transform: skewX(20deg); } }

@@ -15,19 +15,21 @@ const HEADER = 65;
 const rnd = (a, b) => a + Math.random() * (b - a);
 const fr = (offset, x, y, rot = 0, op = 1) => ({ offset, transform: `translate(${x}px,${y}px) rotate(${rot}deg)`, opacity: op });
 
-function make(kind, k, cls = '') {
-  const { vb, a, svg } = ART[kind];
+function make(kind, k, cls = '', { anchor, extra = '' } = {}) {
+  const { vb, svg } = ART[kind];
+  const a = anchor || ART[kind].a;
   const el = document.createElement('div');
   el.className = `bicho bicho--${kind} ${cls}`;
   el.setAttribute('aria-hidden', 'true');
-  el.innerHTML = `<div class="bicho__flip"><div class="bicho__pose"><svg viewBox="${vb.join(' ')}" width="${vb[2] * k}" height="${vb[3] * k}" style="left:${(vb[0] - a[0]) * k}px;top:${(vb[1] - a[1]) * k}px" focusable="false">${svg}</svg></div></div>`;
+  el.innerHTML = `<div class="bicho__flip"><div class="bicho__pose"><svg viewBox="${vb.join(' ')}" width="${vb[2] * k}" height="${vb[3] * k}" style="left:${(vb[0] - a[0]) * k}px;top:${(vb[1] - a[1]) * k}px" focusable="false">${svg}${extra}</svg></div></div>`;
   return el;
 }
 
 /** Põe o bicho no host e anima; devolve { cancel }. onEnd(cancelado) é chamado uma vez. */
-function play(host, el, frames, { dur = DUR, flip, pose, phases = [], removeHost = false } = {}, onEnd) {
+function play(host, el, frames, { dur = DUR, flip, pose, phases = [], removeHost = false, also = [] } = {}, onEnd) {
   host.append(el);
   const anims = [el.animate(frames, { duration: dur, fill: 'both' })];
+  also.forEach(([x, kf]) => anims.push(x.animate(kf, { duration: dur, fill: 'both' }))); // ex.: o galho do sagui
   if (flip) anims.push(el.firstChild.animate(flip, { duration: dur, fill: 'both' }));
   if (pose) anims.push(el.firstChild.firstChild.animate(pose, { duration: dur, fill: 'both' }));
   const timers = phases.map(([t, fn]) => setTimeout(() => fn(el), t * dur));
@@ -155,7 +157,21 @@ function bgPassaro(onEnd) {
   return null;
 }
 
-/** Sagui pendurado na borda superior do hero, na margem direita vazia (só > 680px). */
+/**
+ * Sagui na borda direita do hero (só > 680px): um galho (#2E5A3A) sai da borda trazendo o sagui
+ * pendurado pela cauda enrolada nele; balança e os dois voltam para trás da borda. O galho só existe
+ * durante a aparição (sai junto com o host), aria-hidden e em posição absoluta (sem layout/CLS).
+ */
+const BRANCH_W = 96;
+const TAIL_PIVOT = [-42, -50]; // dentro do gancho da cauda (unidades da arte)
+const TAIL_WRAP = '<path class="bs" d="M-32-54q4 6-1 10q-5 3-11-1" stroke-width="5" fill="none" stroke-linecap="round"/>'; // volta da cauda por baixo do galho
+function branch() {
+  const el = document.createElement('div');
+  el.className = 'bicho-galho';
+  el.setAttribute('aria-hidden', 'true');
+  el.innerHTML = `<svg viewBox="0 0 ${BRANCH_W} 30" width="${BRANCH_W}" height="30" focusable="false"><path d="M${BRANCH_W + 4} 13Q60 11 6 15" stroke-width="6.5" stroke-linecap="round" fill="none"/><path d="M58 12q-8-9-18-10" stroke-width="3" stroke-linecap="round" fill="none"/><ellipse cx="38" cy="3" rx="7" ry="3.4" transform="rotate(-18 38 3)"/><ellipse cx="78" cy="21" rx="7.5" ry="3.6" transform="rotate(24 78 21)"/><ellipse cx="22" cy="20" rx="6" ry="3" transform="rotate(16 22 20)"/></svg>`;
+  return el;
+}
 function bgSagui(onEnd) {
   if (innerWidth <= 680) return null;
   const hero = document.querySelector('main .hero');
@@ -170,11 +186,18 @@ function bgSagui(onEnd) {
   host.setAttribute('aria-hidden', 'true');
   host.style.cssText = `right:0;top:0;width:${W}px;height:${H}px`;
   hero.append(host);
-  const x = W / 2;
-  const f = (o, y, rot = 0) => fr(o, x, y, rot);
-  // desce da borda (de cabeça p/ baixo), balança e sobe de volta sumindo atrás da borda
-  return play(host, make('sagui', 0.9, 'is-hang'), [f(0, -80), f(0.14, 6), f(0.3, 6, 14), f(0.46, 6, -11), f(0.6, 6, 7), f(0.72, 6, -3), f(0.8, 6, 0), f(1, -85)],
-    { removeHost: true }, onEnd);
+  const by = 28; // centro do galho
+  const px = W - BRANCH_W + 10; // onde a cauda prende
+  const gal = branch();
+  gal.style.cssText = `left:${W - BRANCH_W}px;top:${by - 13}px`;
+  host.append(gal);
+  const off = BRANCH_W + 90; // fora do host, à direita (cortado pelo overflow: clip)
+  const f = (o, dx, rot = 0) => fr(o, px + dx, by, 22 + rot); // +22°: o corpo pende abaixo do galho (cabeça longe dele)
+  const g = (o, dx) => ({ offset: o, transform: `translateX(${dx}px)` });
+  // entra pela borda com o galho, balança pendurado pela cauda e volta para trás da borda
+  return play(host, make('sagui', 0.9, 'is-tail', { anchor: TAIL_PIVOT, extra: TAIL_WRAP }),
+    [f(0, off), f(0.14, 0, -6), f(0.3, 0, 14), f(0.46, 0, -11), f(0.6, 0, 7), f(0.72, 0, -3), f(0.82, 0, 0), f(1, off, 4)],
+    { removeHost: true, also: [[gal, [g(0, off), g(0.14, 0), g(0.82, 0), g(1, off)]]] }, onEnd);
 }
 
 const OPTS = [
