@@ -53,9 +53,16 @@ for (const [app, port] of [['studio', 4174], ['portfolio', 4175]] as const) {
     expect(geometryAfter).toBe(geometryBefore);
     await page.getByRole('button', { name: 'Pausar animações' }).click();
     await expect(scene).toHaveAttribute('data-motion', 'paused');
-    const before = await scene.evaluate(el => el.getAnimations({ subtree: true }).map(animation => animation.currentTime));
+    // pause() commits its hold time asynchronously; sample after the pending pause settles.
+    const before = await scene.evaluate(async el => {
+      const animations = el.getAnimations({ subtree: true });
+      await Promise.all(animations.map(animation => animation.ready));
+      return { times: animations.map(animation => animation.currentTime), states: animations.map(animation => animation.playState) };
+    });
+    expect(before.times.length).toBeGreaterThan(0);
+    expect(before.states.every(state => state === 'paused')).toBe(true);
     await page.clock.fastForward(90000);
-    expect(await scene.evaluate(el => el.getAnimations({ subtree: true }).map(animation => animation.currentTime))).toEqual(before);
+    expect(await scene.evaluate(el => el.getAnimations({ subtree: true }).map(animation => animation.currentTime))).toEqual(before.times);
     expect(await page.evaluate(() => window.__manpeAudit.timers.size)).toBe(0);
     await expect(page.getByRole('button', { name: 'Retomar animações' })).toHaveAttribute('aria-pressed', 'true');
     await page.getByRole('button', { name: 'Retomar animações' }).click();
@@ -84,6 +91,11 @@ for (const [app, port] of [['studio', 4174], ['portfolio', 4175]] as const) {
     await page.locator('.header').scrollIntoViewIfNeeded();
     await expect(scene).toHaveAttribute('data-motion', 'paused');
     expect(await page.evaluate(() => window.__manpeAudit.timers.size)).toBe(0);
+    // Settle the offscreen pause and flush its final style before measuring idle layout.
+    await scene.evaluate(async el => {
+      await Promise.all(el.getAnimations({ subtree: true }).map(animation => animation.ready));
+      el.getBoundingClientRect();
+    });
     const idleBefore = await metrics();
     await page.waitForTimeout(300);
     const idleAfter = await metrics();

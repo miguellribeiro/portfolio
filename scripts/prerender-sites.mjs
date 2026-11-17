@@ -2,6 +2,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { build } from 'vite';
+import { writeSiteFiles } from './site-seo.mjs';
 
 const app = process.argv[2];
 if (app !== 'studio' && app !== 'portfolio') throw new Error('Escolha studio ou portfolio.');
@@ -27,4 +28,5 @@ const html = render();
 if (!html.includes('<h1') || !html.includes('manpe-scene')) throw new Error('Conteúdo ou bosque ausente no pré-render.');
 // A replacement callback preserves literal dollar signs in supplied content.
 await writeFile(output, template.replace(marker, () => `<div id="root">${html}</div>`));
+await writeSiteFiles(app, resolve('artifacts', app));
 console.log(`Pré-render ${app}: conteúdo e SVGs presentes no HTML estático.`);

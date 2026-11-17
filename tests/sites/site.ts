@@ -9,7 +9,7 @@ export async function siteURL(page: Page, app: 'studio' | 'portfolio', port: num
     const path = new URL(route.request().url()).pathname;
     const file = resolve(root, path === '/' ? 'index.html' : path.slice(1));
     if (!file.startsWith(root + sep)) { await route.abort(); return; }
-    const types: Record<string, string> = { '.html': 'text/html', '.js': 'application/javascript', '.css': 'text/css', '.woff': 'font/woff', '.woff2': 'font/woff2', '.svg': 'image/svg+xml' };
+    const types: Record<string, string> = { '.html': 'text/html', '.js': 'application/javascript', '.css': 'text/css', '.woff': 'font/woff', '.woff2': 'font/woff2', '.svg': 'image/svg+xml', '.png': 'image/png', '.xml': 'application/xml', '.txt': 'text/plain' };
     try { await route.fulfill({ body: await readFile(file), contentType: types[extname(file)] || 'application/octet-stream' }); }
     catch { await route.fulfill({ status: 404, body: 'Not found' }); }
   });

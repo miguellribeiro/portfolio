@@ -1,0 +1,20 @@
+{
+  "studio": {
+    "name": "Manpe Studio",
+    "origin": "https://manpestudio.com.br",
+    "title": "Manpe Studio — Sites e sistemas",
+    "description": "Sites, landing pages e sistemas para o seu negócio. Conheça os planos e o processo da Manpe.",
+    "imageAlt": "Manpe Studio — Sites, landing pages e sistemas para o seu negócio.",
+    "imageHeading": "Ideias que ganham\nforma digital.",
+    "imageSubtitle": "Sites · Landing pages · Sistemas"
+  },
+  "portfolio": {
+    "name": "Miguel Ribeiro",
+    "origin": "https://miguel.manpestudio.com.br",
+    "title": "Miguel Ribeiro — Desenvolvedor Full Stack",
+    "description": "Projetos, tecnologias e trajetória profissional de Miguel Ribeiro, Desenvolvedor Full Stack e Líder Técnico.",
+    "imageAlt": "Miguel Ribeiro — Líder Técnico e Desenvolvedor Full Stack.",
+    "imageHeading": "Engenharia com\nvisão de conjunto.",
+    "imageSubtitle": "Líder Técnico · Desenvolvedor Full Stack"
+  }
+}
