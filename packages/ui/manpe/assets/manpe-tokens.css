@@ -1,0 +1,18 @@
+:root,[data-manpe-theme="dark"]{color-scheme:dark;--manpe-bg:#1A0B14;--manpe-surface:#24111C;--manpe-ink:#FCEAF2;--manpe-muted:#C9A3B6;--manpe-action:#FF5FA2;--manpe-on-action:#1A0B14;--manpe-leaf:#7FE3CF;--manpe-leaf-shadow:#52766A;--manpe-fur:#FFB38A;--manpe-fur-shadow:#A84F28;--manpe-face:#1A0B14;--manpe-eye:#FFF8FB;--manpe-focus:#FFB38A;--manpe-line:#6B4357;--manpe-title-font:'Bricolage Grotesque',system-ui,sans-serif;--manpe-body-font:Inter,system-ui,sans-serif;--manpe-meta-font:'JetBrains Mono',monospace;--manpe-space-1:8px;--manpe-space-2:16px;--manpe-space-3:24px;--manpe-space-4:32px;--manpe-space-6:48px;--manpe-section-space:64px;--manpe-radius-card:18px;--manpe-radius-control:12px;--manpe-ease:cubic-bezier(.22,1,.36,1);--manpe-scene-height:160px}
+[data-manpe-theme="light"]{color-scheme:light;--manpe-bg:#FFF8FB;--manpe-surface:#FFFFFF;--manpe-ink:#1A0B14;--manpe-muted:#6B4357;--manpe-action:#9C2458;--manpe-on-action:#FFF8FB;--manpe-leaf:#52766A;--manpe-fur:#A84F28;--manpe-fur-shadow:#713619;--manpe-focus:#9C2458;--manpe-face:#FFF8FB;--manpe-eye:#1A0B14}
+.manpe-scope{background:var(--manpe-bg);color:var(--manpe-ink);font:400 1rem/1.6 var(--manpe-body-font)}
+.manpe-container{width:calc(100% - 32px);max-width:1120px;margin-inline:auto}
+.manpe-title{font:600 2.5rem/1.05 var(--manpe-title-font);letter-spacing:-.035em;max-width:18ch}
+.manpe-copy{max-width:65ch}.manpe-muted{color:var(--manpe-muted)}
+.manpe-button{font:inherit;background:var(--manpe-action);color:var(--manpe-on-action);border:0;border-radius:var(--manpe-radius-control);padding:12px 20px;min-height:44px;cursor:pointer}
+.manpe-button:focus-visible{outline:3px solid var(--manpe-focus);outline-offset:4px}
+.manpe-divider{border-top:1px solid var(--manpe-line)}
+.manpe-scene{height:var(--manpe-scene-height);overflow:hidden;pointer-events:none;position:relative;contain:layout paint}
+.manpe-scene svg{display:block;width:100%;height:100%;pointer-events:none}
+.manpe-scene [data-part]{transform-box:view-box}
+/* Static-first: only the orchestrator opts into movement. No perpetual CSS loops. */
+.manpe-scene[data-motion="paused"] *{animation-play-state:paused!important}
+.manpe-scene[data-motion="static"] [data-part]{animation:none!important;transition:none!important;transform:none!important}
+@media(min-width:768px){:root{--manpe-section-space:112px;--manpe-scene-height:240px}.manpe-container{width:calc(100% - 64px)}.manpe-title{font-size:4.5rem}}
+@media(prefers-reduced-motion:reduce){.manpe-scene [data-part]{animation:none!important;transition:none!important;transform:none!important}}
+@supports(color:color-mix(in srgb,black,transparent)){.manpe-divider{border-color:color-mix(in srgb,var(--manpe-ink) 16%,transparent)}}

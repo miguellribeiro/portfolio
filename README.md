@@ -1,3 +1,9 @@
+# Reestruturação Manpe — homologação
+
+A fatia React/TypeScript com dois builds independentes está documentada em [docs/dual-sites.md](docs/dual-sites.md). O frontend e o deploy abaixo continuam sendo o legado em produção.
+
+---
+
 # Manpe — Portfólio de Miguel Ribeiro (PT/ES/EN)
 
 Portfólio profissional em **Vite + React**, com renderização **orientada a dados**: todo o conteúdo

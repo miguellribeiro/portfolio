@@ -9,3 +9,7 @@ dist
 .idea
 _pages
 .wrangler
+
+artifacts/
+.playwright/
+.impeccable/review/

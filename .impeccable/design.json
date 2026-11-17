@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-17T16:32:59Z",
+  "title": "Design System: Ecossistema Manpe",
+  "extensions": {
+    "colorMeta": {
+      "dark-accent": { "role": "primary", "displayName": "Rosa vivo" },
+      "light-accent": { "role": "primary", "displayName": "Rosa profundo" },
+      "dark-bg": { "role": "neutral", "displayName": "Ameixa de fundo" },
+      "light-bg": { "role": "neutral", "displayName": "Papel rosado" },
+      "dark-surface": { "role": "neutral", "displayName": "Ameixa de superfície" },
+      "light-surface": { "role": "neutral", "displayName": "Rosa de superfície" },
+      "adaptive-line": { "role": "neutral", "displayName": "Divisória adaptativa" },
+      "adaptive-wash": { "role": "neutral", "displayName": "Banho tonal adaptativo" }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Título principal", "purpose": "Hero tipográfico com limite de 16ch." },
+      "display-emphasis": { "displayName": "Destaque itálico", "purpose": "Instrument Serif itálica, herdando tamanho do h1." },
+      "body": { "displayName": "Texto de leitura", "purpose": "Inter em parágrafos e controles." }
+    },
+    "shadows": [],
+    "motion": [
+      { "name": "hero-trace", "value": "trace 1.4s ease-out both", "purpose": "Traço SVG comercial: stroke-dasharray 1800, de offset 1800 até zero. Removido com movimento reduzido." },
+      { "name": "scroll", "value": "smooth", "purpose": "Rolagem de âncoras; auto com movimento reduzido." }
+    ],
+    "breakpoints": [{ "name": "single-column", "value": "800px" }]
+  },
+  "components": [
+    {
+      "name": "Ação principal",
+      "kind": "button",
+      "refersTo": "button-primary-dark",
+      "description": "Ação preenchida com tokens do shell e fallback escuro para a amostra isolada.",
+      "html": "<a class=\"ds-button\" href=\"#planos\">Encontrar meu plano<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" aria-hidden=\"true\"><path d=\"M5 12h14m-6-6 6 6-6 6\"/></svg></a>",
+      "css": ".ds-button { display:inline-flex;gap:16px;align-items:center;justify-content:center;padding:15px 22px;min-height:48px;background:var(--accent, #ff5fa2);color:var(--on-accent, #1a0b14);border:0;border-radius:6px;text-decoration:none;font:500 1rem Inter,sans-serif;cursor:pointer; }.ds-button:hover { background:var(--ink, #fceaf2);color:var(--bg, #1a0b14); }.ds-button:focus-visible { outline:3px solid var(--accent, #ff5fa2);outline-offset:5px; }"
+    },
+    {
+      "name": "Alternador de tema",
+      "kind": "button",
+      "description": "Controle transparente; a amostra visual não executa o estado React.",
+      "html": "<button class=\"ds-toggle\" type=\"button\" aria-label=\"Ativar tema claro\">Tema claro</button>",
+      "css": ".ds-toggle { border:1px solid var(--line, #654451);background:transparent;color:var(--ink, #fceaf2);padding:12px 16px;border-radius:6px;cursor:pointer;white-space:nowrap;font:400 1rem Inter,sans-serif; }.ds-toggle:hover { background:var(--wash, #34202b); }.ds-toggle:focus-visible { outline:3px solid var(--accent, #ff5fa2);outline-offset:5px; }"
+    },
+    {
+      "name": "Campo com label",
+      "kind": "input",
+      "refersTo": "input-dark",
+      "description": "Campo do formulário comercial; a borda de erro responde a aria-invalid.",
+      "html": "<label class=\"ds-label\" for=\"ds-contact-name\">Seu nome</label><input class=\"ds-input\" id=\"ds-contact-name\" name=\"name\" autocomplete=\"name\" required />",
+      "css": ".ds-label { display:block;margin:24px 0 10px;color:var(--ink, #fceaf2);font-family:Inter,sans-serif; }.ds-input { width:100%;border:1px solid var(--line, #654451);border-radius:6px;padding:14px;background:var(--surface, #24111c);color:var(--ink, #fceaf2);caret-color:var(--accent, #ff5fa2);font:400 1rem Inter,sans-serif; }.ds-input[aria-invalid=true] { border-color:var(--accent, #ff5fa2); }.ds-input:focus-visible { outline:3px solid var(--accent, #ff5fa2);outline-offset:5px; }"
+    },
+    {
+      "name": "Navegação principal",
+      "kind": "nav",
+      "description": "Links de âncora que quebram linha, sem item ativo ou menu recolhido na base.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Navegação principal\"><ul><li><a href=\"#servicos\">Serviços</a></li><li><a href=\"#trabalhos\">Trabalhos</a></li><li><a href=\"#planos\">Planos</a></li><li><a href=\"#faq\">FAQ</a></li></ul></nav>",
+      "css": ".ds-nav ul { padding:0;margin:0;display:flex;flex-wrap:wrap;gap:8px 24px;list-style:none; }.ds-nav a { display:inline-flex;min-height:44px;align-items:center;text-decoration:none;color:var(--ink, #fceaf2);font:400 .875rem Inter,sans-serif; }.ds-nav a:hover { color:var(--accent, #ff5fa2); }.ds-nav a:focus-visible { outline:3px solid var(--accent, #ff5fa2);outline-offset:5px; }@media(max-width:800px) { .ds-nav ul { gap:4px 20px; } }"
+    },
+    {
+      "name": "Tag de stack",
+      "kind": "chip",
+      "description": "Item informativo, sem interação, seleção ou foco artificial.",
+      "html": "<ul class=\"ds-stack\"><li>TypeScript</li><li>React</li></ul>",
+      "css": ".ds-stack { display:flex;flex-wrap:wrap;gap:12px;padding:0;list-style:none;color:var(--ink, #fceaf2);font:400 1rem Inter,sans-serif; }.ds-stack li { padding:12px 18px;border:1px solid var(--line, #654451);border-radius:6px; }"
+    },
+    {
+      "name": "Superfície de plano",
+      "kind": "card",
+      "refersTo": "plan-dark",
+      "description": "Recorte estrutural do card existente, sem inventar preço ou conteúdo comercial.",
+      "html": "<article class=\"ds-plan\"><h3>Um plano para o seu momento.</h3><p>Sites e landing pages. Mensalidades pré-pagas em reais, sem taxa de adesão e sem fidelidade.</p></article>",
+      "css": ".ds-plan { padding:32px;background:var(--surface, #24111c);color:var(--ink, #fceaf2);border-radius:12px; }.ds-plan h3 { font-family:'Bricolage Grotesque',sans-serif;font-size:1.6rem;line-height:1.2;letter-spacing:-.035em;text-wrap:balance;margin:0 0 16px; }.ds-plan p { font:400 1rem/1.7 Inter,sans-serif;max-width:70ch;margin:0 0 20px; }@media(max-width:800px) { .ds-plan { padding:24px; } }"
+    },
+    {
+      "name": "FAQ nativo",
+      "kind": "custom",
+      "description": "Pergunta expansível com estado nativo de abertura; sem animação adicional.",
+      "html": "<div class=\"ds-faq\"><details><summary>Antes de começar.</summary><p>Sites, landing pages e sistemas sob medida.</p></details></div>",
+      "css": ".ds-faq { color:var(--ink, #fceaf2); }.ds-faq details { border-bottom:1px solid var(--line, #654451);padding-block:20px; }.ds-faq summary { cursor:pointer;font:600 1.2rem 'Bricolage Grotesque',sans-serif;padding-block:8px; }.ds-faq p { color:var(--muted, #c9a3b6);font:400 1rem/1.7 Inter,sans-serif;max-width:70ch;margin:20px 0; }.ds-faq summary:focus-visible { outline:3px solid var(--accent, #ff5fa2);outline-offset:5px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Ameixa e rosa com respiro",
+    "overview": "A direção aprovada em `PRODUCT.md` combina fundos ameixa, acentos rosa, tipografia expressiva e curvas rasas. O sistema base usa blocos editoriais espaçosos, títulos com presença e texto de apoio mais discreto. A identidade herda as famílias tipográficas já instaladas e o símbolo existente do legado; não redefine a marca.\n\nEste documento registra a base compartilhada da fatia #4, extraída de `packages/ui/tokens.css`, `packages/ui/Shell.tsx`, `apps/studio/App.tsx`, `apps/studio/ContactForm.tsx` e `apps/portfolio/App.tsx`, com limites de `PRODUCT.md` e `docs/dual-sites.md`. Os tokens do frontmatter descrevem essa base, sem incorporar o vocabulário separado de assets ou de cenas em integração. O estado é de homologação inicial: este registro não certifica assets finais, bosque, preloader ou produção.\n\nAs superfícies aplicam a mesma identidade com objetivos distintos: o studio tem modo **Persuade**, conduzindo à avaliação de serviços e planos; o portfólio tem modo **Experience**, apresentando projetos e trajetória profissional. São contextos de aplicação, não novos temas nem um modo global compartilhado. O código inicial do portfólio ainda começa por uma introdução tipográfica, sem hero de projeto visual.",
+    "keyCharacteristics": [
+      "Ameixa e rosa com versões explícitas escura e clara.",
+      "Bricolage Grotesque expressiva, Inter para leitura e Instrument Serif itálica nos destaques do hero.",
+      "Seções abertas com divisórias; superfícies preenchidas reservadas a planos e campos.",
+      "Dois sites com conteúdo independente e elementos visuais compartilhados."
+    ],
+    "rules": [{ "name": "The Theme Roles Rule", "body": "Preserve os papéis de fundo, superfície, tinta, apoio, ação, texto sobre ação, linha e banho nos dois temas; as amostras de compatibilidade não substituem a composição adaptativa quando suportada.", "section": "colors" }],
+    "dos": [
+      "**Do** preserve a direção aprovada de ameixa e rosa, as fontes existentes e o símbolo herdado.",
+      "**Do** use os mesmos papéis semânticos nos temas escuro e claro.",
+      "**Do** mantenha foco visível, labels e mensagens de erro textuais, respeitando movimento reduzido.",
+      "**Do** aplique as grades e o breakpoint existentes antes de criar uma nova regra de layout.",
+      "**Do** trate studio e portfólio como superfícies independentes com a mesma linguagem visual."
+    ],
+    "donts": [
+      "**Don't** apresente esta documentação da base #4 como identidade final, entrega de bosque/preloader ou autorização de produção.",
+      "**Don't** transforme tags informativas em controles sem definir comportamento e acessibilidade.",
+      "**Don't** acrescente sombras ou variantes de componentes como se já existissem no sistema documentado.",
+      "**Don't** misture planos e assinatura na apresentação profissional do portfólio.",
+      "**Don't** descreva a preparação local de e-mail como envio concluído."
+    ]
+  }
+}
