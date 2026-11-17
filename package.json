@@ -7,7 +7,16 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "dev:studio": "vite --config vite.sites.config.ts --mode studio --port 5174",
+    "dev:portfolio": "vite --config vite.sites.config.ts --mode portfolio --port 5175",
+    "build:studio": "vite build --config vite.sites.config.ts --mode studio",
+    "build:portfolio": "vite build --config vite.sites.config.ts --mode portfolio",
+    "build:sites": "npm run typecheck && npm run build:studio && npm run build:portfolio",
+    "preview:studio": "vite preview --config vite.sites.config.ts --mode studio --port 4174",
+    "preview:portfolio": "vite preview --config vite.sites.config.ts --mode portfolio --port 4175",
+    "typecheck": "tsc -p tsconfig.sites.json",
+    "test:sites": "playwright test --config playwright.sites.config.ts"
   },
   "dependencies": {
     "@fontsource/bricolage-grotesque": "^5.3.0",
@@ -21,11 +30,16 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
+    "@playwright/test": "^1.65.1",
+    "@types/node": "^26.6.6",
+    "@types/react": "^18.3.31",
+    "@types/react-dom": "^18.3.7",
     "@vitejs/plugin-react": "^4.3.1",
     "eslint": "^9.9.0",
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.9",
     "globals": "^15.9.0",
+    "typescript": "^7.0.2",
     "vite": "^5.4.0"
   }
 }
