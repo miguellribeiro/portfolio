@@ -26,7 +26,7 @@ Previews: `npm run preview:studio` (4174) e `npm run preview:portfolio` (4175). 
 - `packages/ui`: somente tipos de apresentação, shell e tokens; nenhum catálogo de conteúdo compartilhado.
 - `vite.sites.config.ts`: escolhe a aplicação no build. Não usa hostname nem parâmetros no navegador para misturar as duas páginas.
 - Links entre sites apontam explicitamente aos domínios finais; não simulam uma publicação local.
-- O formulário não possui endpoint. Valida campos, foca o primeiro erro e prepara um link `mailto:` para revisão do visitante. Não declara envio concluído.
+- O formulário não possui endpoint. Valida mínimos/formato, máximos de 100/254/2000 unidades UTF-16 e Unicode malformado no handler, foca o primeiro erro associado e prepara um link `mailto:` para revisão do visitante. Não declara envio concluído.
 
 `npm run build`, `vite.config.js`, `wrangler.jsonc` e o frontend legado continuam funcionando. A troca da publicação deve ser feita por Infra/DevOps após o contrato #2 e aprovação. Não apontar o Worker atual para a raiz de `artifacts`, que contém duas aplicações distintas.
 
@@ -36,7 +36,7 @@ Os testes verificam foco do skip link, âncoras de navegação, tema computado, 
 
 As páginas novas começam em pt-BR/BRL. Os idiomas e preços internacionais continuam disponíveis no legado e não foram migrados nesta fatia. As páginas novas têm títulos, descrição e canonical próprios, mas já são pré-renderizadas no build e ainda precisam de SEO final, sitemap e metadados sociais antes da publicação. `robots.txt` impede rastreamento dos previews; revisar esse arquivo na preparação de produção.
 
-Conteúdo da fatia: trabalho próprio e produto Ecossistema web Manpe, identificados como homologação. Cases de clientes só entram com fonte e autorização específicas. Procedência, preloader e bosque: docs/manpe-motion.md. Pendente de revisão independente: fronteiras por Platão, movimento por Leonardo, QA/perfil mobile por Freud, endpoints #7 e QA de publicação #8. Contribuições profissionais usam apenas fatos presentes no histórico existente, sem métricas ou certificações adicionais.
+Conteúdo da fatia: trabalho próprio e produto Ecossistema web Manpe, identificados como homologação. Cases de clientes só entram com fonte e autorização específicas. Procedência, preloader e bosque: docs/manpe-motion.md. Pareceres independentes já emitidos: Platão revisou a implementação ee55275 sem impedimento arquitetural; Leonardo revisou movimento e apontou repouso da grama/atraso da cauda; Qin revisou o contato e apontou máximos/Unicode/FAQ; Freud consolidou QA v3, concluiu #5 no recorte funcional e manteve gate #8 aberto. Os deltas deste retorno corrigem esses pontos de movimento/contato; seus retestes dirigidos precisam de evidência no novo head. Endpoints/retenção #7, infraestrutura #2 e QA de publicação #8 permanecem abertos. Evidências e limites em docs/manpe-validation.md. Contribuições profissionais usam apenas fatos presentes no histórico existente, sem métricas ou certificações adicionais.
 
 ## Movimento e evidências
 

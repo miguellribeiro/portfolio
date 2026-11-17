@@ -84,8 +84,8 @@ export const faq = [
     "a": "Atualmente atuo como profissional autônomo. O serviço é faturado mediante recibo de prestação de serviço (Pessoa Física) e formalizado por contrato com validade jurídica."
   },
   {
-    "q": "Como é tratada a segurança dos dados (LGPD)?",
-    "a": "A segurança é um pilar. Implementamos ofuscação, criptografia e boas práticas de arquitetura para garantir que os dados trafeguem e sejam armazenados em conformidade com as diretrizes de proteção de dados."
+    "q": "O que acontece com os dados do contato?",
+    "a": "O formulário prepara uma mensagem no seu aplicativo de e-mail, onde você pode revisar e enviar. Ele não envia os dados por conta própria. Os botões dos planos abrem uma conversa no WhatsApp. Após o envio, a mensagem é tratada pelos serviços de e-mail ou WhatsApp utilizados. Esta página não realiza contratação nem pagamento."
   },
   {
     "q": "E se eu precisar de algo fora do plano?",

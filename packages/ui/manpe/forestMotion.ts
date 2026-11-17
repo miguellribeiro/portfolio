@@ -11,7 +11,7 @@ export function createForestMotion(scene: HTMLElement) {
   const jaw = part(capybara, 'jaw');
   const grasses = ['grass-a', 'grass-b', 'grass-c'].map(name => element(`[data-part=${name}]`));
   const state = (actor: SVGElement, value: string) => { if (clock.alive) actor.dataset.state = value; };
-  const pose = (target: SVGElement, values: string[], duration: number) => clock.animate(target, values.map(transform => ({ transform })), duration);
+  const pose = (target: SVGElement, values: string[], duration: number, delay = 0) => clock.animate(target, values.map(transform => ({ transform })), duration, delay);
   const move = (actor: SVGElement, frames: Keyframe[], duration: number) => clock.animate(actor, frames, duration);
   const enter = (actor: SVGElement, from: string, duration: number) => move(actor, [{ transform: from, opacity: 0 }, { transform: 'translate(0px, 0px)', opacity: 1 }], duration);
   const leave = (actor: SVGElement, to: string, duration: number) => move(actor, [{ transform: 'translate(0px, 0px)', opacity: 1 }, { transform: to, opacity: 0 }], duration);
@@ -24,11 +24,14 @@ export function createForestMotion(scene: HTMLElement) {
     state(capybara, 'grazing');
     if (!await pose(head, ['rotate(0deg)', 'rotate(15deg)'], 500)) return;
     state(capybara, 'chewing');
-    grasses.forEach(grass => { void pose(grass, ['scaleY(1)', 'scaleY(.22)'], 200); });
+    const reductions = Promise.all(grasses.map(grass => pose(grass, ['scaleY(1)', 'scaleY(.22)'], 200)));
+    // Chewing overlaps the reduction; only the grass rest starts after all three finish.
+    const chewing = pose(jaw, ['rotate(0deg)', 'rotate(2deg)', 'rotate(0deg)', 'rotate(2deg)', 'rotate(0deg)'], 700);
+    if (!(await reductions).every(Boolean) || !clock.alive) return;
     clock.schedule(() => {
       grasses.forEach((grass, index) => { void clock.animate(grass, [{ transform: 'scaleY(.22)' }, { transform: 'scaleY(1)' }], 900, index * 180); });
     }, between(12000, 20000));
-    if (!await pose(jaw, ['rotate(0deg)', 'rotate(2deg)', 'rotate(0deg)', 'rotate(2deg)', 'rotate(0deg)'], 700)) return;
+    if (!await chewing) return;
     if (!await pose(head, ['rotate(15deg)', 'rotate(0deg)'], 500)) return;
     state(capybara, 'leaving');
     await leave(capybara, 'translate(-400px, 0px)', 1900);
@@ -38,9 +41,9 @@ export function createForestMotion(scene: HTMLElement) {
     state(monkey, 'entering');
     if (!await enter(monkey, 'translate(220px, -90px)', 1100)) return;
     state(monkey, 'swinging');
-    const tail = pose(part(monkey, 'tail'), ['rotate(0deg)', 'rotate(8deg)', 'rotate(-4deg)', 'rotate(0deg)'], 2000);
+    const tail = pose(part(monkey, 'tail'), ['rotate(0deg)', 'rotate(8deg)', 'rotate(-4deg)', 'rotate(0deg)'], 1920, 80);
     if (!await pose(part(monkey, 'swing'), ['rotate(0deg)', 'rotate(-12deg)', 'rotate(7deg)', 'rotate(-3deg)', 'rotate(0deg)'], 2000)) return;
-    await tail;
+    if (!await tail) return;
     state(monkey, 'reaching');
     if (!await pose(part(monkey, 'free-arm'), ['rotate(0deg)', 'rotate(12deg)', 'rotate(0deg)'], 600)) return;
     state(monkey, 'leaving');

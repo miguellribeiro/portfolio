@@ -11,13 +11,27 @@ export default function ContactForm() {
   function prepare(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const name = String(data.get('name') ?? '').trim();
-    const reply = String(data.get('email') ?? '').trim();
-    const message = String(data.get('message') ?? '').trim();
+    const values = {
+      name: String(data.get('name') ?? ''),
+      email: String(data.get('email') ?? ''),
+      message: String(data.get('message') ?? ''),
+    };
+    const name = values.name.trim();
+    const reply = values.email.trim();
+    const message = values.message.trim();
     const next: Partial<Record<Fields, string>> = {};
     if (!name) next.name = 'Informe seu nome para identificar a conversa.';
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(reply)) next.email = 'Informe um e-mail válido, como nome@empresa.com.';
     if (message.length < 10) next.message = 'Conte um pouco mais sobre o projeto (ao menos 10 caracteres).';
+    if (values.name.length > 100) next.name = 'Use no máximo 100 caracteres no nome.';
+    if (values.email.length > 254) next.email = 'Use no máximo 254 caracteres no e-mail.';
+    if (values.message.length > 2000) next.message = 'Use no máximo 2000 caracteres na mensagem.';
+    for (const field of ['name', 'email', 'message'] as const) {
+      // Remove valid surrogate pairs, then reject any remaining isolated surrogate.
+      if (/[\uD800-\uDFFF]/.test(values[field].replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, ''))) {
+        next[field] = 'Há um caractere inválido neste campo. Apague e digite o texto novamente.';
+      }
+    }
     setErrors(next);
     setDraft('');
     const first = (['name', 'email', 'message'] as const).find(key => next[key]);

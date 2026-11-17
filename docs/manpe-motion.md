@@ -8,9 +8,9 @@ Shell e conteúdo visíveis desde o primeiro render. O mascote ocupa slot fixo d
 
 ## Bosque
 
-Capivara 5000 ms (aproxima 1400, baixa 500, mastiga 700, ergue 500, sai 1900); espera independente 18–34 s ativos após concluir. Grama reduz em 200 ms, espera 12–20 s ativos e regenera 900 ms (moitas b/c com 180/360 ms de atraso).
+Capivara 5000 ms (aproxima 1400, baixa 500, mastiga 700, ergue 500, sai 1900); espera independente 18–34 s ativos após concluir. Grama reduz em 200 ms em paralelo à mastigação. Promise.all aguarda as três reduções; somente após sucesso e confirmação de que a cena não foi descartada começa o repouso de 12–20 s ativos. A regeneração dura 900 ms (moitas b/c com 180/360 ms de atraso). Conclusão das reduções durante pausa cria uma espera suspensa; o tempo oculto não é consumido. A mastigação sobreposta preserva os 5000 ms da capivara.
 
-Macaco 5000 ms (entra 1100, balança 2000, alcança 600, sai 1300); espera 24–45 s ativos após concluir. Pássaro 3840 ms (aproxima 1000, pousa 240, repousa 1500, sai 1100); espera 12–27 s ativos após concluir. Primeira espera segue as mesmas faixas. Limite 2 atores desktop / 1 mobile; conflitos são adiados. Depois de pausa não há recuperação de ações vencidas.
+Macaco 5000 ms (entra 1100, balança 2000, alcança 600, sai 1300); cauda inicia 80 ms após o balanço e dura 1920 ms, encerrando dentro dos mesmos 2000 ms; espera 24–45 s ativos após concluir. Pássaro 3840 ms (aproxima 1000, pousa 240, repousa 1500, sai 1100); espera 12–27 s ativos após concluir. Primeira espera segue as mesmas faixas. Limite 2 atores desktop / 1 mobile; conflitos são adiados. Depois de pausa não há recuperação de ações vencidas.
 
 Controle comum de atividade: IntersectionObserver, visibilidade da aba, preferência de movimento e pausa manual. Pausa conserva tempo restante e progresso WAAPI; desmontagem cancela timers, animações e observadores. Reduced motion restaura apenas poses/deslocamentos internos, preservando transforms de layout. Animação usa transform/opacity; não há leituras de layout por frame nem setInterval.
 
