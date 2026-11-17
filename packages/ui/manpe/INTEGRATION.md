@@ -10,7 +10,7 @@ Execute python scripts/import-manpe-assets.py na raiz para regenerar o JSX a par
 
 ## Execução atual #5 / #6
 
-Shell monta BrandIntro e Forest nos dois sites. BrandIntro aguarda fontes e decode do logo; usa um slot reservado de 32 px à direita, sem overlay ou bloqueio de foco. Erro/timeout oferecem recarga e continuação com fallback em faixa própria.
+Shell monta BrandIntro e Forest nos dois sites. BrandIntro aguarda fontes e decode do logo; usa um slot reservado de 32 px à direita, sem overlay ou bloqueio de foco. Erro/timeout oferecem recarga e continuação com fallback numa região do fluxo com 8rem reservados desde o SSR; não há painel fixo sobre controles.
 
 Forest conserva wrappers externos de layout e wrappers internos de deslocamento/pose. Mão do macaco (118,18) ancora em (584,68); pés do pássaro (96,106) ancoram em (900,85). Os transforms de composição sobrevivem à redução de movimento. Tokens são importados uma vez; tema é explícito.
 
@@ -18,6 +18,6 @@ ActiveScene controla o relógio ativo, timers restantes e progresso WAAPI. fores
 
 ## Validação
 
-TypeScript e ambos os builds passaram. A suíte final teve 36 testes aprovados em Edge a 1440 e 390 px. Testa conteúdo, teclado, temas, preloader, três ciclos, grama, pausa, visibilidade, redução de movimento e reinicialização. Evidências e limites em docs/manpe-validation.md.
+TypeScript e ambos os builds passaram. A suíte final teve 40 testes aprovados em Edge a 1440 e 390 px. Testa conteúdo, teclado, temas, preloader, três ciclos, grama, pausa, visibilidade, redução de movimento e reinicialização. Evidências e limites em docs/manpe-validation.md.
 
 A suíte usa interceptação Playwright (MANPE_OFFLINE_QA=1); o ensaio complementar em scripts/check-manpe-layout.cjs usa HTTP loopback real. Isso não valida DNS ou publicação. O pré-render estático dos dois builds mantém conteúdo e SVGs sem JavaScript; a hidratação preserva o HTML e habilita tema/formulário. As amostras locais não certificam FPS ou celular físico. Revisão independente de movimento/QA permanece etapa do planejamento. Não houve merge ou deploy.

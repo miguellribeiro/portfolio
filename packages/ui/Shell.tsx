@@ -31,7 +31,7 @@ export function Shell({ brand, navigation, counterpart, children }: ShellProps) 
       <button className="theme-toggle" type="button" disabled={!interactive} onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-label={`Ativar tema ${theme === 'dark' ? 'claro' : 'escuro'}`}>{theme === 'dark' ? 'Tema claro' : 'Tema escuro'}</button>
       <BrandIntro logo={logo} statusTarget={statusTarget} contentTarget={contentTarget} theme={theme} />
     </header>
-    <div className="resource-status" ref={statusTarget} />
+    <div className="resource-status wrap" ref={statusTarget} />
     <main id="main" ref={contentTarget} tabIndex={-1}>{children}</main>
     <footer>
       <div className="footer wrap"><p>{brand}</p><a href={counterpart.href}>{counterpart.label}<Arrow /></a><a href="#main">Voltar ao início</a></div>

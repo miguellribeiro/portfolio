@@ -93,7 +93,7 @@ export function BrandIntro({ logo, statusTarget, contentTarget, theme }: { logo:
     <span ref={slot} className="brand-mascot" aria-hidden="true"><svg ref={mascot} viewBox="0 0 200 200" focusable="false" aria-hidden="true"><MonkeyArtwork /></svg></span>
   </div>
     {showStatus && statusTarget.current && createPortal(<div className="load-status">
-      {phase === 'error' ? <><p role="alert">Alguns recursos não carregaram. Você pode usar a página e tentar novamente.</p><div className="actions"><button className="theme-toggle" onClick={() => window.location.reload()}>Tentar novamente</button><button className="theme-toggle" onClick={() => { contentTarget.current?.focus({ preventScroll: true }); continueWithFallback.current(); }}>Continuar com fontes alternativas</button></div></> : <p role="status">Carregando fontes e identidade visual… O conteúdo já está disponível.</p>}
+      {phase === 'error' ? <><p role="alert">Alguns recursos não carregaram. A página está disponível.</p><div className="actions"><button className="theme-toggle" onClick={() => window.location.reload()}>Tentar novamente</button><button className="theme-toggle" aria-label="Continuar com fontes alternativas" onClick={() => { contentTarget.current?.focus({ preventScroll: true }); continueWithFallback.current(); }}>Continuar</button></div></> : <p role="status">Carregando fontes e identidade visual… O conteúdo já está disponível.</p>}
     </div>, statusTarget.current)}
   </>;
 }
