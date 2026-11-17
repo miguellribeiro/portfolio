@@ -18,6 +18,6 @@ ActiveScene controla o relógio ativo, timers restantes e progresso WAAPI. fores
 
 ## Validação
 
-TypeScript e ambos os builds passaram. A suíte final teve 20 testes aprovados em Edge a 1440 e 390 px. Testa conteúdo, teclado, temas, preloader, três ciclos, grama, pausa, visibilidade, redução de movimento e reinicialização. Evidências e limites em docs/manpe-validation.md.
+TypeScript e ambos os builds passaram. A suíte final teve 36 testes aprovados em Edge a 1440 e 390 px. Testa conteúdo, teclado, temas, preloader, três ciclos, grama, pausa, visibilidade, redução de movimento e reinicialização. Evidências e limites em docs/manpe-validation.md.
 
-Os arquivos compilados foram servidos por interceptação Playwright (MANPE_OFFLINE_QA=1); isso não valida rede, DNS ou publicação. As amostras locais não certificam FPS ou celular físico. Revisão independente de movimento/QA permanece etapa do planejamento. Não houve merge ou deploy.
+A suíte usa interceptação Playwright (MANPE_OFFLINE_QA=1); o ensaio complementar em scripts/check-manpe-layout.cjs usa HTTP loopback real. Isso não valida DNS ou publicação. O pré-render estático dos dois builds mantém conteúdo e SVGs sem JavaScript; a hidratação preserva o HTML e habilita tema/formulário. As amostras locais não certificam FPS ou celular físico. Revisão independente de movimento/QA permanece etapa do planejamento. Não houve merge ou deploy.

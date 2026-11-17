@@ -44,7 +44,7 @@ p { line-height: 1.7; max-width: 70ch; margin: 0 0 20px; }
 .rows { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px; }
 .rows article { padding-top: 24px; border-top: 1px solid var(--line); }
 .rows article p { color: var(--muted); }
-.project { padding-block: 32px; border-bottom: 1px solid var(--line); display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+.project { padding-block: 32px; border-bottom: 1px solid var(--line); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px; }
 .project h3 { font-size: 2.6rem; }
 .project .tags { margin: 0; color: var(--accent); }
 .plans { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
@@ -60,6 +60,8 @@ p { line-height: 1.7; max-width: 70ch; margin: 0 0 20px; }
 .stack { display: flex; flex-wrap: wrap; gap: 12px; padding: 0; list-style: none; }
 .stack li { padding: 12px 18px; border: 1px solid var(--line); border-radius: 6px; }
 .timeline article { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 32px; padding-block: 32px; border-top: 1px solid var(--line); }
+fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
+.theme-toggle:disabled, .button:disabled { cursor: default; }
 form { max-width: 720px; margin-top: 32px; }
 label { display: block; margin: 24px 0 10px; }
 input, textarea { min-width: 0; width: 100%; border: 1px solid var(--line); border-radius: 6px; padding: 14px; background: var(--surface); color: var(--ink); caret-color: var(--accent); }

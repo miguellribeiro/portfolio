@@ -11,7 +11,7 @@ const { chromium } = require('@playwright/test');
   fs.mkdirSync(output, { recursive: true });
   const types = { '.html': 'text/html', '.js': 'application/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.woff': 'font/woff' };
   const browser = await chromium.launch({ channel: 'msedge' });
-  const results = { browser: browser.version(), conditions: { latencyMs: 150, bytesPerSecond: 200000, cpuRate: 4, cache: false }, loads: [], reflow: [] };
+  const results = { browser: browser.version(), conditions: { latencyMs: 150, bytesPerSecond: 200000, cpuRate: 4, cache: false }, loads: [], reflow: [], noJavaScript: [] };
   try {
     for (const app of ['studio', 'portfolio']) {
       const base = path.join(root, 'artifacts', app);
@@ -67,6 +67,15 @@ const { chromium } = require('@playwright/test');
           await page.screenshot({ path: path.join(output, `${app}-320-${fontSize.slice(0, -1)}-http-layout.png`) });
         }
         await page.close();
+        const staticContext = await browser.newContext({ viewport: { width: 390, height: 960 }, javaScriptEnabled: false });
+        try {
+          const staticPage = await staticContext.newPage();
+          const response = await staticPage.goto(url);
+          const raw = await response.text();
+          const staticData = await staticPage.evaluate(() => ({ h1: document.querySelectorAll('h1').length, svg: document.querySelectorAll('svg').length, actors: document.querySelectorAll('.manpe-scene [data-actor]').length, themeDisabled: document.querySelector('.header > button').disabled, formDisabled: document.querySelector('fieldset')?.disabled ?? null, scrollWidth: document.documentElement.scrollWidth }));
+          results.noJavaScript.push({ app, htmlContainsHeading: raw.includes('<h1'), htmlContainsScene: raw.includes('manpe-scene'), ...staticData });
+          await staticPage.locator('.manpe-forest').screenshot({ path: path.join(output, app + '-no-js-http-forest.png') });
+        } finally { await staticContext.close(); }
       } finally { await new Promise(resolve => server.close(resolve)); }
     }
   } finally { await browser.close(); }
@@ -74,4 +83,5 @@ const { chromium } = require('@playwright/test');
   console.log(JSON.stringify(results, null, 2));
   for (const load of results.loads) { assert(load.cls <= 0.1, `${load.app}/${load.width}: CLS ${load.cls}`); assert(load.scrollWidth <= load.viewport, `${load.app}/${load.width}: overflow`); }
   for (const row of results.reflow) assert(row.scrollWidth <= row.width, `${row.app}/${row.fontSize}: overflow`);
+  for (const row of results.noJavaScript) { assert(row.htmlContainsHeading && row.htmlContainsScene && row.h1 === 1 && row.actors === 4 && row.themeDisabled && row.scrollWidth === 390, `${row.app}: static fallback`); if (row.app === 'studio') assert(row.formDisabled); }
 })().catch(error => { console.error(error); process.exitCode = 1; });

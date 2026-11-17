@@ -1,4 +1,4 @@
-import { useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import type { NavigationItem } from './types';
 import { Forest } from './manpe/Forest';
 import { BrandIntro } from './manpe/BrandIntro';
@@ -17,6 +17,8 @@ type ShellProps = {
 };
 
 export function Shell({ brand, navigation, counterpart, children }: ShellProps) {
+  const [interactive, setInteractive] = useState(false);
+  useEffect(() => setInteractive(true), []);
   const logo = useRef<HTMLImageElement>(null);
   const statusTarget = useRef<HTMLDivElement>(null);
   const contentTarget = useRef<HTMLElement>(null);
@@ -26,7 +28,7 @@ export function Shell({ brand, navigation, counterpart, children }: ShellProps) 
     <header className="header wrap">
       <a className="brand" href="#main"><img ref={logo} src="/favicon.svg" width="36" height="36" alt="" /><span>{brand}</span></a>
       <nav aria-label="Navegação principal"><ul>{navigation.map(item => <li key={item.href}><a href={item.href}>{item.label}</a></li>)}</ul></nav>
-      <button className="theme-toggle" type="button" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-label={`Ativar tema ${theme === 'dark' ? 'claro' : 'escuro'}`}>{theme === 'dark' ? 'Tema claro' : 'Tema escuro'}</button>
+      <button className="theme-toggle" type="button" disabled={!interactive} onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-label={`Ativar tema ${theme === 'dark' ? 'claro' : 'escuro'}`}>{theme === 'dark' ? 'Tema claro' : 'Tema escuro'}</button>
       <BrandIntro logo={logo} statusTarget={statusTarget} contentTarget={contentTarget} theme={theme} />
     </header>
     <div className="resource-status" ref={statusTarget} />

@@ -1,8 +1,10 @@
-import { useRef, useState, type FormEvent } from 'react';
+import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { email } from './content';
 
 type Fields = 'name' | 'email' | 'message';
 export default function ContactForm() {
+  const [interactive, setInteractive] = useState(false);
+  useEffect(() => setInteractive(true), []);
   const [errors, setErrors] = useState<Partial<Record<Fields, string>>>({});
   const [draft, setDraft] = useState('');
   const formRef = useRef<HTMLFormElement>(null);
@@ -23,7 +25,8 @@ export default function ContactForm() {
     setDraft(`mailto:${email}?subject=${encodeURIComponent('Projeto para a Manpe Studio')}&body=${encodeURIComponent(`Nome: ${name}\nE-mail: ${reply}\n\n${message}`)}`);
   }
   return <form ref={formRef} onSubmit={prepare} onChange={() => setDraft('')} noValidate>
-    <p className="muted">Prepare uma mensagem para enviar pelo seu aplicativo de e-mail. Nenhum dado é enviado por este formulário.</p>
+    <fieldset disabled={!interactive}>
+    <p className="muted">Prepare uma mensagem para enviar pelo seu aplicativo de e-mail. Você também pode usar o e-mail acima. Nenhum dado é enviado por este formulário.</p>
     <label htmlFor="contact-name">Seu nome</label>
     <input id="contact-name" name="name" autoComplete="name" required maxLength={100} aria-invalid={Boolean(errors.name)} aria-describedby={errors.name ? 'name-error' : undefined} />
     {errors.name && <p className="field-error" id="name-error">{errors.name}</p>}
@@ -35,5 +38,6 @@ export default function ContactForm() {
     {errors.message && <p className="field-error" id="message-error">{errors.message}</p>}
     <div className="actions"><button className="button" type="submit">Preparar mensagem</button></div>
     <div aria-live="polite">{draft && <div className="status"><p>Mensagem preparada. Abra seu aplicativo de e-mail para revisar e enviar.</p><a href={draft}>Abrir mensagem no e-mail</a></div>}</div>
+    </fieldset>
   </form>;
 }

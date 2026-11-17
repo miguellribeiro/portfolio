@@ -1,6 +1,6 @@
 # Evidência local — 17/11/2026
 
-TypeScript estrito e builds independentes passaram em npm run build:sites. A suíte final passou 28 testes, zero falhas e zero skips, em Edge desktop 1440 × 960 e mobile 390 × 844 (MANPE_OFFLINE_QA=1 npm run test:sites -- --workers=2).
+TypeScript estrito e builds independentes passaram em npm run build:sites. A suíte final passou 36 testes, zero falhas e zero skips, em Edge desktop 1440 × 960 e mobile 390 × 844 (MANPE_OFFLINE_QA=1 npm run test:sites -- --workers=2).
 
 ## Cobertura
 
@@ -37,11 +37,19 @@ Ensaio complementar executado por HTTP loopback real, sem interceptação Playwr
 
 | Site | Viewport (px) | CLS | Largura do documento (px) |
 | --- | --- | --- | --- |
-| studio | 1440 × 960 | 0.033031 | 1440 |
-| studio | 390 × 960 | 0.002785 | 390 |
+| studio | 1440 × 960 | 0.033218 | 1440 |
+| studio | 390 × 960 | 0.001455 | 390 |
 | portfolio | 1440 × 960 | 0.001696 | 1440 |
 | portfolio | 390 × 960 | 0.000617 | 390 |
 
 As quatro amostras ficaram abaixo de 0,1. Reflow complementar via HTTP: ambos os sites a 320 × 960 mantiveram scrollWidth 320 px com font-size raiz 100% e 200%, sem elementos fora da largura da viewport. O status foi isolado nos testes de geometria com as fontes retidas; os CLS residuais acima incluem a troca de fontes. São amostras locais, não dados de campo nem certificação de dispositivos físicos.
 
-Relatório bruto: artifacts/layout-http-report.json. Capturas: .impeccable/review/*-http-layout.png. A suíte completa final passou 28/28 testes com MANPE_OFFLINE_QA=1, workers=2. Sem merge/deploy.
+Relatório bruto: artifacts/layout-http-report.json. Capturas: .impeccable/review/*-http-layout.png. A suíte completa final passou 36/36 testes com MANPE_OFFLINE_QA=1, workers=2. Sem merge/deploy.
+
+## Complemento: fallback sem JavaScript
+
+Após a correção de reflow, o QA informou que o build anterior devolvia body vazio sem JS. Os dois builds agora pré-renderizam o próprio App, com hidratação progressiva. A suíte completa passou 36/36 testes, incluindo JavaScript desligado e módulo retido/liberado em desktop e mobile; verifica HTML preservado sem remount, ausência de erros de hidratação, navegação/FAQ nativos e disponibilidade correta dos controles.
+
+No ensaio HTTP real, com JS desligado a 390 × 960: studio contém 1 h1, 11 SVGs e 4 grupos data-actor; portfolio contém 1 h1, 4 SVGs e 4 grupos data-actor. Tema permanece desabilitado nos dois e fieldset do formulário permanece desabilitado no studio; contato mailto continua no HTML. Ambos mantêm scrollWidth 390 px. HTML bruto também contém heading e bosque, sem depender de inspeção de DOM criado pelo cliente. Capturas adicionais *-no-js-http-forest.png. A tabela CLS acima foi atualizada para a amostra fria do build pré-renderizado.
+
+O QA informou ainda ensaio próprio de StrictMode com cinco desmontagens/remontagens por largura, inclusive durante WAAPI do pássaro, sem timers/observers/listeners/animações após unmount. Esse ensaio independente não foi repetido nesta rodada; os testes de movimento existentes continuam aprovados. A arquitetura do pré-render foi encaminhada a Platão para revisão; não constitui autorização de release.
