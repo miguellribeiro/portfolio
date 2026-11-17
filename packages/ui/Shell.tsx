@@ -1,5 +1,6 @@
 import { useState, type ReactNode } from 'react';
 import type { NavigationItem } from './types';
+import { Forest } from './manpe/Forest';
 import './tokens.css';
 import '@fontsource/bricolage-grotesque/latin-600.css';
 import '@fontsource/bricolage-grotesque/latin-700.css';
@@ -24,7 +25,10 @@ export function Shell({ brand, navigation, counterpart, children }: ShellProps) 
       <button className="theme-toggle" type="button" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-label={`Ativar tema ${theme === 'dark' ? 'claro' : 'escuro'}`}>{theme === 'dark' ? 'Tema claro' : 'Tema escuro'}</button>
     </header>
     <main id="main" tabIndex={-1}>{children}</main>
-    <footer className="footer wrap"><p>{brand}</p><a href={counterpart.href}>{counterpart.label}<Arrow /></a><a href="#main">Voltar ao início</a></footer>
+    <footer>
+      <div className="footer wrap"><p>{brand}</p><a href={counterpart.href}>{counterpart.label}<Arrow /></a><a href="#main">Voltar ao início</a></div>
+      <Forest theme={theme} />
+    </footer>
   </div>;
 }
 

@@ -1,0 +1,71 @@
+{
+  "generatedAt": "2026-11-17T16:21:59.469Z",
+  "contrast": {
+    "dark": {
+      "inkOnBg": 16.51,
+      "mutedOnBg": 8.53,
+      "inkOnSurface": 15.52,
+      "mutedOnSurface": 8.02,
+      "button": 6.73,
+      "focusOnBg": 10.95,
+      "focusOnSurface": 10.3
+    },
+    "light": {
+      "inkOnBg": 18.22,
+      "mutedOnBg": 7.82,
+      "inkOnSurface": 19.06,
+      "mutedOnSurface": 8.19,
+      "button": 7.15,
+      "focusOnBg": 7.15,
+      "focusOnSurface": 7.48
+    }
+  },
+  "assets": [
+    {
+      "file": "bird.svg",
+      "bytes": 810,
+      "gzipBytes": 460,
+      "elements": 9,
+      "xmlValid": true
+    },
+    {
+      "file": "capybara.svg",
+      "bytes": 1340,
+      "gzipBytes": 562,
+      "elements": 15,
+      "xmlValid": true
+    },
+    {
+      "file": "forest-static.svg",
+      "bytes": 4767,
+      "gzipBytes": 1485,
+      "elements": 52,
+      "xmlValid": true
+    },
+    {
+      "file": "logo-original.svg",
+      "bytes": 888,
+      "gzipBytes": 476,
+      "elements": 13,
+      "xmlValid": true
+    },
+    {
+      "file": "monkey.svg",
+      "bytes": 1569,
+      "gzipBytes": 597,
+      "elements": 16,
+      "xmlValid": true
+    },
+    {
+      "file": "vegetation.svg",
+      "bytes": 1332,
+      "gzipBytes": 591,
+      "elements": 12,
+      "xmlValid": true
+    }
+  ],
+  "sceneBudgetPassed": true,
+  "limits": [
+    "Static asset validation only; portfolio integration and runtime QA owned by frontend."
+  ]
+}

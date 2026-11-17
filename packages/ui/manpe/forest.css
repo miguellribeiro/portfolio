@@ -1,0 +1,7 @@
+.manpe-forest { background: var(--bg, var(--manpe-bg)); }
+.manpe-forest .manpe-scene { max-width: 1120px; margin-inline: auto; }
+/* The fixed composition is intentionally separate from all data-part pose nodes. */
+@media (max-width: 767px) {
+  .manpe-forest .manpe-scene { margin-inline: 16px; }
+  .manpe-forest .manpe-scene svg { overflow: visible; }
+}
