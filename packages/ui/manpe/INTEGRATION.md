@@ -1,33 +1,23 @@
 # Integração do pacote #3
 
-Os dez arquivos originais estão em `assets/`, preservados byte a byte. Execute
-`python scripts/import-manpe-assets.py` para copiar novamente a entrega revisada
-de `shared/manpe-assets` e gerar `Artwork.tsx`. A conversão é feita no build de
-autoria; não há parsing, innerHTML ou dependência SVG no cliente.
+## Origem preservada
 
-`Forest.tsx` monta a cena compartilhada abaixo dos links de ambos os sites.
-Cada ator tem um wrapper `data-actor` separado do wrapper de posição/escala e
-dos grupos internos `data-part`. Consultas futuras devem ficar na ref do ator.
-O logo original em `src/components/Wordmark.jsx` não foi alterado e o snapshot
-da entrega não é importado pelo frontend.
+Os dez arquivos originais em assets/ foram comparados byte a byte com shared/manpe-assets em 17/11/2026: todos idênticos. O pacote declara autoria de Leonardo em seu README. O logo mestre existente no repositório permanece a fonte de identidade; o macaco da fauna é decorativo.
 
-A mão do macaco (118,18) encontra (584,68); os pés do pássaro (96,106)
-encontram (900,85). A capivara está em translate(96,115) scale(.67), junto
-à primeira moita e ao terreno. Na futura pose de pastejo, ajustar focinho e
-troca de apoio durante a coreografia, sem alterar os pivôs internos.
+O commit 22addca30b20ec2f80bc1e8f0ad28da4606b6881 introduziu scripts/import-manpe-assets.py, Artwork.tsx, Forest.tsx, forest.css, forest.spec.ts e a integração em Shell.tsx. Sua identidade Git é Aristóteles; não há evidência suficiente para atribuir a escrita anterior de cada arquivo. Leonardo informou que não escreveu esse conjunto. Nada foi descartado durante a reconciliação. Veja docs/manpe-motion.md.
 
-Validação em 17/11/2026: TypeScript estrito e os dois builds passaram.
-Quatro testes Playwright/Edge passaram, nos dois sites a 1440 e 390 px:
-troca de cores, apoios preservados em movimento reduzido, ausência de
-overflow horizontal e de animações na cena estática e de erros JS.
-Capturas de cena nos temas claro/escuro em `artifacts/forest-*.png` foram
-geradas; desktop escuro e mobile claro revisados visualmente.
+Execute python scripts/import-manpe-assets.py na raiz para regenerar o JSX a partir do pacote. É uma conversão de autoria; o cliente não faz parsing nem innerHTML. O script tem o caminho local do pacote de origem.
 
-O browser não iniciou no sandbox e o acesso às portas locais expirou pela
-ferramenta nativa. Para a validação foi usado o Edge nativo, servindo os arquivos
-compilados com interceptação Playwright (`MANPE_OFFLINE_QA=1`). Isso valida a
-renderização dos builds, não a rede do preview ou a publicação.
+## Execução atual #5 / #6
 
-Estado atual: estático. Sem pausa manual ou scheduler nesta integração.
-Cronogramas, limite de simultaneidade, relógio ativo, visibilidade e pausa real
-WAAPI/timers pertencem à issue #6. O teste estático não comprova esses recursos.
+Shell monta BrandIntro e Forest nos dois sites. BrandIntro aguarda fontes e decode do logo; usa um slot reservado de 32 px à direita, sem overlay ou bloqueio de foco. Erro/timeout oferecem recarga e continuação com fallback em faixa própria.
+
+Forest conserva wrappers externos de layout e wrappers internos de deslocamento/pose. Mão do macaco (118,18) ancora em (584,68); pés do pássaro (96,106) ancoram em (900,85). Os transforms de composição sobrevivem à redução de movimento. Tokens são importados uma vez; tema é explícito.
+
+ActiveScene controla o relógio ativo, timers restantes e progresso WAAPI. forestMotion define os três ciclos, grama e esperas independentes após conclusão, com limite 2 desktop / 1 mobile. Mudança de faixa do viewport reinicia a cena sem acumular ações. IntersectionObserver, visibilidade da aba e pausa manual suspendem timers/animações. Movimento reduzido mantém cena estática e desmonta o controlador. Os retornos dos effects limpam listeners, observers, timers e animações.
+
+## Validação
+
+TypeScript e ambos os builds passaram. A suíte final teve 20 testes aprovados em Edge a 1440 e 390 px. Testa conteúdo, teclado, temas, preloader, três ciclos, grama, pausa, visibilidade, redução de movimento e reinicialização. Evidências e limites em docs/manpe-validation.md.
+
+Os arquivos compilados foram servidos por interceptação Playwright (MANPE_OFFLINE_QA=1); isso não valida rede, DNS ou publicação. As amostras locais não certificam FPS ou celular físico. Revisão independente de movimento/QA permanece etapa do planejamento. Não houve merge ou deploy.

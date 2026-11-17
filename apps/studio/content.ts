@@ -113,3 +113,19 @@ export const services = [
     "description": "Desenvolvimento de APIs robustas, arquitetura de banco de dados e lógica de negócios escalável."
   }
 ];
+
+// Trabalho próprio verificável no repositório; não representa um case de cliente.
+export const brandWork = [{
+  id: 'ecossistema-manpe',
+  title: 'Manpe Studio: um espaço para cada conversa.',
+  status: 'Projeto próprio · Em homologação',
+  description: 'Reestruturação do site da Manpe em duas experiências: serviços e planos no Studio; projetos, stack e trajetória no portfólio profissional.',
+  deliverables: ['Aplicações React e TypeScript com builds independentes', 'Conteúdo comercial e profissional separado', 'Temas claro e escuro, navegação por teclado e layout responsivo'],
+}];
+export const products = [{
+  id: 'manpe-web',
+  title: 'Ecossistema web Manpe',
+  status: 'Produto próprio · Em homologação',
+  description: 'Um espaço para conhecer os serviços da Manpe e outro para explorar a experiência profissional de Miguel. Navegação acessível, versões clara e escura e uma interface que se adapta ao celular e ao computador.',
+  availability: 'Em validação interna, sem data de lançamento definida.',
+}];

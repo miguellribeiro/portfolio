@@ -5,3 +5,6 @@
   .manpe-forest .manpe-scene { margin-inline: 16px; }
   .manpe-forest .manpe-scene svg { overflow: visible; }
 }
+
+.forest-controls { display: flex; justify-content: flex-end; align-items: center; min-height: 64px; }
+.manpe-scene [data-actor]:not([data-actor=vegetation]) { transform-box: view-box; }

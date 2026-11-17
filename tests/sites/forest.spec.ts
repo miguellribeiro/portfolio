@@ -1,20 +1,12 @@
 import { test, expect } from '@playwright/test';
-import { readFile } from 'node:fs/promises';
-import { resolve, extname } from 'node:path';
+import { siteURL } from './site';
 
 for (const [app, port] of [['studio', 4174], ['portfolio', 4175]] as const) {
   test(`${app}: fauna inline, temas e apoios preservados sem movimento`, async ({ page }, testInfo) => {
     const errors: string[] = [];
     page.on('pageerror', error => errors.push(error.message));
-    if (process.env.MANPE_OFFLINE_QA === '1') {
-      await page.route('http://manpe.test/**', async route => {
-        const path = new URL(route.request().url()).pathname;
-        const types: Record<string, string> = { '.html': 'text/html', '.js': 'application/javascript', '.css': 'text/css', '.woff': 'font/woff', '.woff2': 'font/woff2', '.svg': 'image/svg+xml' };
-        const file = resolve('artifacts', app, path === '/' ? 'index.html' : path.slice(1));
-        await route.fulfill({ body: await readFile(file), contentType: types[extname(file)] || 'application/octet-stream' });
-      });
-    }
-    await page.goto(process.env.MANPE_OFFLINE_QA === '1' ? 'http://manpe.test/' : `http://127.0.0.1:${port}`);
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto(await siteURL(page, app, port));
     const scene = page.locator('.manpe-scene');
     await scene.scrollIntoViewIfNeeded();
     await expect(scene).toHaveAttribute('aria-hidden', 'true');
@@ -29,7 +21,7 @@ for (const [app, port] of [['studio', 4174], ['portfolio', 4175]] as const) {
       };
       return { hand: point('[data-actor=monkey]', 118, 18), foot: point('[data-actor=bird]', 96, 106) };
     });
-    for (const motion of ['no-preference', 'reduce'] as const) {
+    for (const motion of ['reduce'] as const) {
       await page.emulateMedia({ reducedMotion: motion });
       const positions = await anchors();
       expect(positions.hand.x).toBeCloseTo(584, 1);

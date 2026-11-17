@@ -1,0 +1,12 @@
+.header { position: relative; }
+.header > .theme-toggle { line-height: 24px; }
+.brand-intro { background: transparent; flex: 0 0 32px; }
+.brand-mascot { display: block; width: 32px; height: 32px; position: relative; }
+.brand-mascot svg { display: block; width: 32px; height: 32px; overflow: visible; position: relative; z-index: 2; pointer-events: none; transform-origin: center; }
+.brand-mascot [data-part] { transform-box: view-box; }
+.load-status { width: 100%; padding: 16px; margin-block: 16px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--ink); font-size: .875rem; }
+.load-status p { margin: 0; }
+.load-status .actions { margin-top: 12px; gap: 12px; }
+.load-status button { white-space: normal; }
+@media (max-width: 800px) { .header { display: grid; grid-template-columns: minmax(0, 1fr) auto 32px; gap: 16px 12px; } .header nav { grid-column: 1 / -1; } .header .brand { font-size: 1.125rem; gap: 8px; min-width: 0; } .header .brand img { width: 32px; height: 32px; } .header > .theme-toggle { padding-inline: 10px; } }
+@media (prefers-reduced-motion: reduce) { .brand-mascot svg { transition: none !important; transform: none !important; } }

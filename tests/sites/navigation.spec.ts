@@ -1,13 +1,19 @@
 import { test, expect } from '@playwright/test';
 import { mkdir } from 'node:fs/promises';
+import { siteURL } from './site';
 
 for (const [app, port] of [['studio', 4174], ['portfolio', 4175]] as const) {
   test(`${app}: navegação, teclado, tema e isolamento`, async ({ page }, testInfo) => {
     const errors: string[] = [];
     page.on('pageerror', error => errors.push(error.message));
-    await page.goto(`http://127.0.0.1:${port}`);
+    const url = await siteURL(page, app, port);
+    await page.goto(url);
     await page.evaluate(() => document.fonts.ready);
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+    const slot = await page.locator('.brand-mascot').boundingBox();
+    const header = await page.locator('.header').boundingBox();
+    expect(Math.abs(slot!.x + slot!.width - header!.x - header!.width)).toBeLessThan(1);
+    expect(slot!.y + slot!.height).toBeLessThan(header!.y + 90);
     await page.keyboard.press('Tab');
     await expect(page.getByRole('link', { name: 'Pular para o conteúdo' })).toBeFocused();
     await page.keyboard.press('Enter');
@@ -25,6 +31,9 @@ for (const [app, port] of [['studio', 4174], ['portfolio', 4175]] as const) {
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
     if (app === 'studio') {
       await expect(page.getByRole('heading', { name: 'Trajetória profissional.' })).toHaveCount(0);
+      await expect(page.locator('#trabalhos')).toContainText('Projeto próprio · Em homologação');
+      await expect(page.locator('#produtos')).toContainText('Ecossistema web Manpe');
+      await expect(page.locator('#trabalhos, #produtos')).not.toContainText(['Sinapse', 'Bankup']);
       await page.getByRole('button', { name: 'Preparar mensagem' }).click();
       await expect(page.getByLabel('Seu nome')).toBeFocused();
       await expect(page.locator('[aria-invalid=true]')).toHaveCount(3);
@@ -48,7 +57,7 @@ for (const [app, port] of [['studio', 4174], ['portfolio', 4175]] as const) {
       await expect(page.getByRole('heading', { name: 'Planos' })).toHaveCount(0);
       await expect(page.getByRole('heading', { name: 'Sinapse', exact: true })).toBeVisible();
     }
-    await page.goto(`http://127.0.0.1:${port}`);
+    await page.goto(url);
     await page.evaluate(() => document.fonts.ready);
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await mkdir('.impeccable/review', { recursive: true });
