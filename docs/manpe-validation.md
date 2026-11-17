@@ -1,6 +1,6 @@
 # Evidência local — 17/11/2026
 
-TypeScript estrito e builds independentes passaram em npm run build:sites. A suíte final passou 20 testes, zero falhas e zero skips, em Edge desktop 1440 × 960 e mobile 390 × 844 (MANPE_OFFLINE_QA=1 npm run test:sites -- --workers=2).
+TypeScript estrito e builds independentes passaram em npm run build:sites. A suíte final passou 28 testes, zero falhas e zero skips, em Edge desktop 1440 × 960 e mobile 390 × 844 (MANPE_OFFLINE_QA=1 npm run test:sites -- --workers=2).
 
 ## Cobertura
 
@@ -26,3 +26,22 @@ SVG pode exigir layouts nativos para desenhar transforms: isso não é prova de 
 Os builds foram servidos por interceptação local Playwright, sem publicação ou chamadas aos domínios finais. Isso não valida rede, DNS ou Cloudflare. npm run test:sites sem MANPE_OFFLINE_QA continua disponível com previews Vite reais.
 
 Capturas revisadas em .impeccable/review (npm run test:sites e node scripts/review-manpe.cjs). Relatório completo: artifacts/motion-test-report.json; amostras também ficam nos anexos performance-sample do Playwright. Artefatos locais são ignorados pelo Git. Validação visual de Leonardo e QA independente de Freud permanecem etapas do planejamento. Nenhum merge ou deploy realizado.
+
+## Correções após QA independente — PR #1
+
+O status de recursos passou para uma faixa fixa no canto inferior, com altura limitada e rolagem própria: carregamento, timeout e remoção deixam a geometria do main inalterada. O mascote continua decorativo. A continuação com fontes alternativas transfere foco para main antes de remover o botão, sem rolar a página; Tab segue para a primeira ação do conteúdo.
+
+O cabeçalho móvel usa grid com prioridade explícita sobre o CSS base. Até 480 px, marca/mascote, tema e navegação ocupam linhas próprias. Marca com largura flexível, quebras de palavras longas, controles limitados ao contêiner e campos encolhíveis preservam o reflow sem esconder overflow. Regressões em tests/sites/layout.spec.ts verificam os dois sites a 320 px com texto normal e 200%, controles utilizáveis e status/timeout/foco; intro.spec.ts verifica também teclado após falha real do logo.
+
+Ensaio complementar executado por HTTP loopback real, sem interceptação Playwright: node scripts/check-manpe-layout.cjs. Edge 157.0.4341.60, cache desativado, latência configurada de 150 ms, download/upload 200000 B/s e CPU 4×; viewports 1440 × 960 e 390 × 960. CLS calculado pela maior janela de sessão (intervalos menores que 1 s, janela até 5 s), excluindo entradas com interação recente. Uma navegação fria por combinação:
+
+| Site | Viewport (px) | CLS | Largura do documento (px) |
+| --- | --- | --- | --- |
+| studio | 1440 × 960 | 0.033031 | 1440 |
+| studio | 390 × 960 | 0.002785 | 390 |
+| portfolio | 1440 × 960 | 0.001696 | 1440 |
+| portfolio | 390 × 960 | 0.000617 | 390 |
+
+As quatro amostras ficaram abaixo de 0,1. Reflow complementar via HTTP: ambos os sites a 320 × 960 mantiveram scrollWidth 320 px com font-size raiz 100% e 200%, sem elementos fora da largura da viewport. O status foi isolado nos testes de geometria com as fontes retidas; os CLS residuais acima incluem a troca de fontes. São amostras locais, não dados de campo nem certificação de dispositivos físicos.
+
+Relatório bruto: artifacts/layout-http-report.json. Capturas: .impeccable/review/*-http-layout.png. A suíte completa final passou 28/28 testes com MANPE_OFFLINE_QA=1, workers=2. Sem merge/deploy.

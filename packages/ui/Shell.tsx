@@ -19,17 +19,18 @@ type ShellProps = {
 export function Shell({ brand, navigation, counterpart, children }: ShellProps) {
   const logo = useRef<HTMLImageElement>(null);
   const statusTarget = useRef<HTMLDivElement>(null);
+  const contentTarget = useRef<HTMLElement>(null);
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
   return <div className="site-shell" data-theme={theme}>
     <a className="skip-link" href="#main">Pular para o conteúdo</a>
     <header className="header wrap">
-      <a className="brand" href="#main"><img ref={logo} src="/favicon.svg" width="36" height="36" alt="" />{brand}</a>
+      <a className="brand" href="#main"><img ref={logo} src="/favicon.svg" width="36" height="36" alt="" /><span>{brand}</span></a>
       <nav aria-label="Navegação principal"><ul>{navigation.map(item => <li key={item.href}><a href={item.href}>{item.label}</a></li>)}</ul></nav>
       <button className="theme-toggle" type="button" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-label={`Ativar tema ${theme === 'dark' ? 'claro' : 'escuro'}`}>{theme === 'dark' ? 'Tema claro' : 'Tema escuro'}</button>
-      <BrandIntro logo={logo} statusTarget={statusTarget} theme={theme} />
+      <BrandIntro logo={logo} statusTarget={statusTarget} contentTarget={contentTarget} theme={theme} />
     </header>
-    <div className="resource-status wrap" ref={statusTarget} />
-    <main id="main" tabIndex={-1}>{children}</main>
+    <div className="resource-status" ref={statusTarget} />
+    <main id="main" ref={contentTarget} tabIndex={-1}>{children}</main>
     <footer>
       <div className="footer wrap"><p>{brand}</p><a href={counterpart.href}>{counterpart.label}<Arrow /></a><a href="#main">Voltar ao início</a></div>
       <Forest theme={theme} />

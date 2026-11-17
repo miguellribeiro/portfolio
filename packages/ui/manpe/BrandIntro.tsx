@@ -6,7 +6,7 @@ import './intro.css';
 type Phase = 'loading' | 'transition' | 'header' | 'error';
 
 /** Decorative intro: the page remains readable and interactive throughout. */
-export function BrandIntro({ logo, statusTarget, theme }: { logo: RefObject<HTMLImageElement>; statusTarget: RefObject<HTMLDivElement>; theme: 'dark' | 'light' }) {
+export function BrandIntro({ logo, statusTarget, contentTarget, theme }: { logo: RefObject<HTMLImageElement>; statusTarget: RefObject<HTMLDivElement>; contentTarget: RefObject<HTMLElement>; theme: 'dark' | 'light' }) {
   const slot = useRef<HTMLSpanElement>(null);
   const mascot = useRef<SVGSVGElement>(null);
   const [phase, setPhase] = useState<Phase>('loading');
@@ -93,7 +93,7 @@ export function BrandIntro({ logo, statusTarget, theme }: { logo: RefObject<HTML
     <span ref={slot} className="brand-mascot" aria-hidden="true"><svg ref={mascot} viewBox="0 0 200 200" focusable="false" aria-hidden="true"><MonkeyArtwork /></svg></span>
   </div>
     {showStatus && statusTarget.current && createPortal(<div className="load-status">
-      {phase === 'error' ? <><p role="alert">Alguns recursos não carregaram. Você pode usar a página e tentar novamente.</p><div className="actions"><button className="theme-toggle" onClick={() => window.location.reload()}>Tentar novamente</button><button className="theme-toggle" onClick={() => continueWithFallback.current()}>Continuar com fontes alternativas</button></div></> : <p role="status">Carregando fontes e identidade visual… O conteúdo já está disponível.</p>}
+      {phase === 'error' ? <><p role="alert">Alguns recursos não carregaram. Você pode usar a página e tentar novamente.</p><div className="actions"><button className="theme-toggle" onClick={() => window.location.reload()}>Tentar novamente</button><button className="theme-toggle" onClick={() => { contentTarget.current?.focus({ preventScroll: true }); continueWithFallback.current(); }}>Continuar com fontes alternativas</button></div></> : <p role="status">Carregando fontes e identidade visual… O conteúdo já está disponível.</p>}
     </div>, statusTarget.current)}
   </>;
 }

@@ -69,7 +69,9 @@ test('logo ausente oferece continuação e movimento reduzido mantém mascote es
   await page.goto(url);
   await expect(page.locator('.brand-intro')).toHaveAttribute('data-phase', 'error');
   expect(await page.locator('.brand-mascot svg').evaluate(el => getComputedStyle(el).transform)).toBe('none');
-  await page.getByRole('button', { name: 'Continuar com fontes alternativas' }).click();
+  await page.getByRole('button', { name: 'Continuar com fontes alternativas' }).focus();
+  await page.keyboard.press('Enter');
+  await expect(page.locator('main')).toBeFocused();
   await expect(page.locator('.brand-intro')).toHaveAttribute('data-phase', 'header');
   await expect(page.getByRole('alert')).toHaveCount(0);
   await expect(page.locator('main')).toBeVisible();
